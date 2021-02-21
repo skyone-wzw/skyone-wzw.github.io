@@ -1,0 +1,13 @@
+# welcome to : www.skyone.host
+User-agent: *
+
+Allow: /
+
+Disallow: /css/
+Disallow: /img/
+Disallow: /js/
+Disallow: /live2d-widget/
+Disallow: /photoswipe/
+
+Sitemap: https://www.skyone.host/sitemap.xml
+Sitemap: https://www.skyone.host/baidusitemap.xml

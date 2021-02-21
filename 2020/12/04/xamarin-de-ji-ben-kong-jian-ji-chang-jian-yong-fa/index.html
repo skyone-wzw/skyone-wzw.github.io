@@ -1,0 +1,269 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Xamarin的基本控件及常见用法 - Skyone-Blog</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="技术博客,"> 
+    <meta name="description" content="技术博客,Xamarin的基本控件及常见用法由于Xaml文件和HTML文件有点像，无法直接上传，只能截图了
+一一介绍一些通用的属性Margin 边距简而言之，就是设置控件距左上右下的边距，注意，不是HTML里,"> 
+    <meta name="author" content="王志伟"> 
+    <link rel="alternative" href="atom.xml" title="Skyone-Blog" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+    
+<link rel="stylesheet" href="/css/diaspora.css">
+
+	<!--
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads"
+        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+	 -->
+    <!-- 看板娘 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css">
+    <script src="/live2d-widget/autoload.js"></script>
+    <!-- MD5 -->
+    <script src="/js/md5.min.js"></script>
+    <!-- aplayer音乐播放器 -->
+    <script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">Skyone-Blog</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="iconfont icon-home image-icon" href="javascript:;" data-url="https://www.skyone.host"></a>
+    <h3 class="subtitle">Xamarin的基本控件及常见用法</h3>
+    <div class="social">
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="iconfont icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">Xamarin的基本控件及常见用法</h1>
+        <div class="stuff">
+            <span>十二月 04, 2020</span>
+            
+  <ul class="post-tags-list" itemprop="keywords"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/Xamarin/" rel="tag">Xamarin</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <h1 id="Xamarin的基本控件及常见用法"><a href="#Xamarin的基本控件及常见用法" class="headerlink" title="Xamarin的基本控件及常见用法"></a>Xamarin的基本控件及常见用法</h1><p>由于Xaml文件和HTML文件有点像，无法直接上传，只能截图了</p>
+<h2 id="一一介绍"><a href="#一一介绍" class="headerlink" title="一一介绍"></a>一一介绍</h2><h3 id="一些通用的属性"><a href="#一些通用的属性" class="headerlink" title="一些通用的属性"></a>一些通用的属性</h3><h4 id="Margin-边距"><a href="#Margin-边距" class="headerlink" title="Margin 边距"></a>Margin 边距</h4><p>简而言之，就是设置控件距左上右下的边距，<strong>注意，不是HTML里的上右下左！</strong></p>
+<h4 id="VerticalTextAlignment-amp-HorizontalTextAlignment-垂直-水平居中"><a href="#VerticalTextAlignment-amp-HorizontalTextAlignment-垂直-水平居中" class="headerlink" title="VerticalTextAlignment &amp; HorizontalTextAlignment 垂直/水平居中"></a>VerticalTextAlignment &amp; HorizontalTextAlignment 垂直/水平居中</h4><p>意思很明显，就是定义控件的文本的对齐方式，有<code>Center</code>,<code>Strat</code>,<code>End</code>三个选项，分别对应：<code>居中</code>、<code>左对齐</code>、<code>右对齐</code>。</p>
+<h4 id="FontSize-字体大小"><a href="#FontSize-字体大小" class="headerlink" title="FontSize 字体大小"></a>FontSize 字体大小</h4><p>不多说，设置文本字体的大小</p>
+<h4 id="以Label控件为例"><a href="#以Label控件为例" class="headerlink" title="以Label控件为例"></a>以Label控件为例</h4><p><img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E4%BB%A3%E7%A0%8101.png" alt="代码01"></p>
+<p>表示一个上下左右边距均为8，垂直/水平居中，字体24号，显示文本”<code>Apple</code>“，名称为”<code>AppleLabel</code>“的Label控件。</p>
+<img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C01.png" alt="运行结果" style="zoom: 50%;" />
+
+<h3 id="Label-文本框"><a href="#Label-文本框" class="headerlink" title="Label 文本框"></a>Label 文本框</h3><p>最简单的控件，用于显示文本，常见属性有：</p>
+<p><img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E4%BB%A3%E7%A0%8102.png" alt="代码02"></p>
+<img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C02.png" alt="运行结果02" style="zoom:50%;" />
+
+<h3 id="Button-按钮"><a href="#Button-按钮" class="headerlink" title="Button 按钮"></a>Button 按钮</h3><p>按钮，按了就可以除非指定事件，比如：</p>
+<p><img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E4%BB%A3%E7%A0%8103.png" alt="代码03"></p>
+<p>配合如下代码：</p>
+<p><img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E4%BB%A3%E7%A0%8104.png" alt="代码04"></p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> Xamarin.Forms;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Blog</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">MainPage</span> : <span class="title">ContentPage</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">MainPage</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            InitializeComponent();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">MyPopupButton_Clicked</span>(<span class="params"><span class="built_in">object</span> sender, EventArgs e</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            AppleLabel.Text = <span class="string">&quot;Apple&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果：</p>
+<img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C03.png" alt="运行结果03" style="zoom:50%;" />
+
+<h3 id="Grid-表"><a href="#Grid-表" class="headerlink" title="Grid 表"></a>Grid 表</h3><p>一般用于排版，可以把其他控件放入其中，常见用法：</p>
+<p><img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E4%BB%A3%E7%A0%8105.png" alt="代码05"></p>
+<p>这个示例创建了一个3行2列的表，示例在本文末尾</p>
+<h3 id="ScrollView-滚动视图"><a href="#ScrollView-滚动视图" class="headerlink" title="ScrollView 滚动视图"></a>ScrollView 滚动视图</h3><p>顾名思义，就是鼠标滚轮可以控制的可滚动视图</p>
+<p><img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E4%BB%A3%E7%A0%8106.png" alt="代码06"></p>
+<p>最好要定义它的高度</p>
+<h3 id="用Label实现的超链接"><a href="#用Label实现的超链接" class="headerlink" title="用Label实现的超链接"></a>用Label实现的超链接</h3><p>通过附加属性使Label可点击，并添加下划线</p>
+<p><img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E4%BB%A3%E7%A0%8107.png" alt="代码07"></p>
+<p>配合C#代码：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> Xamarin.Essentials;</span><br><span class="line"><span class="keyword">using</span> Xamarin.Forms;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">HelloWorld</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">MainPage</span> : <span class="title">ContentPage</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">MainPage</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            InitializeComponent();</span><br><span class="line">        &#125;</span><br><span class="line">		<span class="comment">//注意要异步打开</span></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">async</span> <span class="keyword">void</span> <span class="title">ClickMeHyperlinkButton_Tapped</span>(<span class="params"><span class="built_in">object</span> sender, </span></span></span><br><span class="line"><span class="function"><span class="params">                                                         EventArgs e</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">await</span> Browser.OpenAsync(<span class="string">&quot;https://www.bilibili.com&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Switch-开关"><a href="#Switch-开关" class="headerlink" title="Switch 开关"></a>Switch 开关</h3><p>没什么好说的</p>
+<p><img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E4%BB%A3%E7%A0%8108.png" alt="代码08"></p>
+<h3 id="Entry-输入框"><a href="#Entry-输入框" class="headerlink" title="Entry 输入框"></a>Entry 输入框</h3><p>同样没什么可说的</p>
+<p><img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E4%BB%A3%E7%A0%8109.png" alt="代码09"></p>
+<h2 id="完整的例子"><a href="#完整的例子" class="headerlink" title="完整的例子"></a>完整的例子</h2><p><img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E4%BB%A3%E7%A0%8110.png" alt="代码10"></p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> Xamarin.Essentials;</span><br><span class="line"><span class="keyword">using</span> Xamarin.Forms;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Blog</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">MainPage</span> : <span class="title">ContentPage</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">MainPage</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            InitializeComponent();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">MyPopupButton_Clicked</span>(<span class="params"><span class="built_in">object</span> sender, EventArgs e</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            DisplayAlert(<span class="string">&quot;提示&quot;</span>, <span class="string">&quot;这是一个简单的弹窗&quot;</span>, <span class="string">&quot;确定&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">async</span> <span class="keyword">void</span> <span class="title">ClickMeHyperlinkButton_Tapped</span>(<span class="params"><span class="built_in">object</span> sender, EventArgs e</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">await</span> Browser.OpenAsync(<span class="string">&quot;https://www.bilibili.com&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E7%A4%BA%E4%BE%8B.png" alt="示例"></p>
+
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+		data-enable='true'
+        data-ae='true'
+        data-ci='d5e197ef955b7f3268e5'
+        data-cs='7d4feed7a179ad28943b0865b7970814073145ad'
+        data-r='blog-gitalk'
+        data-o='skyone-wzw'
+        data-a='skyone-wzw'
+        data-d='false'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">Xamarin的基本控件及常见用法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%B8%80%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.1.</span> <span class="toc-text">一一介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E9%80%9A%E7%94%A8%E7%9A%84%E5%B1%9E%E6%80%A7"><span class="toc-number">1.1.1.</span> <span class="toc-text">一些通用的属性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Margin-%E8%BE%B9%E8%B7%9D"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">Margin 边距</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#VerticalTextAlignment-amp-HorizontalTextAlignment-%E5%9E%82%E7%9B%B4-%E6%B0%B4%E5%B9%B3%E5%B1%85%E4%B8%AD"><span class="toc-number">1.1.1.2.</span> <span class="toc-text">VerticalTextAlignment &amp; HorizontalTextAlignment 垂直&#x2F;水平居中</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#FontSize-%E5%AD%97%E4%BD%93%E5%A4%A7%E5%B0%8F"><span class="toc-number">1.1.1.3.</span> <span class="toc-text">FontSize 字体大小</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A5Label%E6%8E%A7%E4%BB%B6%E4%B8%BA%E4%BE%8B"><span class="toc-number">1.1.1.4.</span> <span class="toc-text">以Label控件为例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Label-%E6%96%87%E6%9C%AC%E6%A1%86"><span class="toc-number">1.1.2.</span> <span class="toc-text">Label 文本框</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Button-%E6%8C%89%E9%92%AE"><span class="toc-number">1.1.3.</span> <span class="toc-text">Button 按钮</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Grid-%E8%A1%A8"><span class="toc-number">1.1.4.</span> <span class="toc-text">Grid 表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ScrollView-%E6%BB%9A%E5%8A%A8%E8%A7%86%E5%9B%BE"><span class="toc-number">1.1.5.</span> <span class="toc-text">ScrollView 滚动视图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8Label%E5%AE%9E%E7%8E%B0%E7%9A%84%E8%B6%85%E9%93%BE%E6%8E%A5"><span class="toc-number">1.1.6.</span> <span class="toc-text">用Label实现的超链接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Switch-%E5%BC%80%E5%85%B3"><span class="toc-number">1.1.7.</span> <span class="toc-text">Switch 开关</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Entry-%E8%BE%93%E5%85%A5%E6%A1%86"><span class="toc-number">1.1.8.</span> <span class="toc-text">Entry 输入框</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="toc-number">1.2.</span> <span class="toc-text">完整的例子</span></a></li></ol></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+<div id="aplayer"></div>
+<script>
+    window.aplayer = new APlayer({
+        container: document.getElementById('aplayer'),
+        lrcType: 3,
+        order: "random",
+        fixed: true,
+        audio: [
+            
+            
+            {
+                name: "夜航星",
+                artist: "洛天依",
+                url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/music/夜航星%20-%20洛天依.mp3",
+                
+                cover: "https://ooo.0x0.ooo/2021/02/14/o08AS.png",
+                
+                
+                lrc: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/lrc/夜航星%20-%20洛天依.lrc",
+                
+            },
+            
+            {
+                name: "为谁而为",
+                artist: "洛天依",
+                url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/music/为谁而为%20-%20洛天依%2CCOP.mp3",
+                
+                cover: "https://ooo.0x0.ooo/2021/02/16/ocSlx.jpg",
+                
+                
+                lrc: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/lrc/为谁而为%20-%20洛天依%2CCOP.lrc",
+                
+            },
+            
+            {
+                name: "Faded",
+                artist: "乐正绫",
+                url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/blog/music/乐正绫%20-%20Faded.mp3",
+                
+                cover: "https://ooo.0x0.ooo/2021/02/21/odvNY.png",
+                
+                
+            },
+            
+            {
+                name: "bilibili2018年度总结BGM",
+                artist: "bilibili",
+                url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/blog/music/bilibili2018%20-%20至尊马甲.flac",
+                
+                cover: "https://ooo.0x0.ooo/2021/02/21/odAdp.jpg",
+                
+                
+            },
+            
+        ]
+    });
+</script>
+</body>
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+</html>

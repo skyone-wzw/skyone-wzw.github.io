@@ -1,0 +1,345 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>制作一个获取网易云音乐下载链接的服务器 - Skyone-Blog</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="技术博客,"> 
+    <meta name="description" content="技术博客,技术栈
+Koa基础
+
+推荐一篇博客，把koa讲的非常易懂，几乎看懂他提供的例子后koa就会得差不多了，如果有时间，我可能也会写一篇教程。
+
+JavaScript基础
+HTML基础
+
+用到的Node.,"> 
+    <meta name="author" content="王志伟"> 
+    <link rel="alternative" href="atom.xml" title="Skyone-Blog" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+    
+<link rel="stylesheet" href="/css/diaspora.css">
+
+	<!--
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads"
+        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+	 -->
+    <!-- 看板娘 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css">
+    <script src="/live2d-widget/autoload.js"></script>
+    <!-- MD5 -->
+    <script src="/js/md5.min.js"></script>
+    <!-- aplayer音乐播放器 -->
+    <script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">Skyone-Blog</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="iconfont icon-home image-icon" href="javascript:;" data-url="https://www.skyone.host"></a>
+    <h3 class="subtitle">制作一个获取网易云音乐下载链接的服务器</h3>
+    <div class="social">
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="iconfont icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">制作一个获取网易云音乐下载链接的服务器</h1>
+        <div class="stuff">
+            <span>十二月 20, 2020</span>
+            
+  <ul class="post-tags-list" itemprop="keywords"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/Koa/" rel="tag">Koa</a></li><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <h1 id="技术栈"><a href="#技术栈" class="headerlink" title="技术栈"></a>技术栈</h1><ul>
+<li>Koa基础</li>
+</ul>
+<p>推荐一篇<a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2017/08/koa.html?bsh_bid=1983230339">博客</a>，把koa讲的非常易懂，几乎看懂他提供的例子后koa就会得差不多了，如果有时间，我可能也会写一篇教程。</p>
+<ul>
+<li>JavaScript基础</li>
+<li>HTML基础</li>
+</ul>
+<h1 id="用到的Node-js模块"><a href="#用到的Node-js模块" class="headerlink" title="用到的Node.js模块"></a>用到的Node.js模块</h1><ul>
+<li>koa</li>
+<li>koa-route</li>
+<li>axios</li>
+<li>crypto-js</li>
+</ul>
+<p>如果你用的WebStorm，直接写</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Koa = <span class="built_in">require</span>(<span class="string">&quot;koa&quot;</span>)</span><br><span class="line"><span class="keyword">const</span> querystring = <span class="built_in">require</span>(<span class="string">&quot;querystring&quot;</span>)</span><br><span class="line"><span class="keyword">const</span> CryptoJS = <span class="built_in">require</span>(<span class="string">&quot;crypto-js&quot;</span>)</span><br><span class="line"><span class="keyword">const</span> axios = <span class="built_in">require</span>(<span class="string">&#x27;axios&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&quot;fs&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> route = <span class="built_in">require</span>(<span class="string">&#x27;koa-route&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> app = <span class="keyword">new</span> Koa();</span><br></pre></td></tr></table></figure>
+<p>即可，WebStorm会自动提示你安装。</p>
+<p>其实自己安装也很简单，先切换到工作目录，用cmd或shell运行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm install koa</span><br><span class="line">npm install koa-route</span><br><span class="line">npm install axios</span><br><span class="line">npm isntall crypto-js</span><br></pre></td></tr></table></figure>
+<h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><h2 id="1-抓包、定位加密代码"><a href="#1-抓包、定位加密代码" class="headerlink" title="1. 抓包、定位加密代码"></a>1. 抓包、定位加密代码</h2><p>首先打开网易云音乐网页版，进入任意一首歌，打开浏览器的DevTools，选择Network，点击播放，稍加分析，不难看出，这个<code>post</code>请求是用来获取音乐链接。</p>
+<p><img src="https://tc.skyone.host/blog/post/%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E8%8E%B7%E5%8F%96%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E4%B8%8B%E8%BD%BD%E9%93%BE%E6%8E%A5%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8/%E6%8A%93%E5%8C%85.png" alt="抓包"></p>
+<p>切换到调用栈(Initiator)，看看发送它的函数在哪</p>
+<p><img src="https://tc.skyone.host/blog/post/%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E8%8E%B7%E5%8F%96%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E4%B8%8B%E8%BD%BD%E9%93%BE%E6%8E%A5%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8/%E8%B0%83%E7%94%A8%E6%A0%88.png" alt="调用栈"></p>
+<p>打开，发现是一大坨看不懂的代码</p>
+<p><img src="https://tc.skyone.host/blog/post/%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E8%8E%B7%E5%8F%96%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E4%B8%8B%E8%BD%BD%E9%93%BE%E6%8E%A5%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8/%E4%B8%80%E5%A4%A7%E5%9D%A8%E4%B8%8D%E6%83%B3%E7%9C%8B%E7%9A%84%E4%BB%A3%E7%A0%81.png" alt="一大坨不想看的代码"></p>
+<p>看来这样走不通，那就搜搜post请求的data吧，<code>Ctrl</code>+<code>F</code>，搜<code>encSecKey</code></p>
+<p><img src="https://tc.skyone.host/blog/post/%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E8%8E%B7%E5%8F%96%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E4%B8%8B%E8%BD%BD%E9%93%BE%E6%8E%A5%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8/%E8%AF%B7%E6%B1%82%E5%A4%B4.png" alt="请求头"></p>
+<p><img src="https://tc.skyone.host/blog/post/%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E8%8E%B7%E5%8F%96%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E4%B8%8B%E8%BD%BD%E9%93%BE%E6%8E%A5%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8/%E5%AE%9A%E4%BD%8D%E5%8A%A0%E5%AF%86%E4%BB%A3%E7%A0%81.png" alt="定位加密代码"></p>
+<p>嗯，完美，很显然，这里的两个参数来自第13297行(可能你看到的行数和我不一样)的<code>window.asrsea()</code>函数</p>
+<p>先刷新一下，再在那一行打个断点，点击播放</p>
+<p>断点触发，进入<code>window.asrsea()</code>函数</p>
+<p><img src="https://tc.skyone.host/blog/post/%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E8%8E%B7%E5%8F%96%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E4%B8%8B%E8%BD%BD%E9%93%BE%E6%8E%A5%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8/%E8%BF%9B%E5%85%A5%E5%8A%A0%E5%AF%86%E5%87%BD%E6%95%B0.png" alt="进入加密函数"></p>
+<p>再在那个<code>d(d,e,f,g)</code>函数的第一行打个断点，可以看到这就是我们要找的加密函数。</p>
+<h2 id="2-分析加密代码"><a href="#2-分析加密代码" class="headerlink" title="2. 分析加密代码"></a>2. 分析加密代码</h2><p><img src="https://tc.skyone.host/blog/post/%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E8%8E%B7%E5%8F%96%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E4%B8%8B%E8%BD%BD%E9%93%BE%E6%8E%A5%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8/%E5%8A%A0%E5%AF%86%E4%BB%A3%E7%A0%81.png" alt="加密代码"></p>
+<p>在左边的局部变量中看出，<code>d</code>保存的是一个字符串化的json，保存着要获取的歌曲id</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    id: [</span><br><span class="line">        <span class="number">32102297</span></span><br><span class="line">    ],</span><br><span class="line">    level: &quot;standard&quot;,</span><br><span class="line">    encodeType: &quot;aac&quot;,</span><br><span class="line">    csrf_token: &quot;&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>经过多次测试，<code>e</code>是一个定值：<code>&quot;010001&quot;</code>，来自<code>[&quot;流泪&quot;, &quot;强&quot;]</code>两个表情转换为对应的代码，转换映射如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;色&quot;</span>: <span class="string">&quot;00e0b&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;流感&quot;</span>: <span class="string">&quot;509f6&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;这边&quot;</span>: <span class="string">&quot;259df&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;弱&quot;</span>: <span class="string">&quot;8642d&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;嘴唇&quot;</span>: <span class="string">&quot;bc356&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;亲&quot;</span>: <span class="string">&quot;62901&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;开心&quot;</span>: <span class="string">&quot;477df&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;呲牙&quot;</span>: <span class="string">&quot;22677&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;憨笑&quot;</span>: <span class="string">&quot;ec152&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;猫&quot;</span>: <span class="string">&quot;b5ff6&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;皱眉&quot;</span>: <span class="string">&quot;8ace6&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;幽灵&quot;</span>: <span class="string">&quot;15bb7&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;蛋糕&quot;</span>: <span class="string">&quot;b7251&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;发怒&quot;</span>: <span class="string">&quot;52b3a&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;大哭&quot;</span>: <span class="string">&quot;b17a8&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;兔子&quot;</span>: <span class="string">&quot;76aea&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;星星&quot;</span>: <span class="string">&quot;8a5aa&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;钟情&quot;</span>: <span class="string">&quot;76d2e&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;牵手&quot;</span>: <span class="string">&quot;41762&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;公鸡&quot;</span>: <span class="string">&quot;9ec4e&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;爱意&quot;</span>: <span class="string">&quot;e341f&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;禁止&quot;</span>: <span class="string">&quot;56135&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;狗&quot;</span>: <span class="string">&quot;fccf6&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;亲亲&quot;</span>: <span class="string">&quot;95280&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;叉&quot;</span>: <span class="string">&quot;104e0&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;礼物&quot;</span>: <span class="string">&quot;312ec&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;晕&quot;</span>: <span class="string">&quot;bda92&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;呆&quot;</span>: <span class="string">&quot;557c9&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;生病&quot;</span>: <span class="string">&quot;38701&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;钻石&quot;</span>: <span class="string">&quot;14af6&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;拜&quot;</span>: <span class="string">&quot;c9d05&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;怒&quot;</span>: <span class="string">&quot;c4f7f&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;示爱&quot;</span>: <span class="string">&quot;0c368&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;汗&quot;</span>: <span class="string">&quot;5b7a4&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;小鸡&quot;</span>: <span class="string">&quot;6bee2&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;痛苦&quot;</span>: <span class="string">&quot;55932&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;撇嘴&quot;</span>: <span class="string">&quot;575cc&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;惶恐&quot;</span>: <span class="string">&quot;e10b4&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;口罩&quot;</span>: <span class="string">&quot;24d81&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;吐舌&quot;</span>: <span class="string">&quot;3cfe4&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;心碎&quot;</span>: <span class="string">&quot;875d3&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;生气&quot;</span>: <span class="string">&quot;e8204&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;可爱&quot;</span>: <span class="string">&quot;7b97d&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;鬼脸&quot;</span>: <span class="string">&quot;def52&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;跳舞&quot;</span>: <span class="string">&quot;741d5&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;男孩&quot;</span>: <span class="string">&quot;46b8e&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;奸笑&quot;</span>: <span class="string">&quot;289dc&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;猪&quot;</span>: <span class="string">&quot;6935b&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;圈&quot;</span>: <span class="string">&quot;3ece0&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;便便&quot;</span>: <span class="string">&quot;462db&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;外星&quot;</span>: <span class="string">&quot;0a22b&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;圣诞&quot;</span>: <span class="string">&quot;8e7&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;流泪&quot;</span>: <span class="string">&quot;01000&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;强&quot;</span>: <span class="string">&quot;1&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;爱心&quot;</span>: <span class="string">&quot;0CoJU&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;女孩&quot;</span>: <span class="string">&quot;m6Qyw&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;惊恐&quot;</span>: <span class="string">&quot;8W8ju&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;大笑&quot;</span>: <span class="string">&quot;d&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>f</code>同样是定值，来自一下表情转换为代码</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">&quot;色&quot;</span>, <span class="string">&quot;流感&quot;</span>, <span class="string">&quot;这边&quot;</span>, <span class="string">&quot;弱&quot;</span>, <span class="string">&quot;嘴唇&quot;</span>, <span class="string">&quot;亲&quot;</span>, <span class="string">&quot;开心&quot;</span>, <span class="string">&quot;呲牙&quot;</span>, <span class="string">&quot;憨笑&quot;</span>, <span class="string">&quot;猫&quot;</span>, <span class="string">&quot;皱眉&quot;</span>, <span class="string">&quot;幽灵&quot;</span>, <span class="string">&quot;蛋糕&quot;</span>, <span class="string">&quot;发怒&quot;</span>, <span class="string">&quot;大哭&quot;</span>, <span class="string">&quot;兔子&quot;</span>, <span class="string">&quot;星星&quot;</span>, <span class="string">&quot;钟情&quot;</span>, <span class="string">&quot;牵手&quot;</span>, <span class="string">&quot;公鸡&quot;</span>, <span class="string">&quot;爱意&quot;</span>, <span class="string">&quot;禁止&quot;</span>, <span class="string">&quot;狗&quot;</span>, <span class="string">&quot;亲亲&quot;</span>, <span class="string">&quot;叉&quot;</span>, <span class="string">&quot;礼物&quot;</span>, <span class="string">&quot;晕&quot;</span>, <span class="string">&quot;呆&quot;</span>, <span class="string">&quot;生病&quot;</span>, <span class="string">&quot;钻石&quot;</span>, <span class="string">&quot;拜&quot;</span>, <span class="string">&quot;怒&quot;</span>, <span class="string">&quot;示爱&quot;</span>, <span class="string">&quot;汗&quot;</span>, <span class="string">&quot;小鸡&quot;</span>, <span class="string">&quot;痛苦&quot;</span>, <span class="string">&quot;撇嘴&quot;</span>, <span class="string">&quot;惶恐&quot;</span>, <span class="string">&quot;口罩&quot;</span>, <span class="string">&quot;吐舌&quot;</span>, <span class="string">&quot;心碎&quot;</span>, <span class="string">&quot;生气&quot;</span>, <span class="string">&quot;可爱&quot;</span>, <span class="string">&quot;鬼脸&quot;</span>, <span class="string">&quot;跳舞&quot;</span>, <span class="string">&quot;男孩&quot;</span>, <span class="string">&quot;奸笑&quot;</span>, <span class="string">&quot;猪&quot;</span>, <span class="string">&quot;圈&quot;</span>, <span class="string">&quot;便便&quot;</span>, <span class="string">&quot;外星&quot;</span>, <span class="string">&quot;圣诞&quot;</span>]</span><br></pre></td></tr></table></figure>
+<p><code>g</code>同上，是<code>[&quot;爱心&quot;, &quot;女孩&quot;, &quot;惊恐&quot;, &quot;大笑&quot;]</code>转换为代码</p>
+<p>所以</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">e = <span class="string">&quot;010001&quot;</span></span><br><span class="line">f = <span class="string">&quot;00e0b509f6259df8642dbc35662901477df22677ec152b5ff68ace615bb7b725152b3ab17a876aea8a5aa76d2e417629ec4ee341f56135fccf695280104e0312ecbda92557c93870114af6c9d05c4f7f0c3685b7a46bee255932575cce10b424d813cfe4875d3e82047b97ddef52741d546b8e289dc6935b3ece0462db0a22b8e7&quot;</span></span><br><span class="line">g = <span class="string">&quot;0CoJUm6Qyw8W8jud&quot;</span></span><br></pre></td></tr></table></figure>
+<p>嗯，常量搞清楚了，再看看加密方法</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">!<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">a</span>(<span class="params">a</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> d, e, b = <span class="string">&quot;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&quot;</span>, c = <span class="string">&quot;&quot;</span>;</span><br><span class="line">        <span class="keyword">for</span> (d = <span class="number">0</span>; a &gt; d; d += <span class="number">1</span>)</span><br><span class="line">            e = <span class="built_in">Math</span>.random() * b.length,</span><br><span class="line">                e = <span class="built_in">Math</span>.floor(e),</span><br><span class="line">                c += b.charAt(e);</span><br><span class="line">        <span class="keyword">return</span> c</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">b</span>(<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> c = CryptoJS.enc.Utf8.parse(b)</span><br><span class="line">            , d = CryptoJS.enc.Utf8.parse(<span class="string">&quot;0102030405060708&quot;</span>)</span><br><span class="line">            , e = CryptoJS.enc.Utf8.parse(a)</span><br><span class="line">            , f = CryptoJS.AES.encrypt(e, c, &#123;</span><br><span class="line">                iv: d,</span><br><span class="line">                mode: CryptoJS.mode.CBC</span><br><span class="line">            &#125;);</span><br><span class="line">        <span class="keyword">return</span> f.toString()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">c</span>(<span class="params">a, b, c</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> d, e;</span><br><span class="line">        <span class="keyword">return</span> setMaxDigits(<span class="number">131</span>),</span><br><span class="line">            d = <span class="keyword">new</span> RSAKeyPair(b, <span class="string">&quot;&quot;</span>, c),</span><br><span class="line">            e = encryptedString(d, a)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">d</span>(<span class="params">d, e, f, g</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> h = &#123;&#125;</span><br><span class="line">            , i = a(<span class="number">16</span>);</span><br><span class="line">        <span class="keyword">return</span> h.encText = b(d, g),</span><br><span class="line">            h.encText = b(h.encText, i),</span><br><span class="line">            h.encSecKey = c(i, e, f),</span><br><span class="line">            h</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">e</span>(<span class="params">a, b, d, e</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> f = &#123;&#125;;</span><br><span class="line">        <span class="keyword">return</span> f.encText = c(a + e, b, d),</span><br><span class="line">            f</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">window</span>.asrsea = d,</span><br><span class="line">        <span class="built_in">window</span>.ecnonasr = e</span><br><span class="line">&#125;();</span><br></pre></td></tr></table></figure>
+<p><code>enText</code>就是post请求里的<code>params</code>参数，来自b函数加密两次</p>
+<p><code>encSecKey</code>来自c函数加密一次</p>
+<h3 id="a函数"><a href="#a函数" class="headerlink" title="a函数"></a>a函数</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">a</span>(<span class="params">a</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> d, e, b = <span class="string">&quot;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&quot;</span>, c = <span class="string">&quot;&quot;</span>;</span><br><span class="line">    <span class="keyword">for</span> (d = <span class="number">0</span>; a &gt; d; d += <span class="number">1</span>)</span><br><span class="line">        e = <span class="built_in">Math</span>.random() * b.length,</span><br><span class="line">            e = <span class="built_in">Math</span>.floor(e),</span><br><span class="line">            c += b.charAt(e);</span><br><span class="line">    <span class="keyword">return</span> c</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>显然，用来生成指定长度的随机字符串</p>
+<h3 id="b函数"><a href="#b函数" class="headerlink" title="b函数"></a>b函数</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">b</span>(<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> c = CryptoJS.enc.Utf8.parse(b)</span><br><span class="line">        , d = CryptoJS.enc.Utf8.parse(<span class="string">&quot;0102030405060708&quot;</span>)</span><br><span class="line">        , e = CryptoJS.enc.Utf8.parse(a)</span><br><span class="line">        , f = CryptoJS.AES.encrypt(e, c, &#123;</span><br><span class="line">            iv: d,</span><br><span class="line">            mode: CryptoJS.mode.CBC</span><br><span class="line">        &#125;);</span><br><span class="line">    <span class="keyword">return</span> f.toString()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>只使用了CryptoJS的函数，由于我们也用JavaScript写代码，直接复制即可，管他干嘛的-_-，只要在开头加个</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> CryptoJS = <span class="built_in">require</span>(<span class="string">&quot;crypto-js&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>即可。</p>
+<h3 id="c函数"><a href="#c函数" class="headerlink" title="c函数"></a>c函数</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">c</span>(<span class="params">a, b, c</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> d, e;</span><br><span class="line">    <span class="keyword">return</span> setMaxDigits(<span class="number">131</span>),</span><br><span class="line">        d = <span class="keyword">new</span> RSAKeyPair(b, <span class="string">&quot;&quot;</span>, c),</span><br><span class="line">        e = encryptedString(d, a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>看着很短，实际上调用了自定义的类，这样就不能用对付b函数的方法了，这里我们先不去看c函数干了什么</p>
+<p>我们看看它的参数</p>
+<table>
+<thead>
+<tr>
+<th>c函数的参数</th>
+<th>d函数里对应的变量</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>a</td>
+<td>i</td>
+<td>长度位16的随机字符串</td>
+</tr>
+<tr>
+<td>b</td>
+<td>e</td>
+<td>“010001”</td>
+</tr>
+<tr>
+<td>c</td>
+<td>f</td>
+<td>“00e0b509f6259df8642dbc35662901477df22677ec152b5ff68ace615bb7b725152b3ab17a876aea8a5aa76d2e417629ec4ee341f56135fccf695280104e0312ecbda92557c93870114af6c9d05c4f7f0c3685b7a46bee255932575cce10b424d813cfe4875d3e82047b97ddef52741d546b8e289dc6935b3ece0462db0a22b8e7”</td>
+</tr>
+</tbody></table>
+<p>站在网易的角度想想，向网易传了一串加密后的字符串，这个字符串经过一个随机数和三个常量的加密，要想解密，必然需要那个随机数，而<code>encSecKey</code>显然是用来提供那个随机数的，<code>encSecKey</code>只来自c函数且c函数接受一个随机数和两个常量，可以解密出那个随机数，因此：</p>
+<p><strong>如果那个a函数得到的随机数如果我们用定值代替，嘿嘿嘿，c函数得出的</strong><code>encSecKey</code><strong>也将是定值！</strong></p>
+<p>我们同调试函数即可获取一个随机数和与之对应的加密后的<code>encSecKey</code></p>
+<p>我获得的是：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">i = <span class="string">&quot;bEjJE2aqLOyTEZiv&quot;</span></span><br><span class="line">encSecKey = <span class="string">&quot;3e7ad1dbe03a65fc32268930314b88bcbfc1e9782c3b398c30b62776e39b66a048a7122d282a13d99f9b63bd4e1940b136169fbedf56c1887933fa59a01f95c4c0e78a6d9bb7f91605408e9c1c3c2e57873c53cdf09a3d79a43cfe26260741097089e4bd19808aab395190274e687b807ffddee89f39d75f2288e28a582f3d08&quot;</span></span><br></pre></td></tr></table></figure>
+<h3 id="写代码"><a href="#写代码" class="headerlink" title="写代码"></a>写代码</h3><p>经过上面的分析，我们可以得出如下代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> CryptoJS = <span class="built_in">require</span>(<span class="string">&quot;crypto-js&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">b</span>(<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> c = CryptoJS.enc.Utf8.parse(b)</span><br><span class="line">        , d = CryptoJS.enc.Utf8.parse(<span class="string">&quot;0102030405060708&quot;</span>)</span><br><span class="line">        , e = CryptoJS.enc.Utf8.parse(a)</span><br><span class="line">        , f = CryptoJS.AES.encrypt(e, c, &#123;</span><br><span class="line">        iv: d,</span><br><span class="line">        mode: CryptoJS.mode.CBC</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> f.toString()</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">maker</span>(<span class="params">d</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> h = &#123;&#125;</span><br><span class="line">      , i = <span class="string">&quot;bEjJE2aqLOyTEZiv&quot;</span>;</span><br><span class="line">    h.encText = b(d, <span class="string">&quot;0CoJUm6Qyw8W8jud&quot;</span>);</span><br><span class="line">    h.encText = b(h.encText, i);</span><br><span class="line">    h.encSecKey = <span class="string">&quot;3e7ad1dbe03a65fc32268930314b88bcbfc1e9782c3b398c30b62776e39b66a048a7122d282a13d99f9b63bd4e1940b136169fbedf56c1887933fa59a01f95c4c0e78a6d9bb7f91605408e9c1c3c2e57873c53cdf09a3d79a43cfe26260741097089e4bd19808aab395190274e687b807ffddee89f39d75f2288e28a582f3d08&quot;</span>;</span><br><span class="line">    <span class="keyword">return</span> [h.encText, h.encSecKey];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>是不是很简单？</p>
+<h2 id="3-实现后端"><a href="#3-实现后端" class="headerlink" title="3. 实现后端"></a>3. 实现后端</h2><p>这部分没什么可讲的，要讲的话也只是将web，因此，跳过。。</p>
+<p>完整代码如下：</p>
+<p>app.js</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Koa = <span class="built_in">require</span>(<span class="string">&quot;koa&quot;</span>)</span><br><span class="line"><span class="keyword">const</span> querystring = <span class="built_in">require</span>(<span class="string">&quot;querystring&quot;</span>)</span><br><span class="line"><span class="keyword">const</span> axios = <span class="built_in">require</span>(<span class="string">&#x27;axios&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&quot;fs&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> route = <span class="built_in">require</span>(<span class="string">&#x27;koa-route&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> app = <span class="keyword">new</span> Koa();</span><br><span class="line"><span class="keyword">const</span> CryptoJS = <span class="built_in">require</span>(<span class="string">&quot;crypto-js&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">b</span>(<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> c = CryptoJS.enc.Utf8.parse(b)</span><br><span class="line">        , d = CryptoJS.enc.Utf8.parse(<span class="string">&quot;0102030405060708&quot;</span>)</span><br><span class="line">        , e = CryptoJS.enc.Utf8.parse(a)</span><br><span class="line">        , f = CryptoJS.AES.encrypt(e, c, &#123;</span><br><span class="line">        iv: d,</span><br><span class="line">        mode: CryptoJS.mode.CBC</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> f.toString()</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">maker</span>(<span class="params">d</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> h = &#123;&#125;</span><br><span class="line">      , i = <span class="string">&quot;bEjJE2aqLOyTEZiv&quot;</span>;</span><br><span class="line">    h.encText = b(d, <span class="string">&quot;0CoJUm6Qyw8W8jud&quot;</span>);</span><br><span class="line">    h.encText = b(h.encText, i);</span><br><span class="line">    h.encSecKey = <span class="string">&quot;3e7ad1dbe03a65fc32268930314b88bcbfc1e9782c3b398c30b62776e39b66a048a7122d282a13d99f9b63bd4e1940b136169fbedf56c1887933fa59a01f95c4c0e78a6d9bb7f91605408e9c1c3c2e57873c53cdf09a3d79a43cfe26260741097089e4bd19808aab395190274e687b807ffddee89f39d75f2288e28a582f3d08&quot;</span>;</span><br><span class="line">    <span class="keyword">return</span> [h.encText, h.encSecKey];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> page = <span class="function">(<span class="params">ctx</span>) =&gt;</span> &#123;</span><br><span class="line">    ctx.response.type = <span class="string">&quot;html&quot;</span>;</span><br><span class="line">    ctx.response.body = fs.createReadStream(<span class="string">&quot;./index.html&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> request = <span class="keyword">async</span> (id) =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> answer = &#123;<span class="attr">status</span>: <span class="number">500</span>, <span class="attr">body</span>: &#123;&#125;&#125;</span><br><span class="line">    <span class="keyword">let</span> params = maker(<span class="built_in">JSON</span>.stringify(&#123;</span><br><span class="line">        ids: [id],</span><br><span class="line">        level: <span class="string">&quot;standard&quot;</span>,</span><br><span class="line">        encodeType: <span class="string">&quot;aac&quot;</span>,</span><br><span class="line">        csrf_token: <span class="string">&quot;&quot;</span></span><br><span class="line">    &#125;));</span><br><span class="line">    <span class="keyword">const</span> settings = &#123;</span><br><span class="line">        method: <span class="string">&quot;post&quot;</span>,</span><br><span class="line">        url: <span class="string">&quot;https://music.163.com/weapi/song/enhance/player/url/v1?csrf_token=&quot;</span>,</span><br><span class="line">        data: querystring.stringify(&#123;</span><br><span class="line">            params: params[<span class="number">0</span>],</span><br><span class="line">            encSecKey: params[<span class="number">1</span>]</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">await</span> axios(settings)</span><br><span class="line">        .then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">            answer.body = res.data;</span><br><span class="line">            answer.status = <span class="literal">true</span>;</span><br><span class="line">        &#125;)</span><br><span class="line">        .catch((<span class="function"><span class="params">err</span> =&gt;</span> &#123;</span><br><span class="line">            answer.body = err;</span><br><span class="line">            answer.status = <span class="literal">false</span>;</span><br><span class="line">        &#125;));</span><br><span class="line">    <span class="keyword">return</span> answer;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> analyze = <span class="keyword">async</span> (ctx) =&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> result = <span class="string">&quot;&lt;p&gt;服务器出错！请联系管理员&lt;/p&gt;&quot;</span>;</span><br><span class="line">    <span class="keyword">await</span> request(ctx.request.query.id)</span><br><span class="line">        .then(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">let</span> data;</span><br><span class="line">            <span class="keyword">if</span> (res.status) &#123;</span><br><span class="line">                data = res.body;</span><br><span class="line">                <span class="keyword">if</span> (data.code === <span class="number">200</span>) &#123;</span><br><span class="line">                    result = <span class="string">&#x27;&lt;p&gt;歌曲id为:&#x27;</span> + data.data[<span class="number">0</span>].id + <span class="string">&#x27;&lt;/p&gt;&lt;p&gt;点击&lt;a href=&quot;&#x27;</span> + data.data[<span class="number">0</span>].url + <span class="string">&#x27;&quot;&gt;链接&lt;/a&gt;下载&lt;/p&gt;&#x27;</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    result = <span class="string">&#x27;&lt;p&gt;输入错误！&lt;/p&gt;&#x27;</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">        .catch(<span class="function">(<span class="params">err</span>) =&gt;</span> &#123;</span><br><span class="line">            result = <span class="string">&#x27;&lt;p&gt;输入错误！&lt;/p&gt;&lt;br /&gt;&#x27;</span> + <span class="built_in">JSON</span>.stringify(err);</span><br><span class="line">        &#125;)</span><br><span class="line">    ctx.response.body = result;</span><br><span class="line">    ctx.response.type = <span class="string">&quot;html&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line">app.use(route.get(<span class="string">&quot;/&quot;</span>, page))</span><br><span class="line">app.use(route.get(<span class="string">&quot;/url&quot;</span>, analyze))</span><br><span class="line"></span><br><span class="line">app.listen(<span class="number">3000</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="4-实现前端"><a href="#4-实现前端" class="headerlink" title="4. 实现前端"></a>4. 实现前端</h2><p>额，前端我真的不太会，随便写一个吧，能用就行</p>
+<p>index.html</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;zh-CN&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>网易云音乐链接分析器<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    输入歌曲id:<span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">&quot;id&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">label</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">&quot;id&quot;</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">name</span>=<span class="string">&quot;id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">onclick</span>=<span class="string">&quot;getWyyyy()&quot;</span>&gt;</span>获取下载链接<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">    <span class="function"><span class="keyword">function</span> <span class="title">getWyyyy</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">let</span> input = <span class="built_in">document</span>.getElementById(<span class="string">&quot;id&quot;</span>).value</span></span><br><span class="line"><span class="javascript">        <span class="built_in">window</span>.location.href = <span class="string">&quot;http://localhost:3000/url?id=&quot;</span> + input</span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>记得完成后把<code>localhost</code>换成自己的IP或域名哦(如果像远程使用的话)</p>
+<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><p>运行命令:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node app.js</span><br></pre></td></tr></table></figure>
+<p>打开浏览器，输入网址：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;localhost:3000&#x2F;</span><br></pre></td></tr></table></figure>
+<p>如果一切正常，你将看到你写的前端界面</p>
+<p><img src="https://tc.skyone.host/blog/post/%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E8%8E%B7%E5%8F%96%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E4%B8%8B%E8%BD%BD%E9%93%BE%E6%8E%A5%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8/%E6%B5%8B%E8%AF%9501.png" alt="测试01"></p>
+<p>输入歌曲id，点击按钮</p>
+<p><img src="https://tc.skyone.host/blog/post/%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E8%8E%B7%E5%8F%96%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E4%B8%8B%E8%BD%BD%E9%93%BE%E6%8E%A5%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8/%E6%B5%8B%E8%AF%9502.png" alt="测试02"></p>
+<p><img src="https://tc.skyone.host/blog/post/%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E8%8E%B7%E5%8F%96%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E4%B8%8B%E8%BD%BD%E9%93%BE%E6%8E%A5%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8/%E6%B5%8B%E8%AF%9503.png" alt="测试03"></p>
+<p>弹出下载界面，成功！</p>
+
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+		data-enable='true'
+        data-ae='true'
+        data-ci='d5e197ef955b7f3268e5'
+        data-cs='7d4feed7a179ad28943b0865b7970814073145ad'
+        data-r='blog-gitalk'
+        data-o='skyone-wzw'
+        data-a='skyone-wzw'
+        data-d='false'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E6%A0%88"><span class="toc-number">1.</span> <span class="toc-text">技术栈</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%94%A8%E5%88%B0%E7%9A%84Node-js%E6%A8%A1%E5%9D%97"><span class="toc-number">2.</span> <span class="toc-text">用到的Node.js模块</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-number">3.</span> <span class="toc-text">实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%8A%93%E5%8C%85%E3%80%81%E5%AE%9A%E4%BD%8D%E5%8A%A0%E5%AF%86%E4%BB%A3%E7%A0%81"><span class="toc-number">3.1.</span> <span class="toc-text">1. 抓包、定位加密代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%88%86%E6%9E%90%E5%8A%A0%E5%AF%86%E4%BB%A3%E7%A0%81"><span class="toc-number">3.2.</span> <span class="toc-text">2. 分析加密代码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#a%E5%87%BD%E6%95%B0"><span class="toc-number">3.2.1.</span> <span class="toc-text">a函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#b%E5%87%BD%E6%95%B0"><span class="toc-number">3.2.2.</span> <span class="toc-text">b函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#c%E5%87%BD%E6%95%B0"><span class="toc-number">3.2.3.</span> <span class="toc-text">c函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%99%E4%BB%A3%E7%A0%81"><span class="toc-number">3.2.4.</span> <span class="toc-text">写代码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%AE%9E%E7%8E%B0%E5%90%8E%E7%AB%AF"><span class="toc-number">3.3.</span> <span class="toc-text">3. 实现后端</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%AE%9E%E7%8E%B0%E5%89%8D%E7%AB%AF"><span class="toc-number">3.4.</span> <span class="toc-text">4. 实现前端</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95"><span class="toc-number">4.</span> <span class="toc-text">测试</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+<div id="aplayer"></div>
+<script>
+    window.aplayer = new APlayer({
+        container: document.getElementById('aplayer'),
+        lrcType: 3,
+        order: "random",
+        fixed: true,
+        audio: [
+            
+            
+            {
+                name: "夜航星",
+                artist: "洛天依",
+                url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/music/夜航星%20-%20洛天依.mp3",
+                
+                cover: "https://ooo.0x0.ooo/2021/02/14/o08AS.png",
+                
+                
+                lrc: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/lrc/夜航星%20-%20洛天依.lrc",
+                
+            },
+            
+            {
+                name: "为谁而为",
+                artist: "洛天依",
+                url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/music/为谁而为%20-%20洛天依%2CCOP.mp3",
+                
+                cover: "https://ooo.0x0.ooo/2021/02/16/ocSlx.jpg",
+                
+                
+                lrc: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/lrc/为谁而为%20-%20洛天依%2CCOP.lrc",
+                
+            },
+            
+            {
+                name: "Faded",
+                artist: "乐正绫",
+                url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/blog/music/乐正绫%20-%20Faded.mp3",
+                
+                cover: "https://ooo.0x0.ooo/2021/02/21/odvNY.png",
+                
+                
+            },
+            
+            {
+                name: "bilibili2018年度总结BGM",
+                artist: "bilibili",
+                url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/blog/music/bilibili2018%20-%20至尊马甲.flac",
+                
+                cover: "https://ooo.0x0.ooo/2021/02/21/odAdp.jpg",
+                
+                
+            },
+            
+        ]
+    });
+</script>
+</body>
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+</html>
