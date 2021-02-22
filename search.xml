@@ -1,6 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Linux下安装Python3</title>
+    <url>/2021/01/12/linux-xia-an-zhuang-python3/</url>
+    <content><![CDATA[<h1 id="Linux下安装Python3"><a href="#Linux下安装Python3" class="headerlink" title="Linux下安装Python3"></a>Linux下安装Python3</h1><p>Linux里安装过多次Python，但依然不记得，今天来总结以下。</p>
+<p>先把命令列出来：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wget https://www.python.org/ftp/python/3.7.9/Python-3.7.9.tgz # 这里是对应版本的下载链接</span><br><span class="line">tar -zxvf ./Python-3.7.9.tgz</span><br><span class="line">cd Python-3.7.9</span><br><span class="line">./configure --prefix=/usr/software/python3 # 这里是你的安装目录</span><br><span class="line">make</span><br><span class="line">make install</span><br><span class="line">ln -s /usr/software/python3/bin/python3 /usr/bin/</span><br><span class="line">ln -s /usr/software/python3/bin/pip3 /usr/bin/</span><br></pre></td></tr></table></figure>
+<h2 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h2><p>安装Python需要以下依赖，请确保已经全部安装</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel</span><br></pre></td></tr></table></figure>
+<p>这些依赖我也不清楚T-T，总之不懂就运行以下命令：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum isntall zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel</span><br></pre></td></tr></table></figure>
+<h2 id="下载并解压Python源码"><a href="#下载并解压Python源码" class="headerlink" title="下载并解压Python源码"></a>下载并解压Python源码</h2><p>前往<a href="https://www.python.org/downloads/">Python官网</a>，找到对应Python版本的下载链接，例如我要下载的是<a href="https://www.python.org/ftp/python/3.7.9/Python-3.7.9.tgz">3.7.9版</a>的。</p>
+<p>注意应下载Gzip压缩后的源码<code>Gzipped source tarball</code>。</p>
+<p>切换的一个用于下载的目录（不是安装目录），然后使用以下命令：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wget https://www.python.org/ftp/python/3.7.9/Python-3.7.9.tgz # 这里是对应版本的下载链接</span><br></pre></td></tr></table></figure>
+<p>如果显示没有<code>wget</code>可以使用以下命令安装：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum install wget</span><br></pre></td></tr></table></figure>
+<p>解压源码也很简单，用<code>tar</code>解压：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">tar -zxvf Python-3.7.9.tgz # 下载得到的文件，后缀tgz指的是tar gzip</span><br></pre></td></tr></table></figure>
+<p>然后进入解压得到的文件夹</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd Python-3.7.9</span><br></pre></td></tr></table></figure>
+<h2 id="编译-amp-安装"><a href="#编译-amp-安装" class="headerlink" title="编译&amp;安装"></a>编译&amp;安装</h2><p>创建一个文件夹用于安装Python，这个安装路径由你自己决定！例如我把它安装到<code>/usr/software/python3</code></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mkdir -p /usr/software/python3</span><br></pre></td></tr></table></figure>
+<p>配置安装路径</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./configure --prefix=/usr/software/python3</span><br></pre></td></tr></table></figure>
+<p>下面编译Python，使用make构建，这一步相对来说比较慢</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">make</span><br></pre></td></tr></table></figure>
+<p>安装</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">make install</span><br></pre></td></tr></table></figure>
+<h2 id="创建软链"><a href="#创建软链" class="headerlink" title="创建软链"></a>创建软链</h2><p>所谓软链，在这里可以理解为快捷方式，分别为<code>python3</code>和<code>pip3</code>创建软链</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ln -s /usr/software/python3/bin/python3 /usr/bin/</span><br><span class="line">ln -s /usr/software/python3/bin/pip3 /usr/bin/</span><br></pre></td></tr></table></figure>
+<p>注意！这里不能把软链命名为<code>python</code>和<code>pip</code>，因为大部分Linux系统自带python2.7，且部分功能要依靠python2.7，而执行python2.7和它的pip的命令是python和pip，所以这里用python3和pip3加以区分！</p>
+<hr>
+<p>OK，安装完成，使用以下命令检测一下吧~~~</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 -V # 大写的 V</span><br><span class="line">pip3 -V # 大写的 V</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python装饰器</title>
+    <url>/2021/01/17/python-zhuang-shi-qi/</url>
+    <content><![CDATA[<h1 id="装饰器是什么？"><a href="#装饰器是什么？" class="headerlink" title="装饰器是什么？"></a>装饰器是什么？</h1><p>装饰器(Decorators)是 Python 的一个重要部分。举一个不太恰当的比方，装饰器是一个函数，它以函数为参数，先执行一些操作，再调用作为参数的函数，然后再执行以下操作，例如下面的函数：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_decorator</span>(<span class="params">func</span>):</span></span><br><span class="line">    print(<span class="string">&quot;Do something before call func.&quot;</span>)</span><br><span class="line">    func() <span class="comment"># 调用func()</span></span><br><span class="line">    print(<span class="string">&quot;Do something after call func.&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>没错，就像C语言里的回调函数一样</p>
+<p>可以这样使用它：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">greet</span>():</span></span><br><span class="line">    print(<span class="string">&quot;Hello!&quot;</span>)</span><br><span class="line"></span><br><span class="line">my_decorator(greed) <span class="comment"># 注意这里不是调用 greed</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;输出</span></span><br><span class="line"><span class="string">Do something before call func.</span></span><br><span class="line"><span class="string">Hello</span></span><br><span class="line"><span class="string">Do something after call func.</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+<p>然而，python作为一个优雅的语言，使用了特殊语法简化了上面的操作，下面的例子和上面的是等效的：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_decorator</span>(<span class="params">func</span>):</span></span><br><span class="line">    print(<span class="string">&quot;Do something before call func.&quot;</span>)</span><br><span class="line">    func() <span class="comment"># 调用func()</span></span><br><span class="line">    print(<span class="string">&quot;Do something after call func.&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@my_decorator </span><span class="comment"># 也不是调用</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">greet</span>():</span></span><br><span class="line">    print(<span class="string">&quot;Hello!&quot;</span>)</span><br><span class="line"></span><br><span class="line">greet</span><br><span class="line"><span class="string">&quot;&quot;&quot;输出</span></span><br><span class="line"><span class="string">Do something before call func.</span></span><br><span class="line"><span class="string">Hello</span></span><br><span class="line"><span class="string">Do something after call func.</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+<h1 id="装饰器的使用"><a href="#装饰器的使用" class="headerlink" title="装饰器的使用"></a>装饰器的使用</h1><h2 id="适配带有参数的函数"><a href="#适配带有参数的函数" class="headerlink" title="适配带有参数的函数"></a>适配带有参数的函数</h2><p>前面的最简单的装饰器不能修饰带有参数的函数，而且修饰后的函数不能做参数之类的（想一想为什么）</p>
+<p>其实也很容易解决，既然函数可以作为另一个函数的参数，那么它可不可以作为返回值呢？</p>
+<p>当然可以！这是因为python一切皆对象，函数和变量究其本质都是对象<del>我怎么联想到了Linux一切皆文件@_@</del></p>
+<p>现在我们将其修改一下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">a_new_decorator</span>(<span class="params">func</span>):</span></span><br><span class="line">    <span class="comment"># python 可以在函数里再定义函数，即嵌套函数</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapped</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">        print(<span class="string">&quot;Do something before call func.&quot;</span>)</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        print(<span class="string">&quot;Do something after call func.&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> wrapped</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@a_new_decorator</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">greet</span>():</span></span><br><span class="line">    print(<span class="string">&quot;Hello!&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">greet()</span><br></pre></td></tr></table></figure>
+<h2 id="保持函数名"><a href="#保持函数名" class="headerlink" title="保持函数名"></a>保持函数名</h2><p>现在我们在上面的代码后面再加一行：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(greet.__name__)</span><br><span class="line"><span class="string">&quot;&quot;&quot;输出</span></span><br><span class="line"><span class="string">wrapped</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+<p>哦不，这不是我们想要的结果，函数名被装饰器改写了！</p>
+<p>幸好<code>functiontools</code>的<code>warps</code>装饰器可以解决这个问题，再改！</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">a_new_decorator</span>(<span class="params">func</span>):</span></span><br><span class="line"><span class="meta">    @wraps(<span class="params">func</span>)</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapped</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">        print(<span class="string">&quot;Do something before call func.&quot;</span>)</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        print(<span class="string">&quot;Do something after call func.&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> wrapped</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@a_new_decorator</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">greet</span>():</span></span><br><span class="line">    print(<span class="string">&quot;Hello!&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(greet.__name__)</span><br><span class="line"><span class="string">&quot;&quot;&quot;输出</span></span><br><span class="line"><span class="string">greet</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+<h2 id="带参数的装饰器"><a href="#带参数的装饰器" class="headerlink" title="带参数的装饰器"></a>带参数的装饰器</h2><p>上例中<code>wraps</code>也是装饰器，但他为什么要加括号调用，还可以添加参数？</p>
+<p>先看看这个：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">a</span>():</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">b</span>():</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">c</span>():</span></span><br><span class="line">            <span class="function"><span class="keyword">def</span> <span class="title">d</span>():</span></span><br><span class="line">                <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> d</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> c</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> b</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">response = a()()()()</span><br><span class="line"></span><br><span class="line"><span class="comment"># response = 1</span></span><br></pre></td></tr></table></figure>
+<p>这样来看就很简单了，就是再嵌套一个函数嘛。。</p>
+<p>有了这个思路，再改！</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">final_decorator</span>(<span class="params">output_filename=<span class="string">&quot;greet.txt&quot;</span></span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">a_new_decorator</span>(<span class="params">func</span>):</span></span><br><span class="line"><span class="meta">        @wraps(<span class="params">func</span>)</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">wrapped</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">            <span class="keyword">with</span> <span class="built_in">open</span>(output_filename, <span class="string">&quot;a&quot;</span>) <span class="keyword">as</span> file:</span><br><span class="line">                greet_str = func(*args, **kwargs)</span><br><span class="line">                file.write(greet_str)</span><br><span class="line">            <span class="keyword">return</span> greet_str</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> wrapped</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> a_new_decorator</span><br><span class="line"></span><br><span class="line"><span class="meta">@final_decorator(<span class="params"><span class="string">&quot;233.txt&quot;</span></span>)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">greet</span>(<span class="params">name</span>):</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;Hello &quot;</span> + name</span><br><span class="line"></span><br><span class="line">print(greet(<span class="string">&quot;skyone&quot;</span>))</span><br><span class="line"><span class="string">&quot;&quot;&quot;输出</span></span><br><span class="line"><span class="string">Hello skyone</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;文件`123.txt`</span></span><br><span class="line"><span class="string">Hello skyone</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+<h1 id="花样写日志"><a href="#花样写日志" class="headerlink" title="花样写日志"></a>花样写日志</h1><h2 id="函数做装饰器"><a href="#函数做装饰器" class="headerlink" title="函数做装饰器"></a>函数做装饰器</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">logger</span>(<span class="params">logfile=<span class="string">&quot;out.log&quot;</span>, callback=<span class="literal">None</span></span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">logger_decorator</span>(<span class="params">func</span>):</span></span><br><span class="line"><span class="meta">        @wraps(<span class="params">func</span>)</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">wrapped_func</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">            log_string = <span class="string">&quot;[logger] function &lt;&quot;</span> + func.__name__ + <span class="string">&quot;&gt; was called&quot;</span></span><br><span class="line">            print(log_string)</span><br><span class="line">            <span class="keyword">with</span> <span class="built_in">open</span>(logfile, <span class="string">&quot;a&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> file:</span><br><span class="line">                file.write(log_string + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> callback <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                callback()</span><br><span class="line">            <span class="keyword">return</span> func(*args, *kwargs)</span><br><span class="line">        <span class="keyword">return</span> wrapped_func</span><br><span class="line">    <span class="keyword">return</span> logger_decorator</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@logger()</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">a</span>():</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">3</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(a())</span><br></pre></td></tr></table></figure>
+<h2 id="类做装饰器"><a href="#类做装饰器" class="headerlink" title="类做装饰器"></a>类做装饰器</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Logger</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, logfile=<span class="string">&quot;out.log&quot;</span>, callback=<span class="literal">None</span></span>):</span></span><br><span class="line">        self.logfile = logfile</span><br><span class="line">        self.callback = callback</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span>(<span class="params">self, func</span>):</span></span><br><span class="line"><span class="meta">        @wraps(<span class="params">func</span>)</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">wrapped_func</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">            log_string = <span class="string">&quot;[logger] function &lt;&quot;</span> + func.__name__ + <span class="string">&quot;&gt; was called&quot;</span></span><br><span class="line">            print(log_string)</span><br><span class="line">            <span class="keyword">with</span> <span class="built_in">open</span>(self.logfile, <span class="string">&quot;a&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> file:</span><br><span class="line">                file.write(log_string + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> self.callback <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                self.callback()</span><br><span class="line">            self.notify()</span><br><span class="line">            <span class="keyword">return</span> func(*args, **kwargs)</span><br><span class="line">        <span class="keyword">return</span> wrapped_func</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">notify</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@logger()</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">a</span>():</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">3</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(a())</span><br></pre></td></tr></table></figure>
+<p>这样做的好处是可以改写，而且比嵌套函数的方式更加整洁，下面的例子来自<a href="https://www.runoob.com/w3cnote/python-func-decorators.html">菜鸟教程</a></p>
+<p>创建一个子类：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">email_logger</span>(<span class="params">Logger</span>):</span></span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    一个logit的实现版本，可以在函数调用时发送email给管理员</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, email=<span class="string">&#x27;admin@myproject.com&#x27;</span>, *args, **kwargs</span>):</span></span><br><span class="line">        self.email = email</span><br><span class="line">        <span class="built_in">super</span>(email_logger, self).__init__(*args, **kwargs)</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">notify</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="comment"># 发送Email的实现···</span></span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Android学习笔记之应用资源</title>
     <url>/2021/01/30/android-xue-xi-bi-ji-zhi-ying-yong-zi-yuan/</url>
     <content><![CDATA[<h1 id="资源文件的存放位置"><a href="#资源文件的存放位置" class="headerlink" title="资源文件的存放位置"></a>资源文件的存放位置</h1><p>首先来看一下Android工程的目录结构：</p>
@@ -72,48 +155,6 @@
       </categories>
       <tags>
         <tag>Android</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux下安装Python3</title>
-    <url>/2021/01/12/linux-xia-an-zhuang-python3/</url>
-    <content><![CDATA[<h1 id="Linux下安装Python3"><a href="#Linux下安装Python3" class="headerlink" title="Linux下安装Python3"></a>Linux下安装Python3</h1><p>Linux里安装过多次Python，但依然不记得，今天来总结以下。</p>
-<p>先把命令列出来：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wget https://www.python.org/ftp/python/3.7.9/Python-3.7.9.tgz # 这里是对应版本的下载链接</span><br><span class="line">tar -zxvf ./Python-3.7.9.tgz</span><br><span class="line">cd Python-3.7.9</span><br><span class="line">./configure --prefix=/usr/software/python3 # 这里是你的安装目录</span><br><span class="line">make</span><br><span class="line">make install</span><br><span class="line">ln -s /usr/software/python3/bin/python3 /usr/bin/</span><br><span class="line">ln -s /usr/software/python3/bin/pip3 /usr/bin/</span><br></pre></td></tr></table></figure>
-<h2 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h2><p>安装Python需要以下依赖，请确保已经全部安装</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel</span><br></pre></td></tr></table></figure>
-<p>这些依赖我也不清楚T-T，总之不懂就运行以下命令：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum isntall zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel</span><br></pre></td></tr></table></figure>
-<h2 id="下载并解压Python源码"><a href="#下载并解压Python源码" class="headerlink" title="下载并解压Python源码"></a>下载并解压Python源码</h2><p>前往<a href="https://www.python.org/downloads/">Python官网</a>，找到对应Python版本的下载链接，例如我要下载的是<a href="https://www.python.org/ftp/python/3.7.9/Python-3.7.9.tgz">3.7.9版</a>的。</p>
-<p>注意应下载Gzip压缩后的源码<code>Gzipped source tarball</code>。</p>
-<p>切换的一个用于下载的目录（不是安装目录），然后使用以下命令：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wget https://www.python.org/ftp/python/3.7.9/Python-3.7.9.tgz # 这里是对应版本的下载链接</span><br></pre></td></tr></table></figure>
-<p>如果显示没有<code>wget</code>可以使用以下命令安装：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum install wget</span><br></pre></td></tr></table></figure>
-<p>解压源码也很简单，用<code>tar</code>解压：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">tar -zxvf Python-3.7.9.tgz # 下载得到的文件，后缀tgz指的是tar gzip</span><br></pre></td></tr></table></figure>
-<p>然后进入解压得到的文件夹</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd Python-3.7.9</span><br></pre></td></tr></table></figure>
-<h2 id="编译-amp-安装"><a href="#编译-amp-安装" class="headerlink" title="编译&amp;安装"></a>编译&amp;安装</h2><p>创建一个文件夹用于安装Python，这个安装路径由你自己决定！例如我把它安装到<code>/usr/software/python3</code></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mkdir -p /usr/software/python3</span><br></pre></td></tr></table></figure>
-<p>配置安装路径</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./configure --prefix=/usr/software/python3</span><br></pre></td></tr></table></figure>
-<p>下面编译Python，使用make构建，这一步相对来说比较慢</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">make</span><br></pre></td></tr></table></figure>
-<p>安装</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">make install</span><br></pre></td></tr></table></figure>
-<h2 id="创建软链"><a href="#创建软链" class="headerlink" title="创建软链"></a>创建软链</h2><p>所谓软链，在这里可以理解为快捷方式，分别为<code>python3</code>和<code>pip3</code>创建软链</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ln -s /usr/software/python3/bin/python3 /usr/bin/</span><br><span class="line">ln -s /usr/software/python3/bin/pip3 /usr/bin/</span><br></pre></td></tr></table></figure>
-<p>注意！这里不能把软链命名为<code>python</code>和<code>pip</code>，因为大部分Linux系统自带python2.7，且部分功能要依靠python2.7，而执行python2.7和它的pip的命令是python和pip，所以这里用python3和pip3加以区分！</p>
-<hr>
-<p>OK，安装完成，使用以下命令检测一下吧~~~</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 -V # 大写的 V</span><br><span class="line">pip3 -V # 大写的 V</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
@@ -239,47 +280,6 @@
       </categories>
       <tags>
         <tag>Linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python装饰器</title>
-    <url>/2021/01/17/python-zhuang-shi-qi/</url>
-    <content><![CDATA[<h1 id="装饰器是什么？"><a href="#装饰器是什么？" class="headerlink" title="装饰器是什么？"></a>装饰器是什么？</h1><p>装饰器(Decorators)是 Python 的一个重要部分。举一个不太恰当的比方，装饰器是一个函数，它以函数为参数，先执行一些操作，再调用作为参数的函数，然后再执行以下操作，例如下面的函数：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_decorator</span>(<span class="params">func</span>):</span></span><br><span class="line">    print(<span class="string">&quot;Do something before call func.&quot;</span>)</span><br><span class="line">    func() <span class="comment"># 调用func()</span></span><br><span class="line">    print(<span class="string">&quot;Do something after call func.&quot;</span>)</span><br></pre></td></tr></table></figure>
-<p>没错，就像C语言里的回调函数一样</p>
-<p>可以这样使用它：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">greet</span>():</span></span><br><span class="line">    print(<span class="string">&quot;Hello!&quot;</span>)</span><br><span class="line"></span><br><span class="line">my_decorator(greed) <span class="comment"># 注意这里不是调用 greed</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;输出</span></span><br><span class="line"><span class="string">Do something before call func.</span></span><br><span class="line"><span class="string">Hello</span></span><br><span class="line"><span class="string">Do something after call func.</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
-<p>然而，python作为一个优雅的语言，使用了特殊语法简化了上面的操作，下面的例子和上面的是等效的：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_decorator</span>(<span class="params">func</span>):</span></span><br><span class="line">    print(<span class="string">&quot;Do something before call func.&quot;</span>)</span><br><span class="line">    func() <span class="comment"># 调用func()</span></span><br><span class="line">    print(<span class="string">&quot;Do something after call func.&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@my_decorator </span><span class="comment"># 也不是调用</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">greet</span>():</span></span><br><span class="line">    print(<span class="string">&quot;Hello!&quot;</span>)</span><br><span class="line"></span><br><span class="line">greet</span><br><span class="line"><span class="string">&quot;&quot;&quot;输出</span></span><br><span class="line"><span class="string">Do something before call func.</span></span><br><span class="line"><span class="string">Hello</span></span><br><span class="line"><span class="string">Do something after call func.</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
-<h1 id="装饰器的使用"><a href="#装饰器的使用" class="headerlink" title="装饰器的使用"></a>装饰器的使用</h1><h2 id="适配带有参数的函数"><a href="#适配带有参数的函数" class="headerlink" title="适配带有参数的函数"></a>适配带有参数的函数</h2><p>前面的最简单的装饰器不能修饰带有参数的函数，而且修饰后的函数不能做参数之类的（想一想为什么）</p>
-<p>其实也很容易解决，既然函数可以作为另一个函数的参数，那么它可不可以作为返回值呢？</p>
-<p>当然可以！这是因为python一切皆对象，函数和变量究其本质都是对象<del>我怎么联想到了Linux一切皆文件@_@</del></p>
-<p>现在我们将其修改一下：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">a_new_decorator</span>(<span class="params">func</span>):</span></span><br><span class="line">    <span class="comment"># python 可以在函数里再定义函数，即嵌套函数</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapped</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">        print(<span class="string">&quot;Do something before call func.&quot;</span>)</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        print(<span class="string">&quot;Do something after call func.&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> wrapped</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@a_new_decorator</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">greet</span>():</span></span><br><span class="line">    print(<span class="string">&quot;Hello!&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">greet()</span><br></pre></td></tr></table></figure>
-<h2 id="保持函数名"><a href="#保持函数名" class="headerlink" title="保持函数名"></a>保持函数名</h2><p>现在我们在上面的代码后面再加一行：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(greet.__name__)</span><br><span class="line"><span class="string">&quot;&quot;&quot;输出</span></span><br><span class="line"><span class="string">wrapped</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
-<p>哦不，这不是我们想要的结果，函数名被装饰器改写了！</p>
-<p>幸好<code>functiontools</code>的<code>warps</code>装饰器可以解决这个问题，再改！</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">a_new_decorator</span>(<span class="params">func</span>):</span></span><br><span class="line"><span class="meta">    @wraps(<span class="params">func</span>)</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapped</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">        print(<span class="string">&quot;Do something before call func.&quot;</span>)</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        print(<span class="string">&quot;Do something after call func.&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> wrapped</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@a_new_decorator</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">greet</span>():</span></span><br><span class="line">    print(<span class="string">&quot;Hello!&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(greet.__name__)</span><br><span class="line"><span class="string">&quot;&quot;&quot;输出</span></span><br><span class="line"><span class="string">greet</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
-<h2 id="带参数的装饰器"><a href="#带参数的装饰器" class="headerlink" title="带参数的装饰器"></a>带参数的装饰器</h2><p>上例中<code>wraps</code>也是装饰器，但他为什么要加括号调用，还可以添加参数？</p>
-<p>先看看这个：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">a</span>():</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">b</span>():</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">c</span>():</span></span><br><span class="line">            <span class="function"><span class="keyword">def</span> <span class="title">d</span>():</span></span><br><span class="line">                <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> d</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> c</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> b</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">response = a()()()()</span><br><span class="line"></span><br><span class="line"><span class="comment"># response = 1</span></span><br></pre></td></tr></table></figure>
-<p>这样来看就很简单了，就是再嵌套一个函数嘛。。</p>
-<p>有了这个思路，再改！</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">final_decorator</span>(<span class="params">output_filename=<span class="string">&quot;greet.txt&quot;</span></span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">a_new_decorator</span>(<span class="params">func</span>):</span></span><br><span class="line"><span class="meta">        @wraps(<span class="params">func</span>)</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">wrapped</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">            <span class="keyword">with</span> <span class="built_in">open</span>(output_filename, <span class="string">&quot;a&quot;</span>) <span class="keyword">as</span> file:</span><br><span class="line">                greet_str = func(*args, **kwargs)</span><br><span class="line">                file.write(greet_str)</span><br><span class="line">            <span class="keyword">return</span> greet_str</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> wrapped</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> a_new_decorator</span><br><span class="line"></span><br><span class="line"><span class="meta">@final_decorator(<span class="params"><span class="string">&quot;233.txt&quot;</span></span>)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">greet</span>(<span class="params">name</span>):</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;Hello &quot;</span> + name</span><br><span class="line"></span><br><span class="line">print(greet(<span class="string">&quot;skyone&quot;</span>))</span><br><span class="line"><span class="string">&quot;&quot;&quot;输出</span></span><br><span class="line"><span class="string">Hello skyone</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;文件`123.txt`</span></span><br><span class="line"><span class="string">Hello skyone</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
-<h1 id="花样写日志"><a href="#花样写日志" class="headerlink" title="花样写日志"></a>花样写日志</h1><h2 id="函数做装饰器"><a href="#函数做装饰器" class="headerlink" title="函数做装饰器"></a>函数做装饰器</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">logger</span>(<span class="params">logfile=<span class="string">&quot;out.log&quot;</span>, callback=<span class="literal">None</span></span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">logger_decorator</span>(<span class="params">func</span>):</span></span><br><span class="line"><span class="meta">        @wraps(<span class="params">func</span>)</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">wrapped_func</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">            log_string = <span class="string">&quot;[logger] function &lt;&quot;</span> + func.__name__ + <span class="string">&quot;&gt; was called&quot;</span></span><br><span class="line">            print(log_string)</span><br><span class="line">            <span class="keyword">with</span> <span class="built_in">open</span>(logfile, <span class="string">&quot;a&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> file:</span><br><span class="line">                file.write(log_string + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> callback <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                callback()</span><br><span class="line">            <span class="keyword">return</span> func(*args, *kwargs)</span><br><span class="line">        <span class="keyword">return</span> wrapped_func</span><br><span class="line">    <span class="keyword">return</span> logger_decorator</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@logger()</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">a</span>():</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">3</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(a())</span><br></pre></td></tr></table></figure>
-<h2 id="类做装饰器"><a href="#类做装饰器" class="headerlink" title="类做装饰器"></a>类做装饰器</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Logger</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, logfile=<span class="string">&quot;out.log&quot;</span>, callback=<span class="literal">None</span></span>):</span></span><br><span class="line">        self.logfile = logfile</span><br><span class="line">        self.callback = callback</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span>(<span class="params">self, func</span>):</span></span><br><span class="line"><span class="meta">        @wraps(<span class="params">func</span>)</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">wrapped_func</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">            log_string = <span class="string">&quot;[logger] function &lt;&quot;</span> + func.__name__ + <span class="string">&quot;&gt; was called&quot;</span></span><br><span class="line">            print(log_string)</span><br><span class="line">            <span class="keyword">with</span> <span class="built_in">open</span>(self.logfile, <span class="string">&quot;a&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> file:</span><br><span class="line">                file.write(log_string + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> self.callback <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                self.callback()</span><br><span class="line">            self.notify()</span><br><span class="line">            <span class="keyword">return</span> func(*args, **kwargs)</span><br><span class="line">        <span class="keyword">return</span> wrapped_func</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">notify</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@logger()</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">a</span>():</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">3</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(a())</span><br></pre></td></tr></table></figure>
-<p>这样做的好处是可以改写，而且比嵌套函数的方式更加整洁，下面的例子来自<a href="https://www.runoob.com/w3cnote/python-func-decorators.html">菜鸟教程</a></p>
-<p>创建一个子类：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">email_logger</span>(<span class="params">Logger</span>):</span></span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    一个logit的实现版本，可以在函数调用时发送email给管理员</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, email=<span class="string">&#x27;admin@myproject.com&#x27;</span>, *args, **kwargs</span>):</span></span><br><span class="line">        self.email = email</span><br><span class="line">        <span class="built_in">super</span>(email_logger, self).__init__(*args, **kwargs)</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">notify</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="comment"># 发送Email的实现···</span></span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
-
-
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -471,6 +471,237 @@
         <tag>Node.js</tag>
         <tag>JavaScript</tag>
         <tag>Koa</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>用Arduino制作一个简易超声波测距仪</title>
+    <url>/2021/02/22/yong-arduino-zhi-zuo-yi-ge-jian-yi-chao-sheng-bo-ce-ju-yi/</url>
+    <content><![CDATA[<h1 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h1><p>用Arduino UNO开发板做一个简单的超声波测距仪</p>
+<img src="F:\Blog\草稿\超声波\成果.jpg" alt="成果" style="zoom: 33%;" />
+
+<h1 id="材料准备"><a href="#材料准备" class="headerlink" title="材料准备"></a>材料准备</h1><table>
+<thead>
+<tr>
+<th>材料</th>
+<th>数量</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Arduino Uno</strong>或其他类似开发板及其配套<strong>数据线</strong></td>
+<td>1个</td>
+</tr>
+<tr>
+<td><strong>杜邦线</strong></td>
+<td>若干</td>
+</tr>
+<tr>
+<td><strong>超声波测距模块</strong>(HC-SR04)</td>
+<td>1个</td>
+</tr>
+<tr>
+<td><strong>四位数码管</strong></td>
+<td>1个</td>
+</tr>
+<tr>
+<td><strong>电阻</strong></td>
+<td>若干</td>
+</tr>
+</tbody></table>
+<p>括号里的是我自己使用的型号；当然，你还需要一台装有<strong>Arduino IDE</strong>的电脑。</p>
+<h1 id="Arduino基础"><a href="#Arduino基础" class="headerlink" title="Arduino基础"></a>Arduino基础</h1><p>了解过Arduino的请跳过~~</p>
+<h2 id="Arduino怎么用？"><a href="#Arduino怎么用？" class="headerlink" title="Arduino怎么用？"></a>Arduino怎么用？</h2><p>如你所见，Arduino上有很多插孔，这个叫 <code>I/O</code> ，我们要做的就是通过 <code>C++</code> 程序控制I/O的读取和输出。</p>
+<h2 id="这个C-程序怎么写？"><a href="#这个C-程序怎么写？" class="headerlink" title="这个C++程序怎么写？"></a>这个C++程序怎么写？</h2><blockquote>
+<p> 什么？你不会C++？快去<a href="https://www.runoob.com/cplusplus/cpp-tutorial.html">这里</a>学习吧。。。</p>
+</blockquote>
+<p>Arduino程序必须包含两个函数： <code>setup()</code> 和 <code>loop()</code></p>
+<p>这两个函数简单来说就是先执行 <code>setup()</code> 函数初始化，在无限循环 <code>loop()</code> 函数</p>
+<p>咳咳，还是这么解释吧：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setup</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">loop</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    setup();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(;;) &#123;</span><br><span class="line">        loop();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="超声波测距模块"><a href="#超声波测距模块" class="headerlink" title="超声波测距模块"></a>超声波测距模块</h1><h2 id="分析工作原理"><a href="#分析工作原理" class="headerlink" title="分析工作原理"></a>分析工作原理</h2><p>由于各个型号的模块针脚可能不同，请查看相关文档，这里我根据我使用的<strong>HC-SR04</strong>介绍。</p>
+<img src="https://tc.skyone.host/blog/post/%E7%94%A8Arduino%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E7%AE%80%E6%98%93%E8%B6%85%E5%A3%B0%E6%B3%A2%E6%B5%8B%E8%B7%9D%E4%BB%AA/HC-SR04.jpg" alt="HC-SR04" style="zoom: 25%;" />
+
+<blockquote>
+<p>采用IO触发测距，给至少10us的高电平信号。模块自动发送8个40khz的方波，自动检测是否有信号返回。有信号返回，通过IO输出一高电平，高电平持续的时间就是超声波从发射到返回的时间。测试距离=(高电平时间*声速(340m/s))/2</p>
+<img src="https://tc.skyone.host/blog/post/%E7%94%A8Arduino%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E7%AE%80%E6%98%93%E8%B6%85%E5%A3%B0%E6%B3%A2%E6%B5%8B%E8%B7%9D%E4%BB%AA/HC-SR04%E6%96%87%E6%A1%A3.png" alt="文档" style="zoom:50%;" />
+</blockquote>
+<h2 id="一个完整的测距过程"><a href="#一个完整的测距过程" class="headerlink" title="一个完整的测距过程"></a>一个完整的测距过程</h2><ol start="0">
+<li><code>GND</code> 接Arduino的 <code>GND</code> ， <code>VCC</code> 接Arduino的 <code>5V</code></li>
+</ol>
+<p>下面开始测距：</p>
+<ol>
+<li>给 <code>Trig</code> 一个至少10微秒的脉冲</li>
+<li>监听输出端口并开始计时</li>
+<li>当输出端口出现高电平时计时结束</li>
+<li>根据声速计算距离</li>
+</ol>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p>首先，为了接线方便，超声波测距模块连Arduino的 <code>A2</code> ~ <code>A5</code> 引脚。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> GND A2</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ECHO A3</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TRIG A4</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> VCC A5</span></span><br></pre></td></tr></table></figure>
+
+
+<p>在 <code>setup()</code> 函数里我们初始化引脚</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setup</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// …………</span></span><br><span class="line">    pinMode(GND, OUTPUT);	<span class="comment">// 输出 0V 电压</span></span><br><span class="line">    pinMode(VCC, OUTPUT);	<span class="comment">// 输出 5V 电压</span></span><br><span class="line">    pinMode(TRIG, OUTPUT);	<span class="comment">// 输出 控制信号</span></span><br><span class="line">    pinMOde(ECHO, INPUT);	<span class="comment">// 输入端</span></span><br><span class="line">    <span class="comment">// …………</span></span><br><span class="line">    digitalWrite(VCC, HIGH); <span class="comment">// VCC 5V 高电平</span></span><br><span class="line">    digitalWrite(GND, LOW); <span class="comment">// GND 低电平</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>还记得上面的步骤吗？</p>
+<p>在 <code>loop()</code> 里我们先将 <code>Trig</code> 设为高电平( <code>digitalWrite(TRIG, HIGH);</code> )，50微秒后变回低电平，也就是形成一个50微秒的脉冲</p>
+<p>再调用Arduino库函数 <code>pulseln()</code> ，这个函数等待一个端口变为高电平并开始计时，再变为低电平时停止计时，并返回时间间隔（单位为微秒）</p>
+<p>最后计算距离</p>
+<p>代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">loop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    digitalWrite(TRIG, HIGH);	<span class="comment">// 先将 `Trig` 设为高电平</span></span><br><span class="line">    delayMicroseconds(<span class="number">50</span>);		<span class="comment">// 等待 50 微秒</span></span><br><span class="line">    digitalWrite(TRIG, LOW);	<span class="comment">// 先将 `Trig` 设为低电平</span></span><br><span class="line">    <span class="keyword">double</span> time = <span class="keyword">double</span>(pulseIn(ECHO, HIGH)) / <span class="number">1000000</span>;	<span class="comment">// 保存以秒为单位的时间间隔</span></span><br><span class="line">    </span><br><span class="line">    show(time * <span class="number">340</span> / <span class="number">2</span>);		<span class="comment">// 将计算结果传递给 `show()` 函数，这个函数的实现在后面</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="四位数码管"><a href="#四位数码管" class="headerlink" title="四位数码管"></a>四位数码管</h1><h2 id="分析工作原理-1"><a href="#分析工作原理-1" class="headerlink" title="分析工作原理"></a>分析工作原理</h2><p>我用的是共阴数码管，原理图如下：</p>
+<img src="https://tc.skyone.host/blog/post/%E7%94%A8Arduino%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E7%AE%80%E6%98%93%E8%B6%85%E5%A3%B0%E6%B3%A2%E6%B5%8B%E8%B7%9D%E4%BB%AA/%E6%95%B0%E7%A0%81%E7%AE%A1.png" alt="数码管原理图" style="zoom:50%;" />
+
+<p>可以看到，当12低电平时，其他引脚控制第一个数字，当9为低电平时，其他引脚控制第一个数字，以此类推。</p>
+<p><strong>注意！要在 12 , 9 , 8 , 6 四个引脚分别串联一个合适阻值的电阻，具体阻值要看数码管的工作电压。</strong></p>
+<p>如下表：</p>
+<table>
+<thead>
+<tr>
+<th>数字</th>
+<th>高电平的引脚</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>ABCDEF</td>
+</tr>
+<tr>
+<td>1</td>
+<td>BC</td>
+</tr>
+<tr>
+<td>2</td>
+<td>ABDEG</td>
+</tr>
+<tr>
+<td>3</td>
+<td>ABCDG</td>
+</tr>
+<tr>
+<td>4</td>
+<td>BCFG</td>
+</tr>
+<tr>
+<td>5</td>
+<td>ACDFG</td>
+</tr>
+<tr>
+<td>6</td>
+<td>ACDEFG</td>
+</tr>
+<tr>
+<td>7</td>
+<td>ABC</td>
+</tr>
+<tr>
+<td>8</td>
+<td>ABCDEFG</td>
+</tr>
+<tr>
+<td>9</td>
+<td>ABCDFG</td>
+</tr>
+</tbody></table>
+<h2 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h2><p>为了用字母而不是数字表示引脚，可以在程序的开头定义如下：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> l1 13 <span class="comment">// Arduino 的 13 号引脚 连数码管的 12 号引脚</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> l2 12 <span class="comment">// Arduino 的 12 号引脚 连数码管的  9 号引脚</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> l3 11 <span class="comment">// Arduino 的 11 号引脚 连数码管的  8 号引脚</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> l4 2  <span class="comment">// Arduino 的  2 号引脚 连数码管的  6 号引脚</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> la 10 <span class="comment">// Arduino 的 10 号引脚 连数码管的 11 号引脚</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> lb 8  <span class="comment">// Arduino 的  8 号引脚 连数码管的  7 号引脚</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> lc 4  <span class="comment">// Arduino 的  4 号引脚 连数码管的  4 号引脚</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ld 6  <span class="comment">// Arduino 的  6 号引脚 连数码管的  2 号引脚</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> le 7  <span class="comment">// Arduino 的  7 号引脚 连数码管的  1 号引脚</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> lf 9  <span class="comment">// Arduino 的  9 号引脚 连数码管的 10 号引脚</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> lg 3  <span class="comment">// Arduino 的  3 号引脚 连数码管的  5 号引脚</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ldp 5 <span class="comment">// Arduino 的  5 号引脚 连数码管的  3 号引脚</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DELAY 5 <span class="comment">// 用于控制每次测量的间隔</span></span></span><br></pre></td></tr></table></figure>
+<p><strong>初始化引脚</strong></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setup</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt; <span class="number">14</span>; i++) &#123;</span><br><span class="line">        pinMode(i, OUTPUT);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// …………</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>封装每个数字为函数</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">flush</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    digitalWrite(la, LOW);</span><br><span class="line">    digitalWrite(lb, LOW);</span><br><span class="line">    digitalWrite(lc, LOW);</span><br><span class="line">    digitalWrite(ld, LOW);</span><br><span class="line">    digitalWrite(le, LOW);</span><br><span class="line">    digitalWrite(lf, LOW);</span><br><span class="line">    digitalWrite(lg, LOW);</span><br><span class="line">    digitalWrite(ldp, LOW);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show_num</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">switch</span> (num) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">0</span>:</span><br><span class="line">            _show_0();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">            _show_1();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">            _show_2();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">            _show_3();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">            _show_4();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">5</span>:</span><br><span class="line">            _show_5();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">6</span>:</span><br><span class="line">            _show_6();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">7</span>:</span><br><span class="line">            _show_7();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">8</span>:</span><br><span class="line">            _show_8();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">9</span>:</span><br><span class="line">            _show_9();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> _show_0() &#123;</span><br><span class="line">    digitalWrite(la, HIGH);</span><br><span class="line">    digitalWrite(lb, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">    digitalWrite(ld, HIGH);</span><br><span class="line">    digitalWrite(le, HIGH);</span><br><span class="line">    digitalWrite(lf, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> _show_1() &#123;</span><br><span class="line">    digitalWrite(lb, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> _show_2() &#123;</span><br><span class="line">    digitalWrite(la, HIGH);</span><br><span class="line">    digitalWrite(lb, HIGH);</span><br><span class="line">    digitalWrite(lg, HIGH);</span><br><span class="line">    digitalWrite(ld, HIGH);</span><br><span class="line">    digitalWrite(le, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> _show_3() &#123;</span><br><span class="line">    digitalWrite(la, HIGH);</span><br><span class="line">    digitalWrite(lb, HIGH);</span><br><span class="line">    digitalWrite(lg, HIGH);</span><br><span class="line">    digitalWrite(ld, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> _show_4() &#123;</span><br><span class="line">    digitalWrite(lf, HIGH);</span><br><span class="line">    digitalWrite(lg, HIGH);</span><br><span class="line">    digitalWrite(lb, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> _show_5() &#123;</span><br><span class="line">    digitalWrite(la, HIGH);</span><br><span class="line">    digitalWrite(lf, HIGH);</span><br><span class="line">    digitalWrite(lg, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">    digitalWrite(ld, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> _show_6() &#123;</span><br><span class="line">    digitalWrite(la, HIGH);</span><br><span class="line">    digitalWrite(lf, HIGH);</span><br><span class="line">    digitalWrite(le, HIGH);</span><br><span class="line">    digitalWrite(ld, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">    digitalWrite(lg, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> _show_7() &#123;</span><br><span class="line">    digitalWrite(la, HIGH);</span><br><span class="line">    digitalWrite(lb, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> _show_8() &#123;</span><br><span class="line">    digitalWrite(la, HIGH);</span><br><span class="line">    digitalWrite(lb, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">    digitalWrite(ld, HIGH);</span><br><span class="line">    digitalWrite(le, HIGH);</span><br><span class="line">    digitalWrite(lf, HIGH);</span><br><span class="line">    digitalWrite(lg, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> _show_9() &#123;</span><br><span class="line">    digitalWrite(la, HIGH);</span><br><span class="line">    digitalWrite(lb, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">    digitalWrite(ld, HIGH);</span><br><span class="line">    digitalWrite(lf, HIGH);</span><br><span class="line">    digitalWrite(lg, HIGH);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>注意！</strong></p>
+<p>我们要显示的是XX.XX米，其中第二个小数点要正确显示，我们写一个函数，接受一个小于10000的正整数，如344，显示为03.44(米)。<strong>所以前面调用 <code>show()</code> 的时候传入的参数应该乘100</strong>。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 一次测量结果显示 300 / DELAY 秒。</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">300</span> / DELAY; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> tmp = num;</span><br><span class="line">        <span class="keyword">int</span> j;</span><br><span class="line"></span><br><span class="line">        flush();</span><br><span class="line">        j = tmp % <span class="number">10</span>;</span><br><span class="line">        show_num(j);</span><br><span class="line">        digitalWrite(l4, LOW);</span><br><span class="line">        delay(DELAY);</span><br><span class="line">        digitalWrite(l4, HIGH);</span><br><span class="line">        tmp -= j;</span><br><span class="line">        tmp /= <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">        flush();</span><br><span class="line">        j = tmp % <span class="number">10</span>;</span><br><span class="line">        show_num(j);</span><br><span class="line">        digitalWrite(l3, LOW);</span><br><span class="line">        delay(DELAY);</span><br><span class="line">        digitalWrite(l3, HIGH);</span><br><span class="line">        tmp -= j;</span><br><span class="line">        tmp /= <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">        flush();</span><br><span class="line">        j = tmp % <span class="number">10</span>;</span><br><span class="line">        show_num(j);</span><br><span class="line">        digitalWrite(ldp, HIGH);</span><br><span class="line">        digitalWrite(l2, LOW);</span><br><span class="line">        delay(DELAY);</span><br><span class="line">        digitalWrite(l2, HIGH);</span><br><span class="line">        tmp -= j;</span><br><span class="line">        tmp /= <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">        flush();</span><br><span class="line">        j = tmp % <span class="number">10</span>;</span><br><span class="line">        show_num(j);</span><br><span class="line">        digitalWrite(l1, LOW);</span><br><span class="line">        delay(DELAY);</span><br><span class="line">        digitalWrite(l1, HIGH);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="全部代码"><a href="#全部代码" class="headerlink" title="全部代码"></a>全部代码</h1><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> l1 13</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> l2 12</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> l3 11</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> l4 2</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> la 10</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> lb 8</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> lc 4</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ld 6</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> le 7</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> lf 9</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> lg 3</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ldp 5</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> GND A2</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ECHO A3</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TRIG A4</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> VCC A5</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DELAY 5</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setup</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt; <span class="number">14</span>; i++) &#123;</span><br><span class="line">        pinMode(i, OUTPUT);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    pinMode(GND, OUTPUT);</span><br><span class="line">    pinMode(VCC, OUTPUT);</span><br><span class="line">    pinMode(TRIG, OUTPUT);</span><br><span class="line">    pinMOde(ECHO, INPUT);</span><br><span class="line"></span><br><span class="line">    digitalWrite(VCC, HIGH);</span><br><span class="line">    digitalWrite(GND, LOW);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">loop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    digitalWrite(TRIG, LOW);</span><br><span class="line">    delayMicroseconds(<span class="number">5</span>);</span><br><span class="line">    digitalWrite(TRIG, HIGH);</span><br><span class="line">    delayMicroseconds(<span class="number">50</span>);</span><br><span class="line">    digitalWrite(TRIG, LOW);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">double</span> time = <span class="keyword">double</span>(pulseIn(ECHO, HIGH)) / <span class="number">10000</span>;</span><br><span class="line"></span><br><span class="line">    show(<span class="keyword">int</span>(time * <span class="number">340</span> / <span class="number">2</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">300</span> / DELAY; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> tmp = num;</span><br><span class="line">        <span class="keyword">int</span> j;</span><br><span class="line"></span><br><span class="line">        flush();</span><br><span class="line">        j = tmp % <span class="number">10</span>;</span><br><span class="line">        show_num(j);</span><br><span class="line">        digitalWrite(l4, LOW);</span><br><span class="line">        delay(DELAY);</span><br><span class="line">        digitalWrite(l4, HIGH);</span><br><span class="line">        tmp -= j;</span><br><span class="line">        tmp /= <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">        flush();</span><br><span class="line">        j = tmp % <span class="number">10</span>;</span><br><span class="line">        show_num(j);</span><br><span class="line">        digitalWrite(l3, LOW);</span><br><span class="line">        delay(DELAY);</span><br><span class="line">        digitalWrite(l3, HIGH);</span><br><span class="line">        tmp -= j;</span><br><span class="line">        tmp /= <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">        flush();</span><br><span class="line">        j = tmp % <span class="number">10</span>;</span><br><span class="line">        show_num(j);</span><br><span class="line">        digitalWrite(ldp, HIGH);</span><br><span class="line">        digitalWrite(l2, LOW);</span><br><span class="line">        delay(DELAY);</span><br><span class="line">        digitalWrite(l2, HIGH);</span><br><span class="line">        tmp -= j;</span><br><span class="line">        tmp /= <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">        flush();</span><br><span class="line">        j = tmp % <span class="number">10</span>;</span><br><span class="line">        show_num(j);</span><br><span class="line">        digitalWrite(l1, LOW);</span><br><span class="line">        delay(DELAY);</span><br><span class="line">        digitalWrite(l1, HIGH);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">flush</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    digitalWrite(la, LOW);</span><br><span class="line">    digitalWrite(lb, LOW);</span><br><span class="line">    digitalWrite(lc, LOW);</span><br><span class="line">    digitalWrite(ld, LOW);</span><br><span class="line">    digitalWrite(le, LOW);</span><br><span class="line">    digitalWrite(lf, LOW);</span><br><span class="line">    digitalWrite(lg, LOW);</span><br><span class="line">    digitalWrite(ldp, LOW);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show_num</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">switch</span> (num)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">0</span>:</span><br><span class="line">            _show_0();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">            _show_1();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">            _show_2();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">            _show_3();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">            _show_4();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">5</span>:</span><br><span class="line">            _show_5();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">6</span>:</span><br><span class="line">            _show_6();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">7</span>:</span><br><span class="line">            _show_7();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">8</span>:</span><br><span class="line">            _show_8();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">9</span>:</span><br><span class="line">            _show_9();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> _show_1() &#123;</span><br><span class="line">    digitalWrite(lb, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> _show_2() &#123;</span><br><span class="line">    digitalWrite(la, HIGH);</span><br><span class="line">    digitalWrite(lb, HIGH);</span><br><span class="line">    digitalWrite(lg, HIGH);</span><br><span class="line">    digitalWrite(ld, HIGH);</span><br><span class="line">    digitalWrite(le, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> _show_3() &#123;</span><br><span class="line">    digitalWrite(la, HIGH);</span><br><span class="line">    digitalWrite(lb, HIGH);</span><br><span class="line">    digitalWrite(lg, HIGH);</span><br><span class="line">    digitalWrite(ld, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> _show_4() &#123;</span><br><span class="line">    digitalWrite(lf, HIGH);</span><br><span class="line">    digitalWrite(lg, HIGH);</span><br><span class="line">    digitalWrite(lb, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> _show_5() &#123;</span><br><span class="line">    digitalWrite(la, HIGH);</span><br><span class="line">    digitalWrite(lf, HIGH);</span><br><span class="line">    digitalWrite(lg, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">    digitalWrite(ld, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> _show_6() &#123;</span><br><span class="line">    digitalWrite(la, HIGH);</span><br><span class="line">    digitalWrite(lf, HIGH);</span><br><span class="line">    digitalWrite(le, HIGH);</span><br><span class="line">    digitalWrite(ld, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">    digitalWrite(lg, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> _show_7() &#123;</span><br><span class="line">    digitalWrite(la, HIGH);</span><br><span class="line">    digitalWrite(lb, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> _show_8() &#123;</span><br><span class="line">    digitalWrite(la, HIGH);</span><br><span class="line">    digitalWrite(lb, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">    digitalWrite(ld, HIGH);</span><br><span class="line">    digitalWrite(le, HIGH);</span><br><span class="line">    digitalWrite(lf, HIGH);</span><br><span class="line">    digitalWrite(lg, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> _show_9() &#123;</span><br><span class="line">    digitalWrite(la, HIGH);</span><br><span class="line">    digitalWrite(lb, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">    digitalWrite(ld, HIGH);</span><br><span class="line">    digitalWrite(lf, HIGH);</span><br><span class="line">    digitalWrite(lg, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> _show_0() &#123;</span><br><span class="line">    digitalWrite(la, HIGH);</span><br><span class="line">    digitalWrite(lb, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">    digitalWrite(ld, HIGH);</span><br><span class="line">    digitalWrite(le, HIGH);</span><br><span class="line">    digitalWrite(lf, HIGH);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="接线"><a href="#接线" class="headerlink" title="接线"></a>接线</h1><p>前面其实都已经讲过了，这里再复述一遍：</p>
+<table>
+<thead>
+<tr>
+<th>Arduino引脚</th>
+<th>四位数码管引脚</th>
+<th>超声波测距仪引脚</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A2</td>
+<td></td>
+<td>GND</td>
+</tr>
+<tr>
+<td>A3</td>
+<td></td>
+<td>ECHO</td>
+</tr>
+<tr>
+<td>A4</td>
+<td></td>
+<td>TRIG</td>
+</tr>
+<tr>
+<td>A5</td>
+<td></td>
+<td>VCC</td>
+</tr>
+<tr>
+<td>3</td>
+<td>5</td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td>7</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td>7</td>
+<td></td>
+</tr>
+<tr>
+<td>9</td>
+<td>10</td>
+<td></td>
+</tr>
+<tr>
+<td>10</td>
+<td>11</td>
+<td></td>
+</tr>
+<tr>
+<td>11</td>
+<td>8</td>
+<td></td>
+</tr>
+<tr>
+<td>12</td>
+<td>9</td>
+<td></td>
+</tr>
+<tr>
+<td>13</td>
+<td>12</td>
+<td></td>
+</tr>
+</tbody></table>
+<h1 id="完成！"><a href="#完成！" class="headerlink" title="完成！"></a>完成！</h1><p>我已经成功了，你也快去试试吧~~</p>
+<img src="https://tc.skyone.host/blog/post/%E7%94%A8Arduino%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E7%AE%80%E6%98%93%E8%B6%85%E5%A3%B0%E6%B3%A2%E6%B5%8B%E8%B7%9D%E4%BB%AA/%E6%88%90%E6%9E%9C.jpg" alt="完成！" style="zoom: 33%;" />]]></content>
+      <categories>
+        <category>小制作</category>
+      </categories>
+      <tags>
+        <tag>Arduino</tag>
       </tags>
   </entry>
   <entry>

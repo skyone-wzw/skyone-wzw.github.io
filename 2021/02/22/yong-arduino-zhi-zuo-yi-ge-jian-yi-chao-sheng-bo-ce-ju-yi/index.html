@@ -1,0 +1,470 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>用Arduino制作一个简易超声波测距仪 - Skyone-Blog</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="技术博客,"> 
+    <meta name="description" content="技术博客,目标用Arduino UNO开发板做一个简单的超声波测距仪
+
+
+材料准备
+
+
+材料
+数量
+
+
+
+Arduino Uno或其他类似开发板及其配套数据线
+1个
+
+
+杜邦线
+若干
+
+
+超声波测距模块(HC,"> 
+    <meta name="author" content="王志伟"> 
+    <link rel="alternative" href="atom.xml" title="Skyone-Blog" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+    
+<link rel="stylesheet" href="/css/diaspora.css">
+
+	<!--
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads"
+        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+	 -->
+    <!-- 看板娘 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css">
+    <script src="/live2d-widget/autoload.js"></script>
+    <!-- MD5 -->
+    <script src="/js/md5.min.js"></script>
+    <!-- aplayer音乐播放器 -->
+    <script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">Skyone-Blog</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="iconfont icon-home image-icon" href="javascript:;" data-url="https://skyone-wzw.github.io"></a>
+    <h3 class="subtitle">用Arduino制作一个简易超声波测距仪</h3>
+    <div class="social">
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="iconfont icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">用Arduino制作一个简易超声波测距仪</h1>
+        <div class="stuff">
+            <span>二月 22, 2021</span>
+            
+  <ul class="post-tags-list" itemprop="keywords"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/Arduino/" rel="tag">Arduino</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <h1 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h1><p>用Arduino UNO开发板做一个简单的超声波测距仪</p>
+<img src="F:\Blog\草稿\超声波\成果.jpg" alt="成果" style="zoom: 33%;" />
+
+<h1 id="材料准备"><a href="#材料准备" class="headerlink" title="材料准备"></a>材料准备</h1><table>
+<thead>
+<tr>
+<th>材料</th>
+<th>数量</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Arduino Uno</strong>或其他类似开发板及其配套<strong>数据线</strong></td>
+<td>1个</td>
+</tr>
+<tr>
+<td><strong>杜邦线</strong></td>
+<td>若干</td>
+</tr>
+<tr>
+<td><strong>超声波测距模块</strong>(HC-SR04)</td>
+<td>1个</td>
+</tr>
+<tr>
+<td><strong>四位数码管</strong></td>
+<td>1个</td>
+</tr>
+<tr>
+<td><strong>电阻</strong></td>
+<td>若干</td>
+</tr>
+</tbody></table>
+<p>括号里的是我自己使用的型号；当然，你还需要一台装有<strong>Arduino IDE</strong>的电脑。</p>
+<h1 id="Arduino基础"><a href="#Arduino基础" class="headerlink" title="Arduino基础"></a>Arduino基础</h1><p>了解过Arduino的请跳过~~</p>
+<h2 id="Arduino怎么用？"><a href="#Arduino怎么用？" class="headerlink" title="Arduino怎么用？"></a>Arduino怎么用？</h2><p>如你所见，Arduino上有很多插孔，这个叫 <code>I/O</code> ，我们要做的就是通过 <code>C++</code> 程序控制I/O的读取和输出。</p>
+<h2 id="这个C-程序怎么写？"><a href="#这个C-程序怎么写？" class="headerlink" title="这个C++程序怎么写？"></a>这个C++程序怎么写？</h2><blockquote>
+<p> 什么？你不会C++？快去<a target="_blank" rel="noopener" href="https://www.runoob.com/cplusplus/cpp-tutorial.html">这里</a>学习吧。。。</p>
+</blockquote>
+<p>Arduino程序必须包含两个函数： <code>setup()</code> 和 <code>loop()</code></p>
+<p>这两个函数简单来说就是先执行 <code>setup()</code> 函数初始化，在无限循环 <code>loop()</code> 函数</p>
+<p>咳咳，还是这么解释吧：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setup</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">loop</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    setup();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(;;) &#123;</span><br><span class="line">        loop();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="超声波测距模块"><a href="#超声波测距模块" class="headerlink" title="超声波测距模块"></a>超声波测距模块</h1><h2 id="分析工作原理"><a href="#分析工作原理" class="headerlink" title="分析工作原理"></a>分析工作原理</h2><p>由于各个型号的模块针脚可能不同，请查看相关文档，这里我根据我使用的<strong>HC-SR04</strong>介绍。</p>
+<img src="https://tc.skyone.host/blog/post/%E7%94%A8Arduino%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E7%AE%80%E6%98%93%E8%B6%85%E5%A3%B0%E6%B3%A2%E6%B5%8B%E8%B7%9D%E4%BB%AA/HC-SR04.jpg" alt="HC-SR04" style="zoom: 25%;" />
+
+<blockquote>
+<p>采用IO触发测距，给至少10us的高电平信号。模块自动发送8个40khz的方波，自动检测是否有信号返回。有信号返回，通过IO输出一高电平，高电平持续的时间就是超声波从发射到返回的时间。测试距离=(高电平时间*声速(340m/s))/2</p>
+<img src="https://tc.skyone.host/blog/post/%E7%94%A8Arduino%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E7%AE%80%E6%98%93%E8%B6%85%E5%A3%B0%E6%B3%A2%E6%B5%8B%E8%B7%9D%E4%BB%AA/HC-SR04%E6%96%87%E6%A1%A3.png" alt="文档" style="zoom:50%;" />
+</blockquote>
+<h2 id="一个完整的测距过程"><a href="#一个完整的测距过程" class="headerlink" title="一个完整的测距过程"></a>一个完整的测距过程</h2><ol start="0">
+<li><code>GND</code> 接Arduino的 <code>GND</code> ， <code>VCC</code> 接Arduino的 <code>5V</code></li>
+</ol>
+<p>下面开始测距：</p>
+<ol>
+<li>给 <code>Trig</code> 一个至少10微秒的脉冲</li>
+<li>监听输出端口并开始计时</li>
+<li>当输出端口出现高电平时计时结束</li>
+<li>根据声速计算距离</li>
+</ol>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p>首先，为了接线方便，超声波测距模块连Arduino的 <code>A2</code> ~ <code>A5</code> 引脚。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> GND A2</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ECHO A3</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TRIG A4</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> VCC A5</span></span><br></pre></td></tr></table></figure>
+
+
+<p>在 <code>setup()</code> 函数里我们初始化引脚</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setup</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// …………</span></span><br><span class="line">    pinMode(GND, OUTPUT);	<span class="comment">// 输出 0V 电压</span></span><br><span class="line">    pinMode(VCC, OUTPUT);	<span class="comment">// 输出 5V 电压</span></span><br><span class="line">    pinMode(TRIG, OUTPUT);	<span class="comment">// 输出 控制信号</span></span><br><span class="line">    pinMOde(ECHO, INPUT);	<span class="comment">// 输入端</span></span><br><span class="line">    <span class="comment">// …………</span></span><br><span class="line">    digitalWrite(VCC, HIGH); <span class="comment">// VCC 5V 高电平</span></span><br><span class="line">    digitalWrite(GND, LOW); <span class="comment">// GND 低电平</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>还记得上面的步骤吗？</p>
+<p>在 <code>loop()</code> 里我们先将 <code>Trig</code> 设为高电平( <code>digitalWrite(TRIG, HIGH);</code> )，50微秒后变回低电平，也就是形成一个50微秒的脉冲</p>
+<p>再调用Arduino库函数 <code>pulseln()</code> ，这个函数等待一个端口变为高电平并开始计时，再变为低电平时停止计时，并返回时间间隔（单位为微秒）</p>
+<p>最后计算距离</p>
+<p>代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">loop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    digitalWrite(TRIG, HIGH);	<span class="comment">// 先将 `Trig` 设为高电平</span></span><br><span class="line">    delayMicroseconds(<span class="number">50</span>);		<span class="comment">// 等待 50 微秒</span></span><br><span class="line">    digitalWrite(TRIG, LOW);	<span class="comment">// 先将 `Trig` 设为低电平</span></span><br><span class="line">    <span class="keyword">double</span> time = <span class="keyword">double</span>(pulseIn(ECHO, HIGH)) / <span class="number">1000000</span>;	<span class="comment">// 保存以秒为单位的时间间隔</span></span><br><span class="line">    </span><br><span class="line">    show(time * <span class="number">340</span> / <span class="number">2</span>);		<span class="comment">// 将计算结果传递给 `show()` 函数，这个函数的实现在后面</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="四位数码管"><a href="#四位数码管" class="headerlink" title="四位数码管"></a>四位数码管</h1><h2 id="分析工作原理-1"><a href="#分析工作原理-1" class="headerlink" title="分析工作原理"></a>分析工作原理</h2><p>我用的是共阴数码管，原理图如下：</p>
+<img src="https://tc.skyone.host/blog/post/%E7%94%A8Arduino%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E7%AE%80%E6%98%93%E8%B6%85%E5%A3%B0%E6%B3%A2%E6%B5%8B%E8%B7%9D%E4%BB%AA/%E6%95%B0%E7%A0%81%E7%AE%A1.png" alt="数码管原理图" style="zoom:50%;" />
+
+<p>可以看到，当12低电平时，其他引脚控制第一个数字，当9为低电平时，其他引脚控制第一个数字，以此类推。</p>
+<p><strong>注意！要在 12 , 9 , 8 , 6 四个引脚分别串联一个合适阻值的电阻，具体阻值要看数码管的工作电压。</strong></p>
+<p>如下表：</p>
+<table>
+<thead>
+<tr>
+<th>数字</th>
+<th>高电平的引脚</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>ABCDEF</td>
+</tr>
+<tr>
+<td>1</td>
+<td>BC</td>
+</tr>
+<tr>
+<td>2</td>
+<td>ABDEG</td>
+</tr>
+<tr>
+<td>3</td>
+<td>ABCDG</td>
+</tr>
+<tr>
+<td>4</td>
+<td>BCFG</td>
+</tr>
+<tr>
+<td>5</td>
+<td>ACDFG</td>
+</tr>
+<tr>
+<td>6</td>
+<td>ACDEFG</td>
+</tr>
+<tr>
+<td>7</td>
+<td>ABC</td>
+</tr>
+<tr>
+<td>8</td>
+<td>ABCDEFG</td>
+</tr>
+<tr>
+<td>9</td>
+<td>ABCDFG</td>
+</tr>
+</tbody></table>
+<h2 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h2><p>为了用字母而不是数字表示引脚，可以在程序的开头定义如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> l1 13 <span class="comment">// Arduino 的 13 号引脚 连数码管的 12 号引脚</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> l2 12 <span class="comment">// Arduino 的 12 号引脚 连数码管的  9 号引脚</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> l3 11 <span class="comment">// Arduino 的 11 号引脚 连数码管的  8 号引脚</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> l4 2  <span class="comment">// Arduino 的  2 号引脚 连数码管的  6 号引脚</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> la 10 <span class="comment">// Arduino 的 10 号引脚 连数码管的 11 号引脚</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> lb 8  <span class="comment">// Arduino 的  8 号引脚 连数码管的  7 号引脚</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> lc 4  <span class="comment">// Arduino 的  4 号引脚 连数码管的  4 号引脚</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ld 6  <span class="comment">// Arduino 的  6 号引脚 连数码管的  2 号引脚</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> le 7  <span class="comment">// Arduino 的  7 号引脚 连数码管的  1 号引脚</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> lf 9  <span class="comment">// Arduino 的  9 号引脚 连数码管的 10 号引脚</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> lg 3  <span class="comment">// Arduino 的  3 号引脚 连数码管的  5 号引脚</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ldp 5 <span class="comment">// Arduino 的  5 号引脚 连数码管的  3 号引脚</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DELAY 5 <span class="comment">// 用于控制每次测量的间隔</span></span></span><br></pre></td></tr></table></figure>
+<p><strong>初始化引脚</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setup</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt; <span class="number">14</span>; i++) &#123;</span><br><span class="line">        pinMode(i, OUTPUT);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// …………</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>封装每个数字为函数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">flush</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    digitalWrite(la, LOW);</span><br><span class="line">    digitalWrite(lb, LOW);</span><br><span class="line">    digitalWrite(lc, LOW);</span><br><span class="line">    digitalWrite(ld, LOW);</span><br><span class="line">    digitalWrite(le, LOW);</span><br><span class="line">    digitalWrite(lf, LOW);</span><br><span class="line">    digitalWrite(lg, LOW);</span><br><span class="line">    digitalWrite(ldp, LOW);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show_num</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">switch</span> (num) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">0</span>:</span><br><span class="line">            _show_0();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">            _show_1();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">            _show_2();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">            _show_3();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">            _show_4();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">5</span>:</span><br><span class="line">            _show_5();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">6</span>:</span><br><span class="line">            _show_6();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">7</span>:</span><br><span class="line">            _show_7();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">8</span>:</span><br><span class="line">            _show_8();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">9</span>:</span><br><span class="line">            _show_9();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> _show_0() &#123;</span><br><span class="line">    digitalWrite(la, HIGH);</span><br><span class="line">    digitalWrite(lb, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">    digitalWrite(ld, HIGH);</span><br><span class="line">    digitalWrite(le, HIGH);</span><br><span class="line">    digitalWrite(lf, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> _show_1() &#123;</span><br><span class="line">    digitalWrite(lb, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> _show_2() &#123;</span><br><span class="line">    digitalWrite(la, HIGH);</span><br><span class="line">    digitalWrite(lb, HIGH);</span><br><span class="line">    digitalWrite(lg, HIGH);</span><br><span class="line">    digitalWrite(ld, HIGH);</span><br><span class="line">    digitalWrite(le, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> _show_3() &#123;</span><br><span class="line">    digitalWrite(la, HIGH);</span><br><span class="line">    digitalWrite(lb, HIGH);</span><br><span class="line">    digitalWrite(lg, HIGH);</span><br><span class="line">    digitalWrite(ld, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> _show_4() &#123;</span><br><span class="line">    digitalWrite(lf, HIGH);</span><br><span class="line">    digitalWrite(lg, HIGH);</span><br><span class="line">    digitalWrite(lb, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> _show_5() &#123;</span><br><span class="line">    digitalWrite(la, HIGH);</span><br><span class="line">    digitalWrite(lf, HIGH);</span><br><span class="line">    digitalWrite(lg, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">    digitalWrite(ld, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> _show_6() &#123;</span><br><span class="line">    digitalWrite(la, HIGH);</span><br><span class="line">    digitalWrite(lf, HIGH);</span><br><span class="line">    digitalWrite(le, HIGH);</span><br><span class="line">    digitalWrite(ld, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">    digitalWrite(lg, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> _show_7() &#123;</span><br><span class="line">    digitalWrite(la, HIGH);</span><br><span class="line">    digitalWrite(lb, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> _show_8() &#123;</span><br><span class="line">    digitalWrite(la, HIGH);</span><br><span class="line">    digitalWrite(lb, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">    digitalWrite(ld, HIGH);</span><br><span class="line">    digitalWrite(le, HIGH);</span><br><span class="line">    digitalWrite(lf, HIGH);</span><br><span class="line">    digitalWrite(lg, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> _show_9() &#123;</span><br><span class="line">    digitalWrite(la, HIGH);</span><br><span class="line">    digitalWrite(lb, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">    digitalWrite(ld, HIGH);</span><br><span class="line">    digitalWrite(lf, HIGH);</span><br><span class="line">    digitalWrite(lg, HIGH);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>注意！</strong></p>
+<p>我们要显示的是XX.XX米，其中第二个小数点要正确显示，我们写一个函数，接受一个小于10000的正整数，如344，显示为03.44(米)。<strong>所以前面调用 <code>show()</code> 的时候传入的参数应该乘100</strong>。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 一次测量结果显示 300 / DELAY 秒。</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">300</span> / DELAY; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> tmp = num;</span><br><span class="line">        <span class="keyword">int</span> j;</span><br><span class="line"></span><br><span class="line">        flush();</span><br><span class="line">        j = tmp % <span class="number">10</span>;</span><br><span class="line">        show_num(j);</span><br><span class="line">        digitalWrite(l4, LOW);</span><br><span class="line">        delay(DELAY);</span><br><span class="line">        digitalWrite(l4, HIGH);</span><br><span class="line">        tmp -= j;</span><br><span class="line">        tmp /= <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">        flush();</span><br><span class="line">        j = tmp % <span class="number">10</span>;</span><br><span class="line">        show_num(j);</span><br><span class="line">        digitalWrite(l3, LOW);</span><br><span class="line">        delay(DELAY);</span><br><span class="line">        digitalWrite(l3, HIGH);</span><br><span class="line">        tmp -= j;</span><br><span class="line">        tmp /= <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">        flush();</span><br><span class="line">        j = tmp % <span class="number">10</span>;</span><br><span class="line">        show_num(j);</span><br><span class="line">        digitalWrite(ldp, HIGH);</span><br><span class="line">        digitalWrite(l2, LOW);</span><br><span class="line">        delay(DELAY);</span><br><span class="line">        digitalWrite(l2, HIGH);</span><br><span class="line">        tmp -= j;</span><br><span class="line">        tmp /= <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">        flush();</span><br><span class="line">        j = tmp % <span class="number">10</span>;</span><br><span class="line">        show_num(j);</span><br><span class="line">        digitalWrite(l1, LOW);</span><br><span class="line">        delay(DELAY);</span><br><span class="line">        digitalWrite(l1, HIGH);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="全部代码"><a href="#全部代码" class="headerlink" title="全部代码"></a>全部代码</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> l1 13</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> l2 12</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> l3 11</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> l4 2</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> la 10</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> lb 8</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> lc 4</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ld 6</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> le 7</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> lf 9</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> lg 3</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ldp 5</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> GND A2</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ECHO A3</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TRIG A4</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> VCC A5</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DELAY 5</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setup</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt; <span class="number">14</span>; i++) &#123;</span><br><span class="line">        pinMode(i, OUTPUT);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    pinMode(GND, OUTPUT);</span><br><span class="line">    pinMode(VCC, OUTPUT);</span><br><span class="line">    pinMode(TRIG, OUTPUT);</span><br><span class="line">    pinMOde(ECHO, INPUT);</span><br><span class="line"></span><br><span class="line">    digitalWrite(VCC, HIGH);</span><br><span class="line">    digitalWrite(GND, LOW);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">loop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    digitalWrite(TRIG, LOW);</span><br><span class="line">    delayMicroseconds(<span class="number">5</span>);</span><br><span class="line">    digitalWrite(TRIG, HIGH);</span><br><span class="line">    delayMicroseconds(<span class="number">50</span>);</span><br><span class="line">    digitalWrite(TRIG, LOW);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">double</span> time = <span class="keyword">double</span>(pulseIn(ECHO, HIGH)) / <span class="number">10000</span>;</span><br><span class="line"></span><br><span class="line">    show(<span class="keyword">int</span>(time * <span class="number">340</span> / <span class="number">2</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">300</span> / DELAY; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> tmp = num;</span><br><span class="line">        <span class="keyword">int</span> j;</span><br><span class="line"></span><br><span class="line">        flush();</span><br><span class="line">        j = tmp % <span class="number">10</span>;</span><br><span class="line">        show_num(j);</span><br><span class="line">        digitalWrite(l4, LOW);</span><br><span class="line">        delay(DELAY);</span><br><span class="line">        digitalWrite(l4, HIGH);</span><br><span class="line">        tmp -= j;</span><br><span class="line">        tmp /= <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">        flush();</span><br><span class="line">        j = tmp % <span class="number">10</span>;</span><br><span class="line">        show_num(j);</span><br><span class="line">        digitalWrite(l3, LOW);</span><br><span class="line">        delay(DELAY);</span><br><span class="line">        digitalWrite(l3, HIGH);</span><br><span class="line">        tmp -= j;</span><br><span class="line">        tmp /= <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">        flush();</span><br><span class="line">        j = tmp % <span class="number">10</span>;</span><br><span class="line">        show_num(j);</span><br><span class="line">        digitalWrite(ldp, HIGH);</span><br><span class="line">        digitalWrite(l2, LOW);</span><br><span class="line">        delay(DELAY);</span><br><span class="line">        digitalWrite(l2, HIGH);</span><br><span class="line">        tmp -= j;</span><br><span class="line">        tmp /= <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">        flush();</span><br><span class="line">        j = tmp % <span class="number">10</span>;</span><br><span class="line">        show_num(j);</span><br><span class="line">        digitalWrite(l1, LOW);</span><br><span class="line">        delay(DELAY);</span><br><span class="line">        digitalWrite(l1, HIGH);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">flush</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    digitalWrite(la, LOW);</span><br><span class="line">    digitalWrite(lb, LOW);</span><br><span class="line">    digitalWrite(lc, LOW);</span><br><span class="line">    digitalWrite(ld, LOW);</span><br><span class="line">    digitalWrite(le, LOW);</span><br><span class="line">    digitalWrite(lf, LOW);</span><br><span class="line">    digitalWrite(lg, LOW);</span><br><span class="line">    digitalWrite(ldp, LOW);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show_num</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">switch</span> (num)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">0</span>:</span><br><span class="line">            _show_0();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">            _show_1();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">            _show_2();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">            _show_3();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">            _show_4();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">5</span>:</span><br><span class="line">            _show_5();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">6</span>:</span><br><span class="line">            _show_6();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">7</span>:</span><br><span class="line">            _show_7();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">8</span>:</span><br><span class="line">            _show_8();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">9</span>:</span><br><span class="line">            _show_9();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> _show_1() &#123;</span><br><span class="line">    digitalWrite(lb, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> _show_2() &#123;</span><br><span class="line">    digitalWrite(la, HIGH);</span><br><span class="line">    digitalWrite(lb, HIGH);</span><br><span class="line">    digitalWrite(lg, HIGH);</span><br><span class="line">    digitalWrite(ld, HIGH);</span><br><span class="line">    digitalWrite(le, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> _show_3() &#123;</span><br><span class="line">    digitalWrite(la, HIGH);</span><br><span class="line">    digitalWrite(lb, HIGH);</span><br><span class="line">    digitalWrite(lg, HIGH);</span><br><span class="line">    digitalWrite(ld, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> _show_4() &#123;</span><br><span class="line">    digitalWrite(lf, HIGH);</span><br><span class="line">    digitalWrite(lg, HIGH);</span><br><span class="line">    digitalWrite(lb, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> _show_5() &#123;</span><br><span class="line">    digitalWrite(la, HIGH);</span><br><span class="line">    digitalWrite(lf, HIGH);</span><br><span class="line">    digitalWrite(lg, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">    digitalWrite(ld, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> _show_6() &#123;</span><br><span class="line">    digitalWrite(la, HIGH);</span><br><span class="line">    digitalWrite(lf, HIGH);</span><br><span class="line">    digitalWrite(le, HIGH);</span><br><span class="line">    digitalWrite(ld, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">    digitalWrite(lg, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> _show_7() &#123;</span><br><span class="line">    digitalWrite(la, HIGH);</span><br><span class="line">    digitalWrite(lb, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> _show_8() &#123;</span><br><span class="line">    digitalWrite(la, HIGH);</span><br><span class="line">    digitalWrite(lb, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">    digitalWrite(ld, HIGH);</span><br><span class="line">    digitalWrite(le, HIGH);</span><br><span class="line">    digitalWrite(lf, HIGH);</span><br><span class="line">    digitalWrite(lg, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> _show_9() &#123;</span><br><span class="line">    digitalWrite(la, HIGH);</span><br><span class="line">    digitalWrite(lb, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">    digitalWrite(ld, HIGH);</span><br><span class="line">    digitalWrite(lf, HIGH);</span><br><span class="line">    digitalWrite(lg, HIGH);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> _show_0() &#123;</span><br><span class="line">    digitalWrite(la, HIGH);</span><br><span class="line">    digitalWrite(lb, HIGH);</span><br><span class="line">    digitalWrite(lc, HIGH);</span><br><span class="line">    digitalWrite(ld, HIGH);</span><br><span class="line">    digitalWrite(le, HIGH);</span><br><span class="line">    digitalWrite(lf, HIGH);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="接线"><a href="#接线" class="headerlink" title="接线"></a>接线</h1><p>前面其实都已经讲过了，这里再复述一遍：</p>
+<table>
+<thead>
+<tr>
+<th>Arduino引脚</th>
+<th>四位数码管引脚</th>
+<th>超声波测距仪引脚</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A2</td>
+<td></td>
+<td>GND</td>
+</tr>
+<tr>
+<td>A3</td>
+<td></td>
+<td>ECHO</td>
+</tr>
+<tr>
+<td>A4</td>
+<td></td>
+<td>TRIG</td>
+</tr>
+<tr>
+<td>A5</td>
+<td></td>
+<td>VCC</td>
+</tr>
+<tr>
+<td>3</td>
+<td>5</td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td>7</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td>7</td>
+<td></td>
+</tr>
+<tr>
+<td>9</td>
+<td>10</td>
+<td></td>
+</tr>
+<tr>
+<td>10</td>
+<td>11</td>
+<td></td>
+</tr>
+<tr>
+<td>11</td>
+<td>8</td>
+<td></td>
+</tr>
+<tr>
+<td>12</td>
+<td>9</td>
+<td></td>
+</tr>
+<tr>
+<td>13</td>
+<td>12</td>
+<td></td>
+</tr>
+</tbody></table>
+<h1 id="完成！"><a href="#完成！" class="headerlink" title="完成！"></a>完成！</h1><p>我已经成功了，你也快去试试吧~~</p>
+<img src="https://tc.skyone.host/blog/post/%E7%94%A8Arduino%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E7%AE%80%E6%98%93%E8%B6%85%E5%A3%B0%E6%B3%A2%E6%B5%8B%E8%B7%9D%E4%BB%AA/%E6%88%90%E6%9E%9C.jpg" alt="完成！" style="zoom: 33%;" />
+            <div id="aplayer"></div>
+            <script>
+                window.aplayer = new APlayer({
+                    container: document.getElementById('aplayer'),
+                    lrcType: 3,
+                    order: "random",
+                    fixed: true,
+                    audio: [
+                        
+                        
+                        {
+                            name: "夜航星",
+                            artist: "洛天依",
+                            url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/music/夜航星%20-%20洛天依.mp3",
+                            
+                            cover: "https://ooo.0x0.ooo/2021/02/14/o08AS.png",
+                            
+                            
+                            lrc: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/lrc/夜航星%20-%20洛天依.lrc",
+                            
+                        },
+                        
+                        {
+                            name: "为谁而为",
+                            artist: "洛天依",
+                            url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/music/为谁而为%20-%20洛天依%2CCOP.mp3",
+                            
+                            cover: "https://ooo.0x0.ooo/2021/02/16/ocSlx.jpg",
+                            
+                            
+                            lrc: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/lrc/为谁而为%20-%20洛天依%2CCOP.lrc",
+                            
+                        },
+                        
+                        {
+                            name: "Faded",
+                            artist: "乐正绫",
+                            url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/blog/music/乐正绫%20-%20Faded.mp3",
+                            
+                            cover: "https://ooo.0x0.ooo/2021/02/21/odvNY.png",
+                            
+                            
+                        },
+                        
+                        {
+                            name: "bilibili2018年度总结BGM",
+                            artist: "bilibili",
+                            url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/blog/music/bilibili2018%20-%20至尊马甲.flac",
+                            
+                            cover: "https://ooo.0x0.ooo/2021/02/21/odAdp.jpg",
+                            
+                            
+                        },
+                        
+                    ]
+                });
+            </script>
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+		data-enable='true'
+        data-ae='true'
+        data-ci='d5e197ef955b7f3268e5'
+        data-cs='7d4feed7a179ad28943b0865b7970814073145ad'
+        data-r='blog-gitalk'
+        data-o='skyone-wzw'
+        data-a='skyone-wzw'
+        data-d='false'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9B%AE%E6%A0%87"><span class="toc-number">1.</span> <span class="toc-text">目标</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9D%90%E6%96%99%E5%87%86%E5%A4%87"><span class="toc-number">2.</span> <span class="toc-text">材料准备</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Arduino%E5%9F%BA%E7%A1%80"><span class="toc-number">3.</span> <span class="toc-text">Arduino基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Arduino%E6%80%8E%E4%B9%88%E7%94%A8%EF%BC%9F"><span class="toc-number">3.1.</span> <span class="toc-text">Arduino怎么用？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%99%E4%B8%AAC-%E7%A8%8B%E5%BA%8F%E6%80%8E%E4%B9%88%E5%86%99%EF%BC%9F"><span class="toc-number">3.2.</span> <span class="toc-text">这个C++程序怎么写？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%B6%85%E5%A3%B0%E6%B3%A2%E6%B5%8B%E8%B7%9D%E6%A8%A1%E5%9D%97"><span class="toc-number">4.</span> <span class="toc-text">超声波测距模块</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-number">4.1.</span> <span class="toc-text">分析工作原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E5%AE%8C%E6%95%B4%E7%9A%84%E6%B5%8B%E8%B7%9D%E8%BF%87%E7%A8%8B"><span class="toc-number">4.2.</span> <span class="toc-text">一个完整的测距过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-number">4.3.</span> <span class="toc-text">代码</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9B%E4%BD%8D%E6%95%B0%E7%A0%81%E7%AE%A1"><span class="toc-number">5.</span> <span class="toc-text">四位数码管</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86-1"><span class="toc-number">5.1.</span> <span class="toc-text">分析工作原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81-1"><span class="toc-number">5.2.</span> <span class="toc-text">代码</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%A8%E9%83%A8%E4%BB%A3%E7%A0%81"><span class="toc-number">6.</span> <span class="toc-text">全部代码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8E%A5%E7%BA%BF"><span class="toc-number">7.</span> <span class="toc-text">接线</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%8C%E6%88%90%EF%BC%81"><span class="toc-number">8.</span> <span class="toc-text">完成！</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+</html>
