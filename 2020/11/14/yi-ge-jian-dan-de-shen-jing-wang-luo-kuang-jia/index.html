@@ -53,7 +53,7 @@
     <div id="single">
     <div id="top" style="display: block;">
     <div class="bar" style="width: 0;"></div>
-    <a class="iconfont icon-home image-icon" href="javascript:;" data-url="https://www.skyone.host"></a>
+    <a class="iconfont icon-home image-icon" href="javascript:;" data-url="https://skyone-wzw.github.io"></a>
     <h3 class="subtitle">一个简单的神经网络框架</h3>
     <div class="social">
         <div>
@@ -91,6 +91,63 @@
 <p><img src="https://tc.skyone.host/blog/post/%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%A1%86%E6%9E%B6/%E8%AF%86%E5%88%AB%E5%87%86%E7%A1%AE%E7%8E%87.png" alt="识别准确率"></p>
 <h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">activate</span>(<span class="params">x</span>):</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span> / (<span class="number">1</span> + numpy.exp(-x))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NeuralNetwork</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, inputnodes, hiddennodes, outputnodes, learningrate=<span class="number">0.3</span></span>):</span></span><br><span class="line">        <span class="comment"># set number of nodes in each input, hidden, output layer</span></span><br><span class="line">        <span class="comment"># 分别是：输入层、隐藏层、输出层的节点数</span></span><br><span class="line">        self.inodes = inputnodes</span><br><span class="line">        self.hnodes = hiddennodes</span><br><span class="line">        self.onodes = outputnodes</span><br><span class="line"></span><br><span class="line">        <span class="comment"># learning rate</span></span><br><span class="line">        <span class="comment"># 学习速率</span></span><br><span class="line">        self.lr = learningrate</span><br><span class="line"></span><br><span class="line">        <span class="comment"># weights</span></span><br><span class="line">        <span class="comment"># 使用正态分布初始化权重</span></span><br><span class="line">        self.wih = numpy.random.normal(<span class="number">0.0</span>, <span class="built_in">pow</span>(self.inodes, -<span class="number">0.5</span>), (self.hnodes, self.inodes))</span><br><span class="line">        self.who = numpy.random.normal(<span class="number">0.0</span>, <span class="built_in">pow</span>(self.hnodes, -<span class="number">0.5</span>), (self.onodes, self.hnodes))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">query</span>(<span class="params">self, inputs_list</span>):</span></span><br><span class="line">        <span class="comment"># 计算每个数字的概率</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 翻转矩阵</span></span><br><span class="line">        inputs = numpy.array(inputs_list, ndmin=<span class="number">2</span>).T</span><br><span class="line">		<span class="comment"># 输入进隐藏层的数据与权重相乘</span></span><br><span class="line">        hidden_inputs = numpy.dot(self.wih, inputs)</span><br><span class="line">        <span class="comment"># 激活函数</span></span><br><span class="line">        hidden_outputs = activate(hidden_inputs)</span><br><span class="line">		<span class="comment"># 输入进输出层的数据与权重相乘</span></span><br><span class="line">        final_inputs = numpy.dot(self.who, hidden_outputs)</span><br><span class="line">        <span class="comment"># 激活函数</span></span><br><span class="line">        final_outputs = activate(final_inputs)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> final_outputs</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">train</span>(<span class="params">self, inputs_list, targets_list</span>):</span></span><br><span class="line">        <span class="comment"># 误差计算函数</span></span><br><span class="line">        inputs = numpy.array(inputs_list, ndmin=<span class="number">2</span>).T</span><br><span class="line">        targets = numpy.array(targets_list, ndmin=<span class="number">2</span>).T</span><br><span class="line"></span><br><span class="line">        hidden_inputs = numpy.dot(self.wih, inputs)</span><br><span class="line">        hidden_outputs = activate(hidden_inputs)</span><br><span class="line"></span><br><span class="line">        final_inputs = numpy.dot(self.who, hidden_outputs)</span><br><span class="line">        final_outputs = activate(final_inputs)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># errors</span></span><br><span class="line">        <span class="comment"># 误差值</span></span><br><span class="line">        output_errors = targets - final_outputs</span><br><span class="line">        hidden_errors = numpy.dot(self.who.T, output_errors)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># update the weights for the links between the hidden and output layer</span></span><br><span class="line">        <span class="comment"># 根据误差调整权重</span></span><br><span class="line">        self.who += self.lr * numpy.dot((output_errors * final_outputs * (<span class="number">1.0</span> - final_outputs)), numpy.transpose(hidden_outputs))</span><br><span class="line">        <span class="comment"># update the weights for the links between the hidden and output layer</span></span><br><span class="line">        <span class="comment"># 根据误差调整权重</span></span><br><span class="line">        self.wih += self.lr * numpy.dot((hidden_errors * hidden_outputs * (<span class="number">1.0</span> - hidden_outputs)), numpy.transpose(inputs))</span><br></pre></td></tr></table></figure>
 
+            <div id="aplayer"></div>
+            <script>
+                window.aplayer = new APlayer({
+                    container: document.getElementById('aplayer'),
+                    lrcType: 3,
+                    order: "random",
+                    fixed: true,
+                    audio: [
+                        
+                        
+                        {
+                            name: "夜航星",
+                            artist: "洛天依",
+                            url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/music/夜航星%20-%20洛天依.mp3",
+                            
+                            cover: "https://ooo.0x0.ooo/2021/02/14/o08AS.png",
+                            
+                            
+                            lrc: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/lrc/夜航星%20-%20洛天依.lrc",
+                            
+                        },
+                        
+                        {
+                            name: "为谁而为",
+                            artist: "洛天依",
+                            url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/music/为谁而为%20-%20洛天依%2CCOP.mp3",
+                            
+                            cover: "https://ooo.0x0.ooo/2021/02/16/ocSlx.jpg",
+                            
+                            
+                            lrc: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/lrc/为谁而为%20-%20洛天依%2CCOP.lrc",
+                            
+                        },
+                        
+                        {
+                            name: "Faded",
+                            artist: "乐正绫",
+                            url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/blog/music/乐正绫%20-%20Faded.mp3",
+                            
+                            cover: "https://ooo.0x0.ooo/2021/02/21/odvNY.png",
+                            
+                            
+                        },
+                        
+                        {
+                            name: "bilibili2018年度总结BGM",
+                            artist: "bilibili",
+                            url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/blog/music/bilibili2018%20-%20至尊马甲.flac",
+                            
+                            cover: "https://ooo.0x0.ooo/2021/02/21/odAdp.jpg",
+                            
+                            
+                        },
+                        
+                    ]
+                });
+            </script>
         </div>
         
     <div id='gitalk-container' class="comment link"
@@ -116,63 +173,6 @@
 
     </div>
 </div>
-<div id="aplayer"></div>
-<script>
-    window.aplayer = new APlayer({
-        container: document.getElementById('aplayer'),
-        lrcType: 3,
-        order: "random",
-        fixed: true,
-        audio: [
-            
-            
-            {
-                name: "夜航星",
-                artist: "洛天依",
-                url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/music/夜航星%20-%20洛天依.mp3",
-                
-                cover: "https://ooo.0x0.ooo/2021/02/14/o08AS.png",
-                
-                
-                lrc: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/lrc/夜航星%20-%20洛天依.lrc",
-                
-            },
-            
-            {
-                name: "为谁而为",
-                artist: "洛天依",
-                url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/music/为谁而为%20-%20洛天依%2CCOP.mp3",
-                
-                cover: "https://ooo.0x0.ooo/2021/02/16/ocSlx.jpg",
-                
-                
-                lrc: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/lrc/为谁而为%20-%20洛天依%2CCOP.lrc",
-                
-            },
-            
-            {
-                name: "Faded",
-                artist: "乐正绫",
-                url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/blog/music/乐正绫%20-%20Faded.mp3",
-                
-                cover: "https://ooo.0x0.ooo/2021/02/21/odvNY.png",
-                
-                
-            },
-            
-            {
-                name: "bilibili2018年度总结BGM",
-                artist: "bilibili",
-                url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/blog/music/bilibili2018%20-%20至尊马甲.flac",
-                
-                cover: "https://ooo.0x0.ooo/2021/02/21/odAdp.jpg",
-                
-                
-            },
-            
-        ]
-    });
-</script>
 </body>
 
 <script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>

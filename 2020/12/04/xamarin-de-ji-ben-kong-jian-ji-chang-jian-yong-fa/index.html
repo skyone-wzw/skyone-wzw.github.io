@@ -49,7 +49,7 @@
     <div id="single">
     <div id="top" style="display: block;">
     <div class="bar" style="width: 0;"></div>
-    <a class="iconfont icon-home image-icon" href="javascript:;" data-url="https://www.skyone.host"></a>
+    <a class="iconfont icon-home image-icon" href="javascript:;" data-url="https://skyone-wzw.github.io"></a>
     <h3 class="subtitle">Xamarin的基本控件及常见用法</h3>
     <div class="social">
         <div>
@@ -112,6 +112,63 @@
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> Xamarin.Essentials;</span><br><span class="line"><span class="keyword">using</span> Xamarin.Forms;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Blog</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">MainPage</span> : <span class="title">ContentPage</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">MainPage</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            InitializeComponent();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">MyPopupButton_Clicked</span>(<span class="params"><span class="built_in">object</span> sender, EventArgs e</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            DisplayAlert(<span class="string">&quot;提示&quot;</span>, <span class="string">&quot;这是一个简单的弹窗&quot;</span>, <span class="string">&quot;确定&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">async</span> <span class="keyword">void</span> <span class="title">ClickMeHyperlinkButton_Tapped</span>(<span class="params"><span class="built_in">object</span> sender, EventArgs e</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">await</span> Browser.OpenAsync(<span class="string">&quot;https://www.bilibili.com&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E7%A4%BA%E4%BE%8B.png" alt="示例"></p>
 
+            <div id="aplayer"></div>
+            <script>
+                window.aplayer = new APlayer({
+                    container: document.getElementById('aplayer'),
+                    lrcType: 3,
+                    order: "random",
+                    fixed: true,
+                    audio: [
+                        
+                        
+                        {
+                            name: "夜航星",
+                            artist: "洛天依",
+                            url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/music/夜航星%20-%20洛天依.mp3",
+                            
+                            cover: "https://ooo.0x0.ooo/2021/02/14/o08AS.png",
+                            
+                            
+                            lrc: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/lrc/夜航星%20-%20洛天依.lrc",
+                            
+                        },
+                        
+                        {
+                            name: "为谁而为",
+                            artist: "洛天依",
+                            url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/music/为谁而为%20-%20洛天依%2CCOP.mp3",
+                            
+                            cover: "https://ooo.0x0.ooo/2021/02/16/ocSlx.jpg",
+                            
+                            
+                            lrc: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/lrc/为谁而为%20-%20洛天依%2CCOP.lrc",
+                            
+                        },
+                        
+                        {
+                            name: "Faded",
+                            artist: "乐正绫",
+                            url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/blog/music/乐正绫%20-%20Faded.mp3",
+                            
+                            cover: "https://ooo.0x0.ooo/2021/02/21/odvNY.png",
+                            
+                            
+                        },
+                        
+                        {
+                            name: "bilibili2018年度总结BGM",
+                            artist: "bilibili",
+                            url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/blog/music/bilibili2018%20-%20至尊马甲.flac",
+                            
+                            cover: "https://ooo.0x0.ooo/2021/02/21/odAdp.jpg",
+                            
+                            
+                        },
+                        
+                    ]
+                });
+            </script>
         </div>
         
     <div id='gitalk-container' class="comment link"
@@ -137,63 +194,6 @@
 
     </div>
 </div>
-<div id="aplayer"></div>
-<script>
-    window.aplayer = new APlayer({
-        container: document.getElementById('aplayer'),
-        lrcType: 3,
-        order: "random",
-        fixed: true,
-        audio: [
-            
-            
-            {
-                name: "夜航星",
-                artist: "洛天依",
-                url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/music/夜航星%20-%20洛天依.mp3",
-                
-                cover: "https://ooo.0x0.ooo/2021/02/14/o08AS.png",
-                
-                
-                lrc: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/lrc/夜航星%20-%20洛天依.lrc",
-                
-            },
-            
-            {
-                name: "为谁而为",
-                artist: "洛天依",
-                url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/music/为谁而为%20-%20洛天依%2CCOP.mp3",
-                
-                cover: "https://ooo.0x0.ooo/2021/02/16/ocSlx.jpg",
-                
-                
-                lrc: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/lrc/为谁而为%20-%20洛天依%2CCOP.lrc",
-                
-            },
-            
-            {
-                name: "Faded",
-                artist: "乐正绫",
-                url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/blog/music/乐正绫%20-%20Faded.mp3",
-                
-                cover: "https://ooo.0x0.ooo/2021/02/21/odvNY.png",
-                
-                
-            },
-            
-            {
-                name: "bilibili2018年度总结BGM",
-                artist: "bilibili",
-                url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/blog/music/bilibili2018%20-%20至尊马甲.flac",
-                
-                cover: "https://ooo.0x0.ooo/2021/02/21/odAdp.jpg",
-                
-                
-            },
-            
-        ]
-    });
-</script>
 </body>
 
 <script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>

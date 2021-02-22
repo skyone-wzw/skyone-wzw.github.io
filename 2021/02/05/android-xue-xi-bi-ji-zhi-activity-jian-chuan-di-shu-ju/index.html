@@ -52,7 +52,7 @@ Intent 类封装了下面6种信息：
     <div id="single">
     <div id="top" style="display: block;">
     <div class="bar" style="width: 0;"></div>
-    <a class="iconfont icon-home image-icon" href="javascript:;" data-url="https://www.skyone.host"></a>
+    <a class="iconfont icon-home image-icon" href="javascript:;" data-url="https://skyone-wzw.github.io"></a>
     <h3 class="subtitle">Android学习笔记之activity间传递数据</h3>
     <div class="social">
         <div>
@@ -178,6 +178,63 @@ Intent 类封装了下面6种信息：
 <h3 id="AndroidManifest-xml"><a href="#AndroidManifest-xml" class="headerlink" title="AndroidManifest.xml"></a><code>AndroidManifest.xml</code></h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">manifest</span> <span class="attr">xmlns:android</span>=<span class="string">&quot;http://schemas.android.com/apk/res/android&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">package</span>=<span class="string">&quot;host.skyone.intent&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    &lt;application</span><br><span class="line">        android:allowBackup=&quot;true&quot;</span><br><span class="line">        android:icon=&quot;@mipmap/ic_launcher&quot;</span><br><span class="line">        android:label=&quot;@string/app_name&quot;</span><br><span class="line">        android:roundIcon=&quot;@mipmap/ic_launcher_round&quot;</span><br><span class="line">        android:supportsRtl=&quot;true&quot;</span><br><span class="line">        android:theme=&quot;@style/Theme.Intent&quot;&gt;</span><br><span class="line">        <span class="tag">&lt;<span class="name">activity</span> <span class="attr">android:name</span>=<span class="string">&quot;.MainActivity&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.action.MAIN&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">                <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.category.LAUNCHER&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br><span class="line">        &lt;activity</span><br><span class="line">            android:name=&quot;.GetMessage&quot;</span><br><span class="line">            android:parentActivityName=&quot;.MainActivity&quot;&gt;</span><br><span class="line">            &lt;meta-data</span><br><span class="line">                android:name=&quot;android.support.PARENT_ACTIVITY&quot;</span><br><span class="line">                android:value=&quot;.MainActivity&quot; /&gt;</span><br><span class="line">        <span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br><span class="line">        &lt;activity</span><br><span class="line">            android:name=&quot;.ReturnMessage&quot;</span><br><span class="line">            android:parentActivityName=&quot;.MainActivity&quot;&gt;</span><br><span class="line">            &lt;meta-data</span><br><span class="line">                android:name=&quot;android.support.PARENT_ACTIVITY&quot;</span><br><span class="line">                android:value=&quot;.MainActivity&quot; /&gt;</span><br><span class="line">        <span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">application</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <h3 id="strings-xml"><a href="#strings-xml" class="headerlink" title="strings.xml"></a><code>strings.xml</code></h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">resources</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span> <span class="attr">name</span>=<span class="string">&quot;app_name&quot;</span>&gt;</span>intent<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span> <span class="attr">name</span>=<span class="string">&quot;TextView&quot;</span>&gt;</span>输入一些东西<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span> <span class="attr">name</span>=<span class="string">&quot;return_message&quot;</span>&gt;</span>返回消息<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span> <span class="attr">name</span>=<span class="string">&quot;return_test&quot;</span>&gt;</span>测试返回消息<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span> <span class="attr">name</span>=<span class="string">&quot;send_message&quot;</span>&gt;</span>发送消息<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span> <span class="attr">name</span>=<span class="string">&quot;hint&quot;</span>&gt;</span>message<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span> <span class="attr">name</span>=<span class="string">&quot;tips&quot;</span>&gt;</span>接收到了以下信息：<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
+            <div id="aplayer"></div>
+            <script>
+                window.aplayer = new APlayer({
+                    container: document.getElementById('aplayer'),
+                    lrcType: 3,
+                    order: "random",
+                    fixed: true,
+                    audio: [
+                        
+                        
+                        {
+                            name: "夜航星",
+                            artist: "洛天依",
+                            url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/music/夜航星%20-%20洛天依.mp3",
+                            
+                            cover: "https://ooo.0x0.ooo/2021/02/14/o08AS.png",
+                            
+                            
+                            lrc: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/lrc/夜航星%20-%20洛天依.lrc",
+                            
+                        },
+                        
+                        {
+                            name: "为谁而为",
+                            artist: "洛天依",
+                            url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/music/为谁而为%20-%20洛天依%2CCOP.mp3",
+                            
+                            cover: "https://ooo.0x0.ooo/2021/02/16/ocSlx.jpg",
+                            
+                            
+                            lrc: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/lrc/为谁而为%20-%20洛天依%2CCOP.lrc",
+                            
+                        },
+                        
+                        {
+                            name: "Faded",
+                            artist: "乐正绫",
+                            url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/blog/music/乐正绫%20-%20Faded.mp3",
+                            
+                            cover: "https://ooo.0x0.ooo/2021/02/21/odvNY.png",
+                            
+                            
+                        },
+                        
+                        {
+                            name: "bilibili2018年度总结BGM",
+                            artist: "bilibili",
+                            url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/blog/music/bilibili2018%20-%20至尊马甲.flac",
+                            
+                            cover: "https://ooo.0x0.ooo/2021/02/21/odAdp.jpg",
+                            
+                            
+                        },
+                        
+                    ]
+                });
+            </script>
         </div>
         
     <div id='gitalk-container' class="comment link"
@@ -203,63 +260,6 @@ Intent 类封装了下面6种信息：
 
     </div>
 </div>
-<div id="aplayer"></div>
-<script>
-    window.aplayer = new APlayer({
-        container: document.getElementById('aplayer'),
-        lrcType: 3,
-        order: "random",
-        fixed: true,
-        audio: [
-            
-            
-            {
-                name: "夜航星",
-                artist: "洛天依",
-                url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/music/夜航星%20-%20洛天依.mp3",
-                
-                cover: "https://ooo.0x0.ooo/2021/02/14/o08AS.png",
-                
-                
-                lrc: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/lrc/夜航星%20-%20洛天依.lrc",
-                
-            },
-            
-            {
-                name: "为谁而为",
-                artist: "洛天依",
-                url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/music/为谁而为%20-%20洛天依%2CCOP.mp3",
-                
-                cover: "https://ooo.0x0.ooo/2021/02/16/ocSlx.jpg",
-                
-                
-                lrc: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/lrc/为谁而为%20-%20洛天依%2CCOP.lrc",
-                
-            },
-            
-            {
-                name: "Faded",
-                artist: "乐正绫",
-                url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/blog/music/乐正绫%20-%20Faded.mp3",
-                
-                cover: "https://ooo.0x0.ooo/2021/02/21/odvNY.png",
-                
-                
-            },
-            
-            {
-                name: "bilibili2018年度总结BGM",
-                artist: "bilibili",
-                url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/blog/music/bilibili2018%20-%20至尊马甲.flac",
-                
-                cover: "https://ooo.0x0.ooo/2021/02/21/odAdp.jpg",
-                
-                
-            },
-            
-        ]
-    });
-</script>
 </body>
 
 <script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>

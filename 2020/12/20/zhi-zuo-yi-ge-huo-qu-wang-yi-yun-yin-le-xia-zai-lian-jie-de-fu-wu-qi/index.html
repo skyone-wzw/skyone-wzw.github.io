@@ -56,7 +56,7 @@ HTML基础
     <div id="single">
     <div id="top" style="display: block;">
     <div class="bar" style="width: 0;"></div>
-    <a class="iconfont icon-home image-icon" href="javascript:;" data-url="https://www.skyone.host"></a>
+    <a class="iconfont icon-home image-icon" href="javascript:;" data-url="https://skyone-wzw.github.io"></a>
     <h3 class="subtitle">制作一个获取网易云音乐下载链接的服务器</h3>
     <div class="social">
         <div>
@@ -188,6 +188,63 @@ HTML基础
 <p><img src="https://tc.skyone.host/blog/post/%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E8%8E%B7%E5%8F%96%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E4%B8%8B%E8%BD%BD%E9%93%BE%E6%8E%A5%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8/%E6%B5%8B%E8%AF%9503.png" alt="测试03"></p>
 <p>弹出下载界面，成功！</p>
 
+            <div id="aplayer"></div>
+            <script>
+                window.aplayer = new APlayer({
+                    container: document.getElementById('aplayer'),
+                    lrcType: 3,
+                    order: "random",
+                    fixed: true,
+                    audio: [
+                        
+                        
+                        {
+                            name: "夜航星",
+                            artist: "洛天依",
+                            url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/music/夜航星%20-%20洛天依.mp3",
+                            
+                            cover: "https://ooo.0x0.ooo/2021/02/14/o08AS.png",
+                            
+                            
+                            lrc: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/lrc/夜航星%20-%20洛天依.lrc",
+                            
+                        },
+                        
+                        {
+                            name: "为谁而为",
+                            artist: "洛天依",
+                            url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/music/为谁而为%20-%20洛天依%2CCOP.mp3",
+                            
+                            cover: "https://ooo.0x0.ooo/2021/02/16/ocSlx.jpg",
+                            
+                            
+                            lrc: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/lrc/为谁而为%20-%20洛天依%2CCOP.lrc",
+                            
+                        },
+                        
+                        {
+                            name: "Faded",
+                            artist: "乐正绫",
+                            url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/blog/music/乐正绫%20-%20Faded.mp3",
+                            
+                            cover: "https://ooo.0x0.ooo/2021/02/21/odvNY.png",
+                            
+                            
+                        },
+                        
+                        {
+                            name: "bilibili2018年度总结BGM",
+                            artist: "bilibili",
+                            url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/blog/music/bilibili2018%20-%20至尊马甲.flac",
+                            
+                            cover: "https://ooo.0x0.ooo/2021/02/21/odAdp.jpg",
+                            
+                            
+                        },
+                        
+                    ]
+                });
+            </script>
         </div>
         
     <div id='gitalk-container' class="comment link"
@@ -213,63 +270,6 @@ HTML基础
 
     </div>
 </div>
-<div id="aplayer"></div>
-<script>
-    window.aplayer = new APlayer({
-        container: document.getElementById('aplayer'),
-        lrcType: 3,
-        order: "random",
-        fixed: true,
-        audio: [
-            
-            
-            {
-                name: "夜航星",
-                artist: "洛天依",
-                url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/music/夜航星%20-%20洛天依.mp3",
-                
-                cover: "https://ooo.0x0.ooo/2021/02/14/o08AS.png",
-                
-                
-                lrc: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/lrc/夜航星%20-%20洛天依.lrc",
-                
-            },
-            
-            {
-                name: "为谁而为",
-                artist: "洛天依",
-                url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/music/为谁而为%20-%20洛天依%2CCOP.mp3",
-                
-                cover: "https://ooo.0x0.ooo/2021/02/16/ocSlx.jpg",
-                
-                
-                lrc: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/lrc/为谁而为%20-%20洛天依%2CCOP.lrc",
-                
-            },
-            
-            {
-                name: "Faded",
-                artist: "乐正绫",
-                url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/blog/music/乐正绫%20-%20Faded.mp3",
-                
-                cover: "https://ooo.0x0.ooo/2021/02/21/odvNY.png",
-                
-                
-            },
-            
-            {
-                name: "bilibili2018年度总结BGM",
-                artist: "bilibili",
-                url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/blog/music/bilibili2018%20-%20至尊马甲.flac",
-                
-                cover: "https://ooo.0x0.ooo/2021/02/21/odAdp.jpg",
-                
-                
-            },
-            
-        ]
-    });
-</script>
 </body>
 
 <script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
