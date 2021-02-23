@@ -1,0 +1,329 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Win10下配置树莓派Pico的MicroPython与C环境 - Skyone-Blog</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="技术博客,"> 
+    <meta name="description" content="技术博客,
+
+写在前面本文章分别介绍了如何在Windows 10 x64环境下搭建MicroPython环境和C/C++环境。
+其中，C/C++环境我用的IDE是JetBrains的CLion，所以不保证VS,"> 
+    <meta name="author" content="王志伟"> 
+    <link rel="alternative" href="atom.xml" title="Skyone-Blog" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+    
+<link rel="stylesheet" href="/css/diaspora.css">
+
+	<!--
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads"
+        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+	 -->
+    <!-- 看板娘 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css">
+    <script src="/live2d-widget/autoload.js"></script>
+    <!-- MD5 -->
+    <script src="/js/md5.min.js"></script>
+    <!-- aplayer音乐播放器 -->
+    <script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">Skyone-Blog</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="iconfont icon-home image-icon" href="javascript:;" data-url="https://skyone-wzw.github.io"></a>
+    <h3 class="subtitle">Win10下配置树莓派Pico的MicroPython与C环境</h3>
+    <div class="social">
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="iconfont icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">Win10下配置树莓派Pico的MicroPython与C环境</h1>
+        <div class="stuff">
+            <span>二月 24, 2021</span>
+            
+  <ul class="post-tags-list" itemprop="keywords"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" rel="tag">环境配置</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <iframe style="border: none; width: 100%; height: 100px" src="https://music.luotianyi.space:19375/?_=|https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/music/夜航星%20-%20洛天依.mp3|https://ooo.0x0.ooo/2021/02/14/o08AS.png||https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/lrc/夜航星%20-%20洛天依.lrc"></iframe>
+
+<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>本文章分别介绍了如何在<strong>Windows 10 x64</strong>环境下搭建MicroPython环境和C/C++环境。</p>
+<p>其中，C/C++环境我用的IDE是JetBrains的CLion，所以<strong>不保证</strong>VSCode环境一定成功，欢迎留言讨论。</p>
+<p><strong>注意！</strong>这篇教程假设你已经安装好了：CMake，mingw64，CLion或VSCode，Git(非必要，会从GitHub下载代码就行)</p>
+<h1 id="MicroPython环境"><a href="#MicroPython环境" class="headerlink" title="MicroPython环境"></a>MicroPython环境</h1><h2 id="准备软件-文件"><a href="#准备软件-文件" class="headerlink" title="准备软件/文件"></a>准备软件/文件</h2><h3 id="MicroPython固件"><a href="#MicroPython固件" class="headerlink" title="MicroPython固件"></a>MicroPython固件</h3><p>打开<a target="_blank" rel="noopener" href="https://www.raspberrypi.org/documentation/pico/getting-started/">https://www.raspberrypi.org/documentation/pico/getting-started/</a></p>
+<p>选择MicroPython</p>
+<img src="https://tc.skyone.host/blog/post/Win10%E4%B8%8B%E9%85%8D%E7%BD%AE%E6%A0%91%E8%8E%93%E6%B4%BEPico%E7%9A%84MicroPython%E4%B8%8EC%E7%8E%AF%E5%A2%83/pico%E5%AE%98%E7%BD%91.png" alt="pico官网" style="zoom: 40%;" />
+
+<p>下载并命名为 <code>pico-micropython.uf2</code> ，重命名只是为了好记，无影响。</p>
+<img src="https://tc.skyone.host/blog/post/Win10%E4%B8%8B%E9%85%8D%E7%BD%AE%E6%A0%91%E8%8E%93%E6%B4%BEPico%E7%9A%84MicroPython%E4%B8%8EC%E7%8E%AF%E5%A2%83/%E4%B8%8B%E8%BD%BDmicropython.png" alt="下载micropython" style="zoom:45%;" />
+
+<h3 id="Thonny-IDE"><a href="#Thonny-IDE" class="headerlink" title="Thonny IDE"></a>Thonny IDE</h3><p>去官网下载即可，链接：<a target="_blank" rel="noopener" href="https://thonny.org/">https://thonny.org/</a></p>
+<img src="https://tc.skyone.host/blog/post/Win10%E4%B8%8B%E9%85%8D%E7%BD%AE%E6%A0%91%E8%8E%93%E6%B4%BEPico%E7%9A%84MicroPython%E4%B8%8EC%E7%8E%AF%E5%A2%83/Thonny%E5%AE%98%E7%BD%91.png" alt="下载Thonny" style="zoom:67%;" />
+
+<p>安装并打开Thonny，切换到一般模式</p>
+<img src="https://tc.skyone.host/blog/post/Win10%E4%B8%8B%E9%85%8D%E7%BD%AE%E6%A0%91%E8%8E%93%E6%B4%BEPico%E7%9A%84MicroPython%E4%B8%8EC%E7%8E%AF%E5%A2%83/%E5%88%87%E6%8D%A2%E5%88%B0%E4%B8%80%E8%88%AC%E6%A8%A1%E5%BC%8F.png" alt="切换到一般模式" style="zoom:50%;" />
+
+<p>重启。然后选择视图，打开这三个</p>
+<img src="https://tc.skyone.host/blog/post/Win10%E4%B8%8B%E9%85%8D%E7%BD%AE%E6%A0%91%E8%8E%93%E6%B4%BEPico%E7%9A%84MicroPython%E4%B8%8EC%E7%8E%AF%E5%A2%83/thonny%E8%AE%BE%E7%BD%AE.png" alt="打开Shell、变量、文件这三项" style="zoom:67%;" />
+
+<h2 id="烧录固件"><a href="#烧录固件" class="headerlink" title="烧录固件"></a>烧录固件</h2><p>Pico烧录固件非常简单<del>实际上就是直接复制</del>，首先长按pico上的按钮，同时使用USB线连接电脑，然后松开，你应该就能在电脑上看到一个新的移动硬盘，将之前下载的MicroPython固件拖进去。</p>
+<p><img src="https://tc.skyone.host/blog/post/Win10%E4%B8%8B%E9%85%8D%E7%BD%AE%E6%A0%91%E8%8E%93%E6%B4%BEPico%E7%9A%84MicroPython%E4%B8%8EC%E7%8E%AF%E5%A2%83/pico%E7%9B%98.png" alt="Pico盘"></p>
+<p>pico会自动重启，重启后你就看不到那个移动硬盘了。</p>
+<p>这时右键开始键，选择设备管理器</p>
+<img src="https://tc.skyone.host/blog/post/Win10%E4%B8%8B%E9%85%8D%E7%BD%AE%E6%A0%91%E8%8E%93%E6%B4%BEPico%E7%9A%84MicroPython%E4%B8%8EC%E7%8E%AF%E5%A2%83/%E6%89%93%E5%BC%80%E8%AE%BE%E5%A4%87%E7%AE%A1%E7%90%86%E5%99%A8.png" alt="打开设备管理器" style="zoom: 50%;" />
+
+<p>在端口一栏下有一个USB串行设备，记住方框中的东西，例如我的是 <code>COM5</code></p>
+<p><img src="https://tc.skyone.host/blog/post/Win10%E4%B8%8B%E9%85%8D%E7%BD%AE%E6%A0%91%E8%8E%93%E6%B4%BEPico%E7%9A%84MicroPython%E4%B8%8EC%E7%8E%AF%E5%A2%83/USB%E4%B8%B2%E8%A1%8C%E8%AE%BE%E5%A4%87.png" alt="USB串行设备"></p>
+<p>回到Thonny，选择：工具 - 设置</p>
+<img src="https://tc.skyone.host/blog/post/Win10%E4%B8%8B%E9%85%8D%E7%BD%AE%E6%A0%91%E8%8E%93%E6%B4%BEPico%E7%9A%84MicroPython%E4%B8%8EC%E7%8E%AF%E5%A2%83/%E5%B7%A5%E5%85%B7-%E8%AE%BE%E7%BD%AE.png" alt="工具 - 设置" style="zoom: 67%;" />
+
+<p>按下图选择：</p>
+<img src="https://tc.skyone.host/blog/post/Win10%E4%B8%8B%E9%85%8D%E7%BD%AE%E6%A0%91%E8%8E%93%E6%B4%BEPico%E7%9A%84MicroPython%E4%B8%8EC%E7%8E%AF%E5%A2%83/%E9%80%89%E6%8B%A9pico.png" alt="选择Pico" style="zoom: 67%;" />
+
+<p>下面的端口选择刚刚让你记住的那个，我的是 <code>COM5</code>  。</p>
+<p>点击确认，完成！</p>
+<h2 id="点亮板载LED"><a href="#点亮板载LED" class="headerlink" title="点亮板载LED"></a>点亮板载LED</h2><p>在Shell中依此执行：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> machine <span class="keyword">import</span> Pin</span><br><span class="line">led = Pin(<span class="number">25</span>, Pin.OUT)</span><br><span class="line">led.value(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<img src="https://tc.skyone.host/blog/post/Win10%E4%B8%8B%E9%85%8D%E7%BD%AE%E6%A0%91%E8%8E%93%E6%B4%BEPico%E7%9A%84MicroPython%E4%B8%8EC%E7%8E%AF%E5%A2%83/python%E4%BB%A3%E7%A0%81.png" alt="MicroPython代码" style="zoom:67%;" />
+
+<p>快去看看板载LED是不是亮了！</p>
+<h1 id="C-C-环境"><a href="#C-C-环境" class="headerlink" title="C/C++环境"></a>C/C++环境</h1><h2 id="准备软件-文件-1"><a href="#准备软件-文件-1" class="headerlink" title="准备软件/文件"></a>准备软件/文件</h2><h3 id="下载SDK"><a href="#下载SDK" class="headerlink" title="下载SDK"></a>下载SDK</h3><p>clone这个仓库，也就是下载这个仓库的代码：<a target="_blank" rel="noopener" href="https://github.com/raspberrypi/pico-sdk">https://github.com/raspberrypi/pico-sdk</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/raspberrypi/pico-sdk</span><br></pre></td></tr></table></figure>
+<h3 id="下载示例代码"><a href="#下载示例代码" class="headerlink" title="下载示例代码"></a>下载示例代码</h3><p>clone这个仓库，也就是下载这个仓库的代码：<a target="_blank" rel="noopener" href="https://github.com/raspberrypi/pico-examples">https://github.com/raspberrypi/pico-examples</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/raspberrypi/pico-examples</span><br></pre></td></tr></table></figure>
+<h3 id="下载安装gcc-arm-none-eabi"><a href="#下载安装gcc-arm-none-eabi" class="headerlink" title="下载安装gcc-arm-none-eabi"></a>下载安装gcc-arm-none-eabi</h3><p>下载链接在这个网站里：<a target="_blank" rel="noopener" href="https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm/downloads">https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm/downloads</a></p>
+<p>win10选这个即可：</p>
+<img src="https://tc.skyone.host/blog/post/Win10%E4%B8%8B%E9%85%8D%E7%BD%AE%E6%A0%91%E8%8E%93%E6%B4%BEPico%E7%9A%84MicroPython%E4%B8%8EC%E7%8E%AF%E5%A2%83/%E4%B8%8B%E8%BD%BDgcc-arm.png" alt="下载gcc-arm" style="zoom:50%;" />
+
+<p>安装，<strong>注意记住安装位置</strong></p>
+<h2 id="配置环境"><a href="#配置环境" class="headerlink" title="配置环境"></a>配置环境</h2><h3 id="CLion"><a href="#CLion" class="headerlink" title="CLion"></a>CLion</h3><p>在CLion中打开示例代码项目文件夹 <code>pico-examples</code></p>
+<p>进入设置，找到CMake</p>
+<img src="https://tc.skyone.host/blog/post/Win10%E4%B8%8B%E9%85%8D%E7%BD%AE%E6%A0%91%E8%8E%93%E6%B4%BEPico%E7%9A%84MicroPython%E4%B8%8EC%E7%8E%AF%E5%A2%83/CMake%E8%AE%BE%E7%BD%AE.png" alt="CMake设置" style="zoom:67%;" />
+
+<p>配置环境</p>
+<img src="https://tc.skyone.host/blog/post/Win10%E4%B8%8B%E9%85%8D%E7%BD%AE%E6%A0%91%E8%8E%93%E6%B4%BEPico%E7%9A%84MicroPython%E4%B8%8EC%E7%8E%AF%E5%A2%83/%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F.png" alt="配置环境变量" style="zoom: 67%;" />
+
+<p>加入两个：</p>
+<ul>
+<li><code>PICO_SDK_PATH</code> ：值为你下载的pico sdk的目录</li>
+<li><code>PICO_TOOLCHAIN_PATH</code> ：安装gcc-arm-none-eabi的目录下的bin目录</li>
+</ul>
+<p>配置完成！</p>
+<h3 id="VSCode"><a href="#VSCode" class="headerlink" title="VSCode"></a>VSCode</h3><p>打开<strong>Visual Studio **的 **Developer Command Prompt</strong> 命令行，<strong>cmd不行的</strong></p>
+<p>输入 <code>code</code> 打开VSCode，<strong>必须这样打开！</strong></p>
+<p>然后安装cmake tools插件，重启VSCode，<strong>依然是从 Developer Command Prompt 命令行打开VSCode！</strong></p>
+<p>打开设置：</p>
+<img src="https://tc.skyone.host/blog/post/Win10%E4%B8%8B%E9%85%8D%E7%BD%AE%E6%A0%91%E8%8E%93%E6%B4%BEPico%E7%9A%84MicroPython%E4%B8%8EC%E7%8E%AF%E5%A2%83/VSCode%E8%AE%BE%E7%BD%AE.png" alt="VSCode设置" style="zoom: 67%;" />
+
+<p>选择拓展 - CMake Tools Configuration - Configure Environment - 添加项</p>
+<p><img src="https://tc.skyone.host/blog/post/Win10%E4%B8%8B%E9%85%8D%E7%BD%AE%E6%A0%91%E8%8E%93%E6%B4%BEPico%E7%9A%84MicroPython%E4%B8%8EC%E7%8E%AF%E5%A2%83/%E9%85%8D%E7%BD%AECMake.png" alt="配置CMake"></p>
+<p>加入两个：</p>
+<ul>
+<li><code>PICO_SDK_PATH</code> ：值为你下载的pico sdk的目录</li>
+<li><code>PICO_TOOLCHAIN_PATH</code> ：安装gcc-arm-none-eabi的目录下的bin目录</li>
+</ul>
+<p>例如我的是：</p>
+<img src="https://tc.skyone.host/blog/post/Win10%E4%B8%8B%E9%85%8D%E7%BD%AE%E6%A0%91%E8%8E%93%E6%B4%BEPico%E7%9A%84MicroPython%E4%B8%8EC%E7%8E%AF%E5%A2%83/VSCode%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F.png" alt="环境变量" style="zoom:80%;" />
+
+<p>再选择拓展 - CMake Tools Configuration - Generator，设置值为 <code>NMake Makefiles</code></p>
+<img src="https://tc.skyone.host/blog/post/Win10%E4%B8%8B%E9%85%8D%E7%BD%AE%E6%A0%91%E8%8E%93%E6%B4%BEPico%E7%9A%84MicroPython%E4%B8%8EC%E7%8E%AF%E5%A2%83/%E9%85%8D%E7%BD%AECMake2.png" alt="配置CMake2" style="zoom:67%;" />
+
+<p>关闭设置，打开示例代码文件夹，右下角出现是否配置项目，点 ”是“。然后提示配置项目，选择 <code>GCC for arm-none-eabi</code></p>
+<p><img src="https://tc.skyone.host/blog/post/Win10%E4%B8%8B%E9%85%8D%E7%BD%AE%E6%A0%91%E8%8E%93%E6%B4%BEPico%E7%9A%84MicroPython%E4%B8%8EC%E7%8E%AF%E5%A2%83/VSCode%E9%85%8D%E7%BD%AE%E9%A1%B9%E7%9B%AE.png" alt="配置项目"></p>
+<p>配置完成！</p>
+<h2 id="点亮板载LED-1"><a href="#点亮板载LED-1" class="headerlink" title="点亮板载LED"></a>点亮板载LED</h2><p>以CLion为例，打开示例代码下的 <code>blink</code> 下的 <code>blink.c</code> ，点击构建：</p>
+<img src="https://tc.skyone.host/blog/post/Win10%E4%B8%8B%E9%85%8D%E7%BD%AE%E6%A0%91%E8%8E%93%E6%B4%BEPico%E7%9A%84MicroPython%E4%B8%8EC%E7%8E%AF%E5%A2%83/%E6%9E%84%E5%BB%BA%E9%A1%B9%E7%9B%AE.png" alt="构建项目" style="zoom:45%;" />
+
+<p>构建完成后，在 <code>cmake-build-debug/blink/elf2uf2</code> 目录下可以找到 <code>blink.uf2</code> 文件，这即时编译后的需要烧录的文件</p>
+<p>按住pico上的按钮，使用USB线连接电脑后松开按钮，将 <code>blink.uf2</code> 拖进去。</p>
+<p>OK，pico自动重启，LED已经亮了！</p>
+<blockquote>
+<p>你是不是已经意识到了，没错，MicroPython的固件也是 <code>.uf2</code> 后缀，说明MicroPython也是用C写出来、编译好的。</p>
+</blockquote>
+
+            <div id="aplayer"></div>
+            <script>
+                window.aplayer = new APlayer({
+                    container: document.getElementById('aplayer'),
+                    lrcType: 3,
+                    order: "random",
+                    fixed: true,
+                    audio: [
+                        
+                        
+                        {
+                            name: "夜航星",
+                            artist: "洛天依",
+                            url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/music/夜航星%20-%20洛天依.mp3",
+                            
+                            cover: "https://ooo.0x0.ooo/2021/02/14/o08AS.png",
+                            
+                            
+                            lrc: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/lrc/夜航星%20-%20洛天依.lrc",
+                            
+                        },
+                        
+                        {
+                            name: "为谁而为",
+                            artist: "洛天依",
+                            url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/music/为谁而为%20-%20洛天依%2CCOP.mp3",
+                            
+                            cover: "https://ooo.0x0.ooo/2021/02/16/ocSlx.jpg",
+                            
+                            
+                            lrc: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/lrc/为谁而为%20-%20洛天依%2CCOP.lrc",
+                            
+                        },
+                        
+                        {
+                            name: "Faded",
+                            artist: "乐正绫",
+                            url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/blog/music/乐正绫%20-%20Faded.mp3",
+                            
+                            cover: "https://ooo.0x0.ooo/2021/02/21/odvNY.png",
+                            
+                            
+                        },
+                        
+                        {
+                            name: "bilibili2018年度总结BGM",
+                            artist: "bilibili",
+                            url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/blog/music/bilibili2018%20-%20至尊马甲.flac",
+                            
+                            cover: "https://ooo.0x0.ooo/2021/02/21/odAdp.jpg",
+                            
+                            
+                        },
+                        
+                    ]
+                });
+            </script>
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+		data-enable='true'
+        data-ae='true'
+        data-ci='d5e197ef955b7f3268e5'
+        data-cs='7d4feed7a179ad28943b0865b7970814073145ad'
+        data-r='blog-gitalk'
+        data-o='skyone-wzw'
+        data-a='skyone-wzw'
+        data-d='false'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="toc-number">1.</span> <span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MicroPython%E7%8E%AF%E5%A2%83"><span class="toc-number">2.</span> <span class="toc-text">MicroPython环境</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E8%BD%AF%E4%BB%B6-%E6%96%87%E4%BB%B6"><span class="toc-number">2.1.</span> <span class="toc-text">准备软件&#x2F;文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MicroPython%E5%9B%BA%E4%BB%B6"><span class="toc-number">2.1.1.</span> <span class="toc-text">MicroPython固件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Thonny-IDE"><span class="toc-number">2.1.2.</span> <span class="toc-text">Thonny IDE</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%83%A7%E5%BD%95%E5%9B%BA%E4%BB%B6"><span class="toc-number">2.2.</span> <span class="toc-text">烧录固件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%82%B9%E4%BA%AE%E6%9D%BF%E8%BD%BDLED"><span class="toc-number">2.3.</span> <span class="toc-text">点亮板载LED</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-C-%E7%8E%AF%E5%A2%83"><span class="toc-number">3.</span> <span class="toc-text">C&#x2F;C++环境</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E8%BD%AF%E4%BB%B6-%E6%96%87%E4%BB%B6-1"><span class="toc-number">3.1.</span> <span class="toc-text">准备软件&#x2F;文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BDSDK"><span class="toc-number">3.1.1.</span> <span class="toc-text">下载SDK</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E7%A4%BA%E4%BE%8B%E4%BB%A3%E7%A0%81"><span class="toc-number">3.1.2.</span> <span class="toc-text">下载示例代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85gcc-arm-none-eabi"><span class="toc-number">3.1.3.</span> <span class="toc-text">下载安装gcc-arm-none-eabi</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83"><span class="toc-number">3.2.</span> <span class="toc-text">配置环境</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CLion"><span class="toc-number">3.2.1.</span> <span class="toc-text">CLion</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#VSCode"><span class="toc-number">3.2.2.</span> <span class="toc-text">VSCode</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%82%B9%E4%BA%AE%E6%9D%BF%E8%BD%BDLED-1"><span class="toc-number">3.3.</span> <span class="toc-text">点亮板载LED</span></a></li></ol></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+</html>
