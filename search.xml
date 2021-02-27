@@ -1,6 +1,579 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Android学习笔记之应用资源</title>
+    <url>/2021/01/30/android-xue-xi-bi-ji-zhi-ying-yong-zi-yuan/</url>
+    <content><![CDATA[<h1 id="资源文件的存放位置"><a href="#资源文件的存放位置" class="headerlink" title="资源文件的存放位置"></a>资源文件的存放位置</h1><p>首先来看一下Android工程的目录结构：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">MyProject&#x2F;</span><br><span class="line">	manifests&#x2F;</span><br><span class="line">		AndroidManifest.xml</span><br><span class="line">    java&#x2F;</span><br><span class="line">    	host.skyone.resource&#x2F;</span><br><span class="line">        	MainActivity.java</span><br><span class="line">    res&#x2F;</span><br><span class="line">        anim&#x2F;</span><br><span class="line">        color&#x2F;</span><br><span class="line">        drawable&#x2F;</span><br><span class="line">            skyone.png</span><br><span class="line">        layout&#x2F;</span><br><span class="line">            activity_main.xml</span><br><span class="line">        menu&#x2F;</span><br><span class="line">        xml&#x2F;</span><br><span class="line">        raw&#x2F;</span><br><span class="line">        mipmap&#x2F;</span><br><span class="line">            icon.png</span><br><span class="line">        values&#x2F;</span><br><span class="line">            strings.xml</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th align="left">目录</th>
+<th align="left">资源类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>anim/</code></td>
+<td align="left">定义动画属性的XML文件。它们被保存在<code>res/anim/</code>文件夹下，通过<code>R.anim</code>类访问</td>
+</tr>
+<tr>
+<td align="left"><code>color/</code></td>
+<td align="left">定义颜色状态列表的XML文件。它们被保存在res/color/文件夹下，通过<code>R.color</code>类访问</td>
+</tr>
+<tr>
+<td align="left"><code>drawable/</code></td>
+<td align="left">图片文件，如<code>.png</code>,<code>.jpg</code>,<code>.gif</code>或者<code>XML</code>文件，被编译为位图、状态列表、形状、动画图片。它们被保存在<code>res/drawable/</code>文件夹下，通过<code>R.drawable</code>类访问</td>
+</tr>
+<tr>
+<td align="left"><code>layout/</code></td>
+<td align="left">定义用户界面布局的XML文件。它们被保存在res/layout/文件夹下，通过<code>R.layout</code>类访问</td>
+</tr>
+<tr>
+<td align="left"><code>menu/</code></td>
+<td align="left">定义应用程序菜单的XML文件，如选项菜单，上下文菜单，子菜单等。它们被保存在<code>res/menu/</code>文件夹下，通过<code>R.menu</code>类访问</td>
+</tr>
+<tr>
+<td align="left"><code>raw/</code></td>
+<td align="left">任意的文件以它们的原始形式保存。需要根据名为<code>R.raw.filename</code>的资源ID，通过调用<code>Resource.openRawResource()</code>来打开<code>raw</code>文件</td>
+</tr>
+<tr>
+<td align="left"><code>values/</code></td>
+<td align="left">包含简单值(如字符串，整数，颜色等)的XML文件。这里有一些文件夹下的资源命名规范。arrays.xml代表数组资源，通过<code>R.array</code>类访问；<code>integers.xml</code>代表整数资源，通过<code>R.integer</code>类访问；<code>bools.xml</code>代表布尔值资源，通过<code>R.bool</code>类访问；<code>colors.xml</code>代表颜色资源，通过<code>R.color</code>类访问；<code>dimens.xml</code>代表维度值，通过<code>R.dimen</code>类访问；<code>strings.xml</code>代表字符串资源，通过<code>R.string</code>类访问；<code>styles.xml</code>代表样式资源，通过<code>R.style</code>类访问</td>
+</tr>
+<tr>
+<td align="left"><code>xml/</code></td>
+<td align="left">可以通过调用<code>Resources.getXML()</code>来在运行时读取任意的XML文件。可以在这里保存运行时使用的各种配置文件</td>
+</tr>
+<tr>
+<td align="left"><code>minmap/</code></td>
+<td align="left">保存应用的图标</td>
+</tr>
+</tbody></table>
+<h1 id="简单的例子"><a href="#简单的例子" class="headerlink" title="简单的例子"></a>简单的例子</h1><h2 id="配置资源"><a href="#配置资源" class="headerlink" title="配置资源"></a>配置资源</h2><p>例如：将以下图片下载并命名为<code>skyone.png</code></p>
+<img src="https://tc.skyone.host/blog/post/Android%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%BA%94%E7%94%A8%E8%B5%84%E6%BA%90/skyone.png" alt="skyone" style="zoom: 10%;" />
+
+<p>移动到<code>res/drawable/</code>文件夹下，在<code>activity_main.xml</code>中加入<code>ImageView</code></p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">&lt;ImageView</span><br><span class="line">        android:id=&quot;@+id/imageView&quot;</span><br><span class="line">        android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">        android:layout_height=&quot;180dp&quot;</span><br><span class="line">        android:contentDescription=&quot;@string/img_skyone&quot;</span><br><span class="line">        app:layout_constraintEnd_toEndOf=&quot;parent&quot;</span><br><span class="line">        app:layout_constraintStart_toStartOf=&quot;parent&quot;</span><br><span class="line">        app:layout_constraintTop_toTopOf=&quot;parent&quot;</span><br><span class="line">        app:srcCompat=&quot;@drawable/skyone&quot; /&gt;</span><br></pre></td></tr></table></figure>
+<p>在<code>res/values/strings.xml</code>中加入：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">string</span> <span class="attr">name</span>=<span class="string">&quot;img_skyone&quot;</span>&gt;</span>Skyone<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>连接手机，编译运行。</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p><code>activity_main.xml</code></p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">androidx.constraintlayout.widget.ConstraintLayout</span> <span class="attr">xmlns:android</span>=<span class="string">&quot;http://schemas.android.com/apk/res/android&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:app</span>=<span class="string">&quot;http://schemas.android.com/apk/res-auto&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:tools</span>=<span class="string">&quot;http://schemas.android.com/tools&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">tools:context</span>=<span class="string">&quot;.MainActivity&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    &lt;ImageView</span><br><span class="line">        android:id=&quot;@+id/imageView&quot;</span><br><span class="line">        android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">        android:layout_height=&quot;180dp&quot;</span><br><span class="line">        android:contentDescription=&quot;@string/img_skyone&quot;</span><br><span class="line">        app:layout_constraintEnd_toEndOf=&quot;parent&quot;</span><br><span class="line">        app:layout_constraintStart_toStartOf=&quot;parent&quot;</span><br><span class="line">        app:layout_constraintTop_toTopOf=&quot;parent&quot;</span><br><span class="line">        app:srcCompat=&quot;@drawable/skyone&quot; /&gt;</span><br><span class="line"></span><br><span class="line">    &lt;Button</span><br><span class="line">        android:id=&quot;@+id/button&quot;</span><br><span class="line">        android:layout_width=&quot;100dp&quot;</span><br><span class="line">        android:layout_height=&quot;100dp&quot;</span><br><span class="line">        android:background=&quot;#FFFFFF&quot;</span><br><span class="line">        android:onClick=&quot;onClickButton&quot;</span><br><span class="line">        android:text=&quot;@string/button&quot;</span><br><span class="line">        app:layout_constraintBottom_toBottomOf=&quot;parent&quot;</span><br><span class="line">        app:layout_constraintEnd_toEndOf=&quot;parent&quot;</span><br><span class="line">        app:layout_constraintStart_toStartOf=&quot;parent&quot;</span><br><span class="line">        app:layout_constraintTop_toBottomOf=&quot;@+id/imageView&quot; /&gt;</span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">androidx.constraintlayout.widget.ConstraintLayout</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><code>MainActivity.java</code></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> host.skyone.resource;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> androidx.appcompat.app.AppCompatActivity;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.os.Bundle;</span><br><span class="line"><span class="keyword">import</span> android.view.View;</span><br><span class="line"><span class="keyword">import</span> android.widget.Toast;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClickButton</span><span class="params">(View view)</span> </span>&#123;</span><br><span class="line">        Toast.makeText(<span class="keyword">this</span>, <span class="string">&quot;欢迎访问Skyone哦！&quot;</span> , Toast.LENGTH_LONG).show();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>strings.xml</code></p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">resources</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span> <span class="attr">name</span>=<span class="string">&quot;app_name&quot;</span>&gt;</span>Resource<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span> <span class="attr">name</span>=<span class="string">&quot;img_skyone&quot;</span>&gt;</span>Skyone<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span> <span class="attr">name</span>=<span class="string">&quot;button&quot;</span>&gt;</span>点我~^_^~<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><code>AndroidManifest.xml</code></p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">manifest</span> <span class="attr">xmlns:android</span>=<span class="string">&quot;http://schemas.android.com/apk/res/android&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">package</span>=<span class="string">&quot;host.skyone.resource&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    &lt;application</span><br><span class="line">        android:allowBackup=&quot;true&quot;</span><br><span class="line">        android:icon=&quot;@mipmap/ic_launcher&quot;</span><br><span class="line">        android:label=&quot;@string/app_name&quot;</span><br><span class="line">        android:roundIcon=&quot;@mipmap/ic_launcher_round&quot;</span><br><span class="line">        android:supportsRtl=&quot;true&quot;</span><br><span class="line">        android:theme=&quot;@style/Theme.Resource&quot;&gt;</span><br><span class="line">        <span class="tag">&lt;<span class="name">activity</span> <span class="attr">android:name</span>=<span class="string">&quot;.MainActivity&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.action.MAIN&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">                <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.category.LAUNCHER&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">application</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>例图：</p>
+<img src="https://tc.skyone.host/blog/post/Android%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%BA%94%E7%94%A8%E8%B5%84%E6%BA%90/pre.png" alt="例图" style="zoom:20%;" />]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Arduino核心库常用函数</title>
+    <url>/2021/02/27/arduino-he-xin-ku-chang-yong-han-shu/</url>
+    <content><![CDATA[<p>注意！以下内容中的 <code>int</code> 指代整型变量，但实际上整型变量也有所不同，例如 <code>analogWrite()</code> 函数的原型如下：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">analogWrite</span><span class="params">(<span class="keyword">uint8_t</span> pin, <span class="keyword">int</span> val)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>不必深究，只需要把它当成整形变量即可。</p>
+<h1 id="必备函数"><a href="#必备函数" class="headerlink" title="必备函数"></a>必备函数</h1><h2 id="setup"><a href="#setup" class="headerlink" title="setup()"></a><code>setup()</code></h2><p>Arduino通电或复位后，即会开始执行 <code>setup()</code> 函数中的程序，该函数只会执行一次。</p>
+<p>例子：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setup</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    pinMode(<span class="number">3</span>, OUTPUT);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">4</span>; i &lt; <span class="number">11</span>; i++) &#123;</span><br><span class="line">        pinMode(i, OUTPUT);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="loop"><a href="#loop" class="headerlink" title="loop()"></a><code>loop()</code></h2><p>在setup() 函数中的程序执行完后，Arduino会接着会<strong>无限循环</strong> <code>loop()</code> 函数。</p>
+<p>例子：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">loop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    digitalWrite(led, HIGH);</span><br><span class="line">    delay(<span class="number">1000</span>);</span><br><span class="line">    digitalWrite(led, LOW);</span><br><span class="line">    delay(<span class="number">1000</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="main-函数呢？"><a href="#main-函数呢？" class="headerlink" title="main()函数呢？"></a><code>main()</code>函数呢？</h2><p>你可能会问，为什么这个C++项目没有 <code>main()</code> 函数呢？</p>
+<p>实际上，实际上 <code>main()</code> 函数存在于Arduino核心库中，且仍然是程序的入口。</p>
+<p>我们翻看一下 Arduino 核心库的 main.cpp 就可以看到：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;Arduino.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">atexit</span><span class="params">(<span class="keyword">void</span> (*)())</span> </span>&#123; <span class="keyword">return</span> <span class="number">0</span>; &#125;	<span class="comment">//这表示参数为一个指向 无参数无返回值 的函数的指针</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">initVariant</span><span class="params">()</span> __<span class="title">attribute__</span><span class="params">((weak))</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">initVariant</span><span class="params">()</span> </span>&#123; &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setupUSB</span><span class="params">()</span> __<span class="title">attribute__</span><span class="params">((weak))</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setupUSB</span><span class="params">()</span> </span>&#123; &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    init();</span><br><span class="line"></span><br><span class="line">    initVariant();</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> defined(USBCON)</span></span><br><span class="line">    USBDevice.attach();</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    setup();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">        loop();</span><br><span class="line">        <span class="keyword">if</span> (serialEventRun) serialEventRun();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>由上可见，对于一个 Arduino 项目，必须包含 <code>setup()</code> 和 <code>loop()</code> ，而不能包含 <code>main()</code></p>
+<h1 id="输入输出"><a href="#输入输出" class="headerlink" title="输入输出"></a>输入输出</h1><h2 id="pinMode-pin-mode"><a href="#pinMode-pin-mode" class="headerlink" title="pinMode(pin, mode)"></a><code>pinMode(pin, mode)</code></h2><p>在使用引脚前，需要先定义引脚的模式（读或写）</p>
+<h3 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h3><ul>
+<li><p><code>int pin</code></p>
+<p>指定的引脚编号，如： <code>10</code> , <code>A0</code> 等。</p>
+</li>
+<li><p><code>int mode</code></p>
+<p>共三种模式：</p>
+<ul>
+<li><p><code>INPUT</code></p>
+<p>输入模式</p>
+</li>
+<li><p><code>OUTPUT</code></p>
+<p>输出模式</p>
+</li>
+<li><p><code>INPUT_PULLUP</code></p>
+<p>输入上拉模式，也就是启动板载电阻，使该引脚可以直接连接 5V 电压而不需要在之间另加电阻，但<strong>不能接负电位，不能接大于 5V 的电压。</strong></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">pinMode(<span class="number">3</span>, OUTPUT);       <span class="comment">// 设置 3 号引脚为输出模式</span></span><br><span class="line">pinMode(<span class="number">4</span>, INPUT);        <span class="comment">// 设置 4 号引脚为输入模式</span></span><br><span class="line">pinMode(<span class="number">5</span>, INPUT_PULLUP); <span class="comment">// 设置 5 号引脚为输入上拉模式</span></span><br></pre></td></tr></table></figure>
+<h2 id="digitalWrite-pin-value"><a href="#digitalWrite-pin-value" class="headerlink" title="digitalWrite(pin, value)"></a><code>digitalWrite(pin, value)</code></h2><p>设置指定引脚的电位，在此之前要保证该引脚已经 <code>pinMode</code> 过，且为输出模式。</p>
+<h3 id="参数-1"><a href="#参数-1" class="headerlink" title="参数"></a>参数</h3><ul>
+<li><p><code>int pin</code></p>
+<p>指定的引脚编号。</p>
+</li>
+<li><p><code>int value</code></p>
+<p>可以为以下两者之一：</p>
+<ul>
+<li><p><code>HIGH</code></p>
+<p>高电平</p>
+</li>
+<li><p><code>LOW</code></p>
+<p>低电平</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">digitalWrite(<span class="number">3</span>, HIGH); <span class="comment">// 设置 3 号引脚为 高电平</span></span><br><span class="line">digitalWrite(<span class="number">4</span>, HIGH); <span class="comment">// 设置 3 号引脚为 低电平</span></span><br></pre></td></tr></table></figure>
+<h2 id="digitalRead-pin"><a href="#digitalRead-pin" class="headerlink" title="digitalRead(pin)"></a><code>digitalRead(pin)</code></h2><p>读取指定引脚的电位，在此之前要保证该引脚已经 <code>pinMode</code> 过，且为输入模式</p>
+<h3 id="参数-2"><a href="#参数-2" class="headerlink" title="参数"></a>参数</h3><ul>
+<li><p><code>int pin</code></p>
+<p>指定的引脚编号。</p>
+</li>
+</ul>
+<h3 id="返回值"><a href="#返回值" class="headerlink" title="返回值"></a>返回值</h3><ul>
+<li><p><code>int</code></p>
+<p>指定的引脚的电位，为以下两者之一：</p>
+<ul>
+<li><p><code>HIGH</code></p>
+<p>高电平</p>
+</li>
+<li><p><code>LOW</code></p>
+<p>低电平</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="例子-1"><a href="#例子-1" class="headerlink" title="例子"></a>例子</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 假设 4 号引脚连接的是 高电平</span></span><br><span class="line"><span class="keyword">int</span> state = digitalWrite(<span class="number">4</span>);</span><br><span class="line"><span class="comment">// state = HIGH; 也就是 stats = 1;</span></span><br></pre></td></tr></table></figure>
+<h2 id="analogWrite-pin-value"><a href="#analogWrite-pin-value" class="headerlink" title="analogWrite(pin, value)"></a><code>analogWrite(pin, value)</code></h2><p>设定指定引脚的电位，在此之前要保证该引脚已经 <code>pinMode</code> 过，且为输出模式</p>
+<p>此外，还要保证该引脚支持模拟输出，也就是引脚旁边有一个波浪线。</p>
+<h3 id="参数-3"><a href="#参数-3" class="headerlink" title="参数"></a>参数</h3><ul>
+<li><p><code>int pin</code></p>
+<p>指定的引脚编号。</p>
+</li>
+<li><p><code>int value</code></p>
+<p>指定电位的值，范围为 <code>0~255</code> ，从 0V 到 5V 成比例对应。</p>
+</li>
+</ul>
+<h3 id="示例-1"><a href="#示例-1" class="headerlink" title="示例"></a>示例</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">digitalWrite(<span class="number">3</span>, <span class="number">0</span>);   <span class="comment">// 设置 3 号引脚为 0V</span></span><br><span class="line">digitalWrite(<span class="number">3</span>, <span class="number">255</span>); <span class="comment">// 设置 3 号引脚为 5V</span></span><br><span class="line">digitalWrite(<span class="number">3</span>, <span class="number">233</span>); <span class="comment">// 设置 3 号引脚为 (5 * 233 / 255)V</span></span><br></pre></td></tr></table></figure>
+<h2 id="analogRead"><a href="#analogRead" class="headerlink" title="analogRead()"></a><code>analogRead()</code></h2><p>读取指定引脚的电位，在此之前要保证该引脚已经 <code>pinMode</code> 过，且为输入模式</p>
+<p>此外，还要保证该引脚支持模拟输入，在 Arduino Uno 里支持模拟输入的只有： <code>A0</code> ， <code>A1</code> ， <code>A2</code> ，<code>A3</code> ， <code>A4</code> ， <code>A5</code> 六个。</p>
+<h3 id="参数-4"><a href="#参数-4" class="headerlink" title="参数"></a>参数</h3><ul>
+<li><p><code>int pin</code></p>
+<p>指定的引脚编号。</p>
+</li>
+</ul>
+<h3 id="返回值-1"><a href="#返回值-1" class="headerlink" title="返回值"></a>返回值</h3><ul>
+<li><p><code>int</code></p>
+<p>指定的引脚的电位，范围： <code>0~999</code> ，从 0V 到 5V 成比例对应。</p>
+</li>
+</ul>
+<h3 id="例子-2"><a href="#例子-2" class="headerlink" title="例子"></a>例子</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 假设 4 号引脚连接的是 3V</span></span><br><span class="line"><span class="keyword">int</span> state = digitalWrite(<span class="number">4</span>);</span><br><span class="line"><span class="comment">// state = 3 * 1000 / 5;</span></span><br></pre></td></tr></table></figure>
+<h1 id="时间"><a href="#时间" class="headerlink" title="时间"></a>时间</h1><h2 id="delay-ms"><a href="#delay-ms" class="headerlink" title="delay(ms)"></a><code>delay(ms)</code></h2><p>程序停止一段时间</p>
+<h3 id="参数-5"><a href="#参数-5" class="headerlink" title="参数"></a>参数</h3><ul>
+<li><p><code>unsigned long ms</code></p>
+<p>延时的时间，单位为毫秒</p>
+</li>
+</ul>
+<h3 id="示例-2"><a href="#示例-2" class="headerlink" title="示例"></a>示例</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">delay(<span class="number">500</span>); <span class="comment">// 延时 0.5 秒</span></span><br></pre></td></tr></table></figure>
+<h2 id="delayMicroseconds-us"><a href="#delayMicroseconds-us" class="headerlink" title="delayMicroseconds(us)"></a><code>delayMicroseconds(us)</code></h2><h3 id="参数-6"><a href="#参数-6" class="headerlink" title="参数"></a>参数</h3><ul>
+<li><p><code>unsigned int us</code></p>
+<p>延时的时间，单位为微秒</p>
+</li>
+</ul>
+<h3 id="示例-3"><a href="#示例-3" class="headerlink" title="示例"></a>示例</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">delayMicrosecond(<span class="number">300</span>); <span class="comment">// 延时 0.0003 秒</span></span><br></pre></td></tr></table></figure>
+<h2 id="millis"><a href="#millis" class="headerlink" title="millis()"></a><code>millis()</code></h2><h3 id="返回值-2"><a href="#返回值-2" class="headerlink" title="返回值"></a>返回值</h3><ul>
+<li><p><code>unsigned long</code></p>
+<p>Arduino通电后或复位后到现在的时间，单位毫秒</p>
+</li>
+</ul>
+<h3 id="示例-4"><a href="#示例-4" class="headerlink" title="示例"></a>示例</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">long</span> time = millis();</span><br></pre></td></tr></table></figure>
+<h2 id="micros"><a href="#micros" class="headerlink" title="micros()"></a><code>micros()</code></h2><h3 id="返回值-3"><a href="#返回值-3" class="headerlink" title="返回值"></a>返回值</h3><ul>
+<li><p><code>unsigned long</code></p>
+<p>Arduino通电后或复位后到现在的时间，单位毫秒</p>
+</li>
+</ul>
+<h3 id="示例-5"><a href="#示例-5" class="headerlink" title="示例"></a>示例</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">long</span> time = micros();</span><br></pre></td></tr></table></figure>
+<h1 id="串口通信：Serial类"><a href="#串口通信：Serial类" class="headerlink" title="串口通信：Serial类"></a>串口通信：<code>Serial</code>类</h1><h2 id="Serial-begin"><a href="#Serial-begin" class="headerlink" title="Serial.begin()"></a><code>Serial.begin()</code></h2><p>该函数有两个重载，</p>
+<ul>
+<li><p><code>Serial.begin(speed)</code></p>
+<ul>
+<li><p>参数：</p>
+<ul>
+<li><p><code>speed</code></p>
+<p>串口通信波特率，一般为9600，可以为：</p>
+<p>300、600、1200、2400、4800、9600、14400、19200、28800、38400、57600、115200</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code>Serial.begin(speed, config)</code></p>
+<ul>
+<li><p>参数</p>
+<ul>
+<li><p><code>speed</code> 同上</p>
+</li>
+<li><p><code>config</code></p>
+<p>配置信息，具体如下表：</p>
+<table>
+<thead>
+<tr>
+<th align="center">可选配置</th>
+<th align="center">数据位</th>
+<th align="center">校验位</th>
+<th align="center">停止位</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">SERIAL_5N1</td>
+<td align="center">5</td>
+<td align="center">无</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">SERIAL_6N1</td>
+<td align="center">6</td>
+<td align="center">无</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">SERIAL_7N1</td>
+<td align="center">7</td>
+<td align="center">无</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">SERIAL_8N1(默认配置)</td>
+<td align="center">8</td>
+<td align="center">无</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">SERIAL_5N2</td>
+<td align="center">5</td>
+<td align="center">无</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center">SERIAL_6N2</td>
+<td align="center">6</td>
+<td align="center">无</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center">SERIAL_7N2</td>
+<td align="center">7</td>
+<td align="center">无</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center">SERIAL_8N2</td>
+<td align="center">8</td>
+<td align="center">无</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center">SERIAL_5E1</td>
+<td align="center">5</td>
+<td align="center">偶</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">SERIAL_6E1</td>
+<td align="center">6</td>
+<td align="center">偶</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">SERIAL_7E1</td>
+<td align="center">7</td>
+<td align="center">偶</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">SERIAL_8E1</td>
+<td align="center">8</td>
+<td align="center">偶</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">SERIAL_5E2</td>
+<td align="center">5</td>
+<td align="center">偶</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center">SERIAL_6E2</td>
+<td align="center">6</td>
+<td align="center">偶</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center">SERIAL_7E2</td>
+<td align="center">7</td>
+<td align="center">偶</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center">SERIAL_8E2</td>
+<td align="center">8</td>
+<td align="center">偶</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center">SERIAL_5O1</td>
+<td align="center">5</td>
+<td align="center">奇</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">SERIAL_6O1</td>
+<td align="center">6</td>
+<td align="center">奇</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">SERIAL_7O1</td>
+<td align="center">7</td>
+<td align="center">奇</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">SERIAL_8O1</td>
+<td align="center">8</td>
+<td align="center">奇</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">SERIAL_5O2</td>
+<td align="center">5</td>
+<td align="center">奇</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center">SERIAL_6O2</td>
+<td align="center">6</td>
+<td align="center">奇</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center">SERIAL_7O2</td>
+<td align="center">7</td>
+<td align="center">奇</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center">SERIAL_8O2</td>
+<td align="center">8</td>
+<td align="center">奇</td>
+<td align="center">2</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Serial-end"><a href="#Serial-end" class="headerlink" title="Serial.end()"></a><code>Serial.end()</code></h2><p>结束串口通信。释放该串口所在的数字引脚，使得其可以作为普通数字引脚使用。</p>
+<h2 id="Serial-print-与-Serial-println"><a href="#Serial-print-与-Serial-println" class="headerlink" title="Serial.print() 与 Serial.println()"></a><code>Serial.print()</code> 与 <code>Serial.println()</code></h2><p>向串口写入数据，有许多重载</p>
+<p>至于两者区别相信学过Java的都知道，<code>Serial.println()</code> 在输出数据的同时换行。</p>
+<h2 id="Serial-read"><a href="#Serial-read" class="headerlink" title="Serial.read()"></a><code>Serial.read()</code></h2><p>接收串口数据</p>
+<p><strong>返回值</strong></p>
+<ul>
+<li><p><code>int</code></p>
+<p>返回从串口接收的数据，也就是依次接收 ASCII 字符，每次一个比特。</p>
+</li>
+</ul>
+<h2 id="Serial-available"><a href="#Serial-available" class="headerlink" title="Serial.available()"></a><code>Serial.available()</code></h2><p>获取串口接收到的除去已经读取的数据的个数，也就是缓冲区的数据个数，缓冲区最多可保存64 bytes的数据。</p>
+<p><strong>返回值</strong></p>
+<ul>
+<li><p><code>int</code></p>
+<p>缓冲区的数据的比特数，<code>0~64</code></p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>原创教程</category>
+      </categories>
+      <tags>
+        <tag>Arduino</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux下安装Python3</title>
+    <url>/2021/01/12/linux-xia-an-zhuang-python3/</url>
+    <content><![CDATA[<h1 id="Linux下安装Python3"><a href="#Linux下安装Python3" class="headerlink" title="Linux下安装Python3"></a>Linux下安装Python3</h1><p>Linux里安装过多次Python，但依然不记得，今天来总结以下。</p>
+<p>先把命令列出来：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wget https://www.python.org/ftp/python/3.7.9/Python-3.7.9.tgz # 这里是对应版本的下载链接</span><br><span class="line">tar -zxvf ./Python-3.7.9.tgz</span><br><span class="line">cd Python-3.7.9</span><br><span class="line">./configure --prefix=/usr/software/python3 # 这里是你的安装目录</span><br><span class="line">make</span><br><span class="line">make install</span><br><span class="line">ln -s /usr/software/python3/bin/python3 /usr/bin/</span><br><span class="line">ln -s /usr/software/python3/bin/pip3 /usr/bin/</span><br></pre></td></tr></table></figure>
+<h2 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h2><p>安装Python需要以下依赖，请确保已经全部安装</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel</span><br></pre></td></tr></table></figure>
+<p>这些依赖我也不清楚T-T，总之不懂就运行以下命令：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum isntall zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel</span><br></pre></td></tr></table></figure>
+<h2 id="下载并解压Python源码"><a href="#下载并解压Python源码" class="headerlink" title="下载并解压Python源码"></a>下载并解压Python源码</h2><p>前往<a href="https://www.python.org/downloads/">Python官网</a>，找到对应Python版本的下载链接，例如我要下载的是<a href="https://www.python.org/ftp/python/3.7.9/Python-3.7.9.tgz">3.7.9版</a>的。</p>
+<p>注意应下载Gzip压缩后的源码<code>Gzipped source tarball</code>。</p>
+<p>切换的一个用于下载的目录（不是安装目录），然后使用以下命令：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wget https://www.python.org/ftp/python/3.7.9/Python-3.7.9.tgz # 这里是对应版本的下载链接</span><br></pre></td></tr></table></figure>
+<p>如果显示没有<code>wget</code>可以使用以下命令安装：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum install wget</span><br></pre></td></tr></table></figure>
+<p>解压源码也很简单，用<code>tar</code>解压：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">tar -zxvf Python-3.7.9.tgz # 下载得到的文件，后缀tgz指的是tar gzip</span><br></pre></td></tr></table></figure>
+<p>然后进入解压得到的文件夹</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd Python-3.7.9</span><br></pre></td></tr></table></figure>
+<h2 id="编译-amp-安装"><a href="#编译-amp-安装" class="headerlink" title="编译&amp;安装"></a>编译&amp;安装</h2><p>创建一个文件夹用于安装Python，这个安装路径由你自己决定！例如我把它安装到<code>/usr/software/python3</code></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mkdir -p /usr/software/python3</span><br></pre></td></tr></table></figure>
+<p>配置安装路径</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./configure --prefix=/usr/software/python3</span><br></pre></td></tr></table></figure>
+<p>下面编译Python，使用make构建，这一步相对来说比较慢</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">make</span><br></pre></td></tr></table></figure>
+<p>安装</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">make install</span><br></pre></td></tr></table></figure>
+<h2 id="创建软链"><a href="#创建软链" class="headerlink" title="创建软链"></a>创建软链</h2><p>所谓软链，在这里可以理解为快捷方式，分别为<code>python3</code>和<code>pip3</code>创建软链</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ln -s /usr/software/python3/bin/python3 /usr/bin/</span><br><span class="line">ln -s /usr/software/python3/bin/pip3 /usr/bin/</span><br></pre></td></tr></table></figure>
+<p>注意！这里不能把软链命名为<code>python</code>和<code>pip</code>，因为大部分Linux系统自带python2.7，且部分功能要依靠python2.7，而执行python2.7和它的pip的命令是python和pip，所以这里用python3和pip3加以区分！</p>
+<hr>
+<p>OK，安装完成，使用以下命令检测一下吧~~~</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 -V # 大写的 V</span><br><span class="line">pip3 -V # 大写的 V</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux常见命令</title>
+    <url>/2020/10/24/linux-chang-jian-ming-ling/</url>
+    <content><![CDATA[<h1 id="Linux常见命令"><a href="#Linux常见命令" class="headerlink" title="Linux常见命令"></a>Linux常见命令</h1><h2 id="一-文件与目录"><a href="#一-文件与目录" class="headerlink" title="一.文件与目录"></a>一.文件与目录</h2><ul>
+<li><strong>ls</strong>（英文：list files）: 列出目录及文件名</li>
+<li><strong>cd</strong>（英文：change directory）：切换目录</li>
+<li><strong>pwd</strong>（英文：print work directory）：显示目前的目录</li>
+<li><strong>mkdir</strong>（英文：make directory）：创建一个新的目录</li>
+<li><strong>rmdir</strong>（英文：remove directory）：删除一个空的目录</li>
+<li><strong>cp</strong>（英文：copy file）: 复制文件或目录</li>
+<li><strong>rm</strong>（英文：remove）: 移除文件或目录</li>
+<li><strong>mv</strong>（英文：move file）: 移动文件与目录，或修改文件与目录的名称</li>
+</ul>
+<h3 id="ls-列出目录及文件名"><a href="#ls-列出目录及文件名" class="headerlink" title="ls 列出目录及文件名"></a>ls 列出目录及文件名</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">user@wzw:~$ ls [目录]</span><br></pre></td></tr></table></figure>
+<p>参数：</p>
+<ul>
+<li>-a    列出全部的文件，包含隐藏文件( 开头为 . 的文件) (常用)</li>
+<li>-d    仅列出目录本身，而不是列出目录内的文件数据(常用)</li>
+<li>-r    列出包含文件的属性与权限等等数据(常用)</li>
+</ul>
+<h3 id="cd-切换目录"><a href="#cd-切换目录" class="headerlink" title="cd 切换目录"></a>cd 切换目录</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">user@wzw:~$ cd [相对或绝对目录]</span><br></pre></td></tr></table></figure>
+<h3 id="pwd-显示当前所在的目录"><a href="#pwd-显示当前所在的目录" class="headerlink" title="pwd 显示当前所在的目录"></a>pwd 显示当前所在的目录</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">user@wzw:~$ pwd [-P]</span><br></pre></td></tr></table></figure>
+<p>参数：</p>
+<ul>
+<li>-P    显示出确实的路径，而非连结 (link) 路径</li>
+</ul>
+<h3 id="mkdir-创建新目录"><a href="#mkdir-创建新目录" class="headerlink" title="mkdir 创建新目录"></a>mkdir 创建新目录</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">user@wzw:~$ mkdir [-mp] 目录名称</span><br></pre></td></tr></table></figure>
+<p>参数：</p>
+<ul>
+<li>-m    配置文件的权限</li>
+<li>-p    直接将所需要的目录(包含上一级目录)递归创建起来</li>
+</ul>
+<h3 id="rmdir-删除空的目录"><a href="#rmdir-删除空的目录" class="headerlink" title="rmdir 删除空的目录"></a>rmdir 删除空的目录</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">user@wzw:~$ rmdir [-p] 目录</span><br></pre></td></tr></table></figure>
+<p>参数：</p>
+<ul>
+<li>-p    连同上一级<strong>空目录</strong>也一起删除</li>
+</ul>
+<h3 id="cp-复制文件或目录"><a href="#cp-复制文件或目录" class="headerlink" title="cp 复制文件或目录"></a>cp 复制文件或目录</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">user@wzw:~$ cp source destination</span><br></pre></td></tr></table></figure>
+<p>参数：</p>
+<ul>
+<li>-a    相当于 -pdr </li>
+<li>-d    若来源档为连结档的属性(link file)，则复制连结档属性而非文件本身</li>
+<li>-f    若目标文件已经存在且无法开启，则移除后再尝试一次</li>
+<li>-i    若目标档(destination)已经存在时，在覆盖时会先询问动作的进行(常用)</li>
+<li>-l    进行硬式连结(hard link)的连结档创建，而非复制文件本身</li>
+<li>-p    连同文件的属性一起复制，而非使用默认属性(备份文件时常用)</li>
+<li>-r    递归持续复制，用于目录的复制行为(常用)</li>
+<li>-s    复制成为符号连结档 (symbolic link)，亦即<strong>捷径文件</strong></li>
+<li>-u    若 destination 比 source 旧才升级 destination </li>
+</ul>
+<h3 id="rm-移除文件或目录"><a href="#rm-移除文件或目录" class="headerlink" title="rm 移除文件或目录"></a>rm 移除文件或目录</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">user@wzw:~$ rm [-fir] 文件或目录</span><br></pre></td></tr></table></figure>
+<p>参数：</p>
+<ul>
+<li>-f    忽略不存在的文件，不会出现警告信息</li>
+<li>-i    删除前会询问是否执行</li>
+<li>-r    递归删除，常用于删除目录。<strong>这是非常危险的选项！！！</strong></li>
+</ul>
+<h3 id="mv-移动文件与目录，或修改名称"><a href="#mv-移动文件与目录，或修改名称" class="headerlink" title="mv 移动文件与目录，或修改名称"></a>mv 移动文件与目录，或修改名称</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">user@wzw:~$ mv [-fiu] source destination</span><br><span class="line">user@wzw:~$ mv [-fiu] source1 source2 source3 .... directory</span><br></pre></td></tr></table></figure>
+<p>参数：</p>
+<ul>
+<li>-f     如果目标文件已经存在，不会询问而直接覆盖</li>
+<li>-i     若目标文件 (destination) 已存在，询问是否覆盖</li>
+<li>-u    若目标文件已存在，且source较新，才会升级 (update)</li>
+</ul>
+<h2 id="二-查看文件内容"><a href="#二-查看文件内容" class="headerlink" title="二.查看文件内容"></a>二.查看文件内容</h2><ul>
+<li><strong>cat</strong> 由第一行开始显示文件内容</li>
+<li><strong>tac</strong> 从最后一行开始显示，可以看出 tac 是 cat 的倒着写！</li>
+<li><strong>nl</strong>  显示的时候，顺道输出行号！</li>
+<li><strong>more</strong> 一页一页的显示文件内容</li>
+<li><strong>less</strong> 与 more 类似，但是比 more 更好的是，他可以往前翻页！</li>
+<li><strong>head</strong> 只看头几行</li>
+<li><strong>tail</strong> 只看尾巴几行</li>
+</ul>
+<h3 id="cat-从第一行开始显示文件内容"><a href="#cat-从第一行开始显示文件内容" class="headerlink" title="cat 从第一行开始显示文件内容"></a>cat 从第一行开始显示文件内容</h3><p>参数：</p>
+<ul>
+<li>-A     相当于 -vET</li>
+<li>-b     列出行号，仅针对非空白行做行号显示，空白行不标行号</li>
+<li>-E     结尾的断行字节用 $ 显示</li>
+<li>-n     列印出行号，连同空白行也会有行号</li>
+<li>-T     [tab] 键以 ^I 显示</li>
+<li>-v     列出一些看不出来的特殊字符</li>
+</ul>
+<h3 id="tac-从最后一行行开始显示文件内容"><a href="#tac-从最后一行行开始显示文件内容" class="headerlink" title="tac 从最后一行行开始显示文件内容"></a>tac 从最后一行行开始显示文件内容</h3><p>tac与cat命令刚好相反，文件内容从最后一行开始显示，可以看出 tac 是 cat 的倒着写。</p>
+<h3 id="nl-显示行号"><a href="#nl-显示行号" class="headerlink" title="nl 显示行号"></a>nl 显示行号</h3><ul>
+<li>-b ：指定行号指定的方式，主要有两种：<br>-b a ：表示不论是否为空行，也同样列出行号(类似 cat -n)<br>-b t ：如果有空行，空的那一行不要列出行号(默认值)</li>
+<li>-n ：列出行号表示的方法，主要有三种：<br>-n ln ：行号在荧幕的最左方显示；<br>-n rn ：行号在自己栏位的最右方显示，且不加 0<br>-n rz ：行号在自己栏位的最右方显示，且加 0</li>
+<li>-w ：行号栏位的占用的位数。</li>
+</ul>
+<h3 id="more-一页一页翻动"><a href="#more-一页一页翻动" class="headerlink" title="more 一页一页翻动"></a>more 一页一页翻动</h3><p>打开文件后，可以按：</p>
+<ul>
+<li>空白键 (space)：代表向下翻一页；</li>
+<li>Enter     ：代表向下翻『一行』；</li>
+<li>/字串     ：代表在这个显示的内容当中，向下搜寻『字串』这个关键字；</li>
+<li>:f      ：立刻显示出档名以及目前显示的行数；</li>
+<li>q       ：代表立刻离开 more ，不再显示该文件内容。</li>
+<li>b 或 [ctrl]-b ：代表往回翻页，只对文件有用。</li>
+</ul>
+<h3 id="less-一页一页翻动"><a href="#less-一页一页翻动" class="headerlink" title="less 一页一页翻动"></a>less 一页一页翻动</h3><p>打开文件后，可以按：</p>
+<ul>
+<li>空白键  ：向下翻动一页；</li>
+<li>[pagedown]：向下翻动一页；</li>
+<li>[pageup] ：向上翻动一页；</li>
+<li>/字串   ：向下搜寻『字串』的功能；</li>
+<li>?字串   ：向上搜寻『字串』的功能；</li>
+<li>n     ：重复前一个搜寻 (与 / 或 ? 有关！)</li>
+<li>N     ：反向的重复前一个搜寻 (与 / 或 ? 有关！)</li>
+<li>q     ：离开 less 这个程序；</li>
+</ul>
+<h3 id="head-显示文件前面几行"><a href="#head-显示文件前面几行" class="headerlink" title="head 显示文件前面几行"></a>head 显示文件前面几行</h3><p>参数：</p>
+<ul>
+<li>-n ：后面接数字，代表显示几行</li>
+</ul>
+<h3 id="tail-显示文件后面几行"><a href="#tail-显示文件后面几行" class="headerlink" title="tail 显示文件后面几行"></a>tail 显示文件后面几行</h3><p>参数</p>
+<ul>
+<li>-n ：后面接数字，代表显示几行</li>
+<li>-f ：持续侦测后面所接的档名，按下[ctrl]-c才会结束侦测</li>
+</ul>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Win10下配置树莓派Pico的MicroPython与C环境</title>
     <url>/2021/02/24/win10-xia-pei-zhi-shu-mei-pai-pico-de-micropython-yu-c-huan-jing/</url>
     <content><![CDATA[<iframe style="border: none; width: 100%; height: 100px" src="https://music.luotianyi.space:19375/?_=|https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/music/夜航星%20-%20洛天依.mp3|https://ooo.0x0.ooo/2021/02/14/o08AS.png||https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/lrc/夜航星%20-%20洛天依.lrc"></iframe>
@@ -107,146 +680,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Android学习笔记之应用资源</title>
-    <url>/2021/01/30/android-xue-xi-bi-ji-zhi-ying-yong-zi-yuan/</url>
-    <content><![CDATA[<h1 id="资源文件的存放位置"><a href="#资源文件的存放位置" class="headerlink" title="资源文件的存放位置"></a>资源文件的存放位置</h1><p>首先来看一下Android工程的目录结构：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">MyProject&#x2F;</span><br><span class="line">	manifests&#x2F;</span><br><span class="line">		AndroidManifest.xml</span><br><span class="line">    java&#x2F;</span><br><span class="line">    	host.skyone.resource&#x2F;</span><br><span class="line">        	MainActivity.java</span><br><span class="line">    res&#x2F;</span><br><span class="line">        anim&#x2F;</span><br><span class="line">        color&#x2F;</span><br><span class="line">        drawable&#x2F;</span><br><span class="line">            skyone.png</span><br><span class="line">        layout&#x2F;</span><br><span class="line">            activity_main.xml</span><br><span class="line">        menu&#x2F;</span><br><span class="line">        xml&#x2F;</span><br><span class="line">        raw&#x2F;</span><br><span class="line">        mipmap&#x2F;</span><br><span class="line">            icon.png</span><br><span class="line">        values&#x2F;</span><br><span class="line">            strings.xml</span><br></pre></td></tr></table></figure>
-<table>
-<thead>
-<tr>
-<th align="left">目录</th>
-<th align="left">资源类型</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><code>anim/</code></td>
-<td align="left">定义动画属性的XML文件。它们被保存在<code>res/anim/</code>文件夹下，通过<code>R.anim</code>类访问</td>
-</tr>
-<tr>
-<td align="left"><code>color/</code></td>
-<td align="left">定义颜色状态列表的XML文件。它们被保存在res/color/文件夹下，通过<code>R.color</code>类访问</td>
-</tr>
-<tr>
-<td align="left"><code>drawable/</code></td>
-<td align="left">图片文件，如<code>.png</code>,<code>.jpg</code>,<code>.gif</code>或者<code>XML</code>文件，被编译为位图、状态列表、形状、动画图片。它们被保存在<code>res/drawable/</code>文件夹下，通过<code>R.drawable</code>类访问</td>
-</tr>
-<tr>
-<td align="left"><code>layout/</code></td>
-<td align="left">定义用户界面布局的XML文件。它们被保存在res/layout/文件夹下，通过<code>R.layout</code>类访问</td>
-</tr>
-<tr>
-<td align="left"><code>menu/</code></td>
-<td align="left">定义应用程序菜单的XML文件，如选项菜单，上下文菜单，子菜单等。它们被保存在<code>res/menu/</code>文件夹下，通过<code>R.menu</code>类访问</td>
-</tr>
-<tr>
-<td align="left"><code>raw/</code></td>
-<td align="left">任意的文件以它们的原始形式保存。需要根据名为<code>R.raw.filename</code>的资源ID，通过调用<code>Resource.openRawResource()</code>来打开<code>raw</code>文件</td>
-</tr>
-<tr>
-<td align="left"><code>values/</code></td>
-<td align="left">包含简单值(如字符串，整数，颜色等)的XML文件。这里有一些文件夹下的资源命名规范。arrays.xml代表数组资源，通过<code>R.array</code>类访问；<code>integers.xml</code>代表整数资源，通过<code>R.integer</code>类访问；<code>bools.xml</code>代表布尔值资源，通过<code>R.bool</code>类访问；<code>colors.xml</code>代表颜色资源，通过<code>R.color</code>类访问；<code>dimens.xml</code>代表维度值，通过<code>R.dimen</code>类访问；<code>strings.xml</code>代表字符串资源，通过<code>R.string</code>类访问；<code>styles.xml</code>代表样式资源，通过<code>R.style</code>类访问</td>
-</tr>
-<tr>
-<td align="left"><code>xml/</code></td>
-<td align="left">可以通过调用<code>Resources.getXML()</code>来在运行时读取任意的XML文件。可以在这里保存运行时使用的各种配置文件</td>
-</tr>
-<tr>
-<td align="left"><code>minmap/</code></td>
-<td align="left">保存应用的图标</td>
-</tr>
-</tbody></table>
-<h1 id="简单的例子"><a href="#简单的例子" class="headerlink" title="简单的例子"></a>简单的例子</h1><h2 id="配置资源"><a href="#配置资源" class="headerlink" title="配置资源"></a>配置资源</h2><p>例如：将以下图片下载并命名为<code>skyone.png</code></p>
-<img src="https://tc.skyone.host/blog/post/Android%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%BA%94%E7%94%A8%E8%B5%84%E6%BA%90/skyone.png" alt="skyone" style="zoom: 10%;" />
-
-<p>移动到<code>res/drawable/</code>文件夹下，在<code>activity_main.xml</code>中加入<code>ImageView</code></p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">&lt;ImageView</span><br><span class="line">        android:id=&quot;@+id/imageView&quot;</span><br><span class="line">        android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">        android:layout_height=&quot;180dp&quot;</span><br><span class="line">        android:contentDescription=&quot;@string/img_skyone&quot;</span><br><span class="line">        app:layout_constraintEnd_toEndOf=&quot;parent&quot;</span><br><span class="line">        app:layout_constraintStart_toStartOf=&quot;parent&quot;</span><br><span class="line">        app:layout_constraintTop_toTopOf=&quot;parent&quot;</span><br><span class="line">        app:srcCompat=&quot;@drawable/skyone&quot; /&gt;</span><br></pre></td></tr></table></figure>
-<p>在<code>res/values/strings.xml</code>中加入：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">string</span> <span class="attr">name</span>=<span class="string">&quot;img_skyone&quot;</span>&gt;</span>Skyone<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>连接手机，编译运行。</p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p><code>activity_main.xml</code></p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">androidx.constraintlayout.widget.ConstraintLayout</span> <span class="attr">xmlns:android</span>=<span class="string">&quot;http://schemas.android.com/apk/res/android&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:app</span>=<span class="string">&quot;http://schemas.android.com/apk/res-auto&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:tools</span>=<span class="string">&quot;http://schemas.android.com/tools&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">tools:context</span>=<span class="string">&quot;.MainActivity&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    &lt;ImageView</span><br><span class="line">        android:id=&quot;@+id/imageView&quot;</span><br><span class="line">        android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">        android:layout_height=&quot;180dp&quot;</span><br><span class="line">        android:contentDescription=&quot;@string/img_skyone&quot;</span><br><span class="line">        app:layout_constraintEnd_toEndOf=&quot;parent&quot;</span><br><span class="line">        app:layout_constraintStart_toStartOf=&quot;parent&quot;</span><br><span class="line">        app:layout_constraintTop_toTopOf=&quot;parent&quot;</span><br><span class="line">        app:srcCompat=&quot;@drawable/skyone&quot; /&gt;</span><br><span class="line"></span><br><span class="line">    &lt;Button</span><br><span class="line">        android:id=&quot;@+id/button&quot;</span><br><span class="line">        android:layout_width=&quot;100dp&quot;</span><br><span class="line">        android:layout_height=&quot;100dp&quot;</span><br><span class="line">        android:background=&quot;#FFFFFF&quot;</span><br><span class="line">        android:onClick=&quot;onClickButton&quot;</span><br><span class="line">        android:text=&quot;@string/button&quot;</span><br><span class="line">        app:layout_constraintBottom_toBottomOf=&quot;parent&quot;</span><br><span class="line">        app:layout_constraintEnd_toEndOf=&quot;parent&quot;</span><br><span class="line">        app:layout_constraintStart_toStartOf=&quot;parent&quot;</span><br><span class="line">        app:layout_constraintTop_toBottomOf=&quot;@+id/imageView&quot; /&gt;</span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">androidx.constraintlayout.widget.ConstraintLayout</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p><code>MainActivity.java</code></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> host.skyone.resource;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> androidx.appcompat.app.AppCompatActivity;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.os.Bundle;</span><br><span class="line"><span class="keyword">import</span> android.view.View;</span><br><span class="line"><span class="keyword">import</span> android.widget.Toast;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClickButton</span><span class="params">(View view)</span> </span>&#123;</span><br><span class="line">        Toast.makeText(<span class="keyword">this</span>, <span class="string">&quot;欢迎访问Skyone哦！&quot;</span> , Toast.LENGTH_LONG).show();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><code>strings.xml</code></p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">resources</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span> <span class="attr">name</span>=<span class="string">&quot;app_name&quot;</span>&gt;</span>Resource<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span> <span class="attr">name</span>=<span class="string">&quot;img_skyone&quot;</span>&gt;</span>Skyone<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span> <span class="attr">name</span>=<span class="string">&quot;button&quot;</span>&gt;</span>点我~^_^~<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p><code>AndroidManifest.xml</code></p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">manifest</span> <span class="attr">xmlns:android</span>=<span class="string">&quot;http://schemas.android.com/apk/res/android&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">package</span>=<span class="string">&quot;host.skyone.resource&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    &lt;application</span><br><span class="line">        android:allowBackup=&quot;true&quot;</span><br><span class="line">        android:icon=&quot;@mipmap/ic_launcher&quot;</span><br><span class="line">        android:label=&quot;@string/app_name&quot;</span><br><span class="line">        android:roundIcon=&quot;@mipmap/ic_launcher_round&quot;</span><br><span class="line">        android:supportsRtl=&quot;true&quot;</span><br><span class="line">        android:theme=&quot;@style/Theme.Resource&quot;&gt;</span><br><span class="line">        <span class="tag">&lt;<span class="name">activity</span> <span class="attr">android:name</span>=<span class="string">&quot;.MainActivity&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.action.MAIN&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">                <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.category.LAUNCHER&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">application</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>例图：</p>
-<img src="https://tc.skyone.host/blog/post/Android%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%BA%94%E7%94%A8%E8%B5%84%E6%BA%90/pre.png" alt="例图" style="zoom:20%;" />]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>Android</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux下安装Python3</title>
-    <url>/2021/01/12/linux-xia-an-zhuang-python3/</url>
-    <content><![CDATA[<h1 id="Linux下安装Python3"><a href="#Linux下安装Python3" class="headerlink" title="Linux下安装Python3"></a>Linux下安装Python3</h1><p>Linux里安装过多次Python，但依然不记得，今天来总结以下。</p>
-<p>先把命令列出来：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wget https://www.python.org/ftp/python/3.7.9/Python-3.7.9.tgz # 这里是对应版本的下载链接</span><br><span class="line">tar -zxvf ./Python-3.7.9.tgz</span><br><span class="line">cd Python-3.7.9</span><br><span class="line">./configure --prefix=/usr/software/python3 # 这里是你的安装目录</span><br><span class="line">make</span><br><span class="line">make install</span><br><span class="line">ln -s /usr/software/python3/bin/python3 /usr/bin/</span><br><span class="line">ln -s /usr/software/python3/bin/pip3 /usr/bin/</span><br></pre></td></tr></table></figure>
-<h2 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h2><p>安装Python需要以下依赖，请确保已经全部安装</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel</span><br></pre></td></tr></table></figure>
-<p>这些依赖我也不清楚T-T，总之不懂就运行以下命令：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum isntall zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel</span><br></pre></td></tr></table></figure>
-<h2 id="下载并解压Python源码"><a href="#下载并解压Python源码" class="headerlink" title="下载并解压Python源码"></a>下载并解压Python源码</h2><p>前往<a href="https://www.python.org/downloads/">Python官网</a>，找到对应Python版本的下载链接，例如我要下载的是<a href="https://www.python.org/ftp/python/3.7.9/Python-3.7.9.tgz">3.7.9版</a>的。</p>
-<p>注意应下载Gzip压缩后的源码<code>Gzipped source tarball</code>。</p>
-<p>切换的一个用于下载的目录（不是安装目录），然后使用以下命令：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wget https://www.python.org/ftp/python/3.7.9/Python-3.7.9.tgz # 这里是对应版本的下载链接</span><br></pre></td></tr></table></figure>
-<p>如果显示没有<code>wget</code>可以使用以下命令安装：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum install wget</span><br></pre></td></tr></table></figure>
-<p>解压源码也很简单，用<code>tar</code>解压：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">tar -zxvf Python-3.7.9.tgz # 下载得到的文件，后缀tgz指的是tar gzip</span><br></pre></td></tr></table></figure>
-<p>然后进入解压得到的文件夹</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd Python-3.7.9</span><br></pre></td></tr></table></figure>
-<h2 id="编译-amp-安装"><a href="#编译-amp-安装" class="headerlink" title="编译&amp;安装"></a>编译&amp;安装</h2><p>创建一个文件夹用于安装Python，这个安装路径由你自己决定！例如我把它安装到<code>/usr/software/python3</code></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mkdir -p /usr/software/python3</span><br></pre></td></tr></table></figure>
-<p>配置安装路径</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./configure --prefix=/usr/software/python3</span><br></pre></td></tr></table></figure>
-<p>下面编译Python，使用make构建，这一步相对来说比较慢</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">make</span><br></pre></td></tr></table></figure>
-<p>安装</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">make install</span><br></pre></td></tr></table></figure>
-<h2 id="创建软链"><a href="#创建软链" class="headerlink" title="创建软链"></a>创建软链</h2><p>所谓软链，在这里可以理解为快捷方式，分别为<code>python3</code>和<code>pip3</code>创建软链</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ln -s /usr/software/python3/bin/python3 /usr/bin/</span><br><span class="line">ln -s /usr/software/python3/bin/pip3 /usr/bin/</span><br></pre></td></tr></table></figure>
-<p>注意！这里不能把软链命名为<code>python</code>和<code>pip</code>，因为大部分Linux系统自带python2.7，且部分功能要依靠python2.7，而执行python2.7和它的pip的命令是python和pip，所以这里用python3和pip3加以区分！</p>
-<hr>
-<p>OK，安装完成，使用以下命令检测一下吧~~~</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 -V # 大写的 V</span><br><span class="line">pip3 -V # 大写的 V</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>一个简单的神经网络框架</title>
-    <url>/2020/11/14/yi-ge-jian-dan-de-shen-jing-wang-luo-kuang-jia/</url>
-    <content><![CDATA[<h2 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h2><p>这是一个基于python的最简单的神经网络框架，使用了<code>numpy</code>库，使用的是输入层 - 隐藏层 - 输出层的结构，每一层的节点数自可定义。原理图：</p>
-<p><img src="https://tc.skyone.host/blog/post/%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%A1%86%E6%9E%B6/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.png" alt="原理图"></p>
-<p>激活函数是经典的：</p>
-<p><img src="https://tc-1.oss-cn-hangzhou.aliyuncs.com/blog/post/%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%A1%86%E6%9E%B6/%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0.png" alt="激活函数"></p>
-<p>误差函数的斜率：</p>
-<p><img src="https://tc-1.oss-cn-hangzhou.aliyuncs.com/blog/post/%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%A1%86%E6%9E%B6/%E8%AF%AF%E5%B7%AE%E5%87%BD%E6%95%B0.png" alt="误差函数"></p>
-<p>使用矩阵简化运算：</p>
-<p><img src="https://tc-1.oss-cn-hangzhou.aliyuncs.com/blog/post/%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%A1%86%E6%9E%B6/%E7%9F%A9%E9%98%B5%E8%BF%90%E7%AE%97.png" alt="矩阵运算"></p>
-<p>代码很短、很简单，但效果却还不错。</p>
-<p>输入层、隐藏层、输出层节点数分别784、100、10个，经过<code>MNIST手写数字数据集</code>的训练后，跑了10000个测试，手写数字识别准确率达到了95%左右。</p>
-<p><img src="https://tc.skyone.host/blog/post/%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%A1%86%E6%9E%B6/%E8%AF%86%E5%88%AB%E5%87%86%E7%A1%AE%E7%8E%87.png" alt="识别准确率"></p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">activate</span>(<span class="params">x</span>):</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span> / (<span class="number">1</span> + numpy.exp(-x))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NeuralNetwork</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, inputnodes, hiddennodes, outputnodes, learningrate=<span class="number">0.3</span></span>):</span></span><br><span class="line">        <span class="comment"># set number of nodes in each input, hidden, output layer</span></span><br><span class="line">        <span class="comment"># 分别是：输入层、隐藏层、输出层的节点数</span></span><br><span class="line">        self.inodes = inputnodes</span><br><span class="line">        self.hnodes = hiddennodes</span><br><span class="line">        self.onodes = outputnodes</span><br><span class="line"></span><br><span class="line">        <span class="comment"># learning rate</span></span><br><span class="line">        <span class="comment"># 学习速率</span></span><br><span class="line">        self.lr = learningrate</span><br><span class="line"></span><br><span class="line">        <span class="comment"># weights</span></span><br><span class="line">        <span class="comment"># 使用正态分布初始化权重</span></span><br><span class="line">        self.wih = numpy.random.normal(<span class="number">0.0</span>, <span class="built_in">pow</span>(self.inodes, -<span class="number">0.5</span>), (self.hnodes, self.inodes))</span><br><span class="line">        self.who = numpy.random.normal(<span class="number">0.0</span>, <span class="built_in">pow</span>(self.hnodes, -<span class="number">0.5</span>), (self.onodes, self.hnodes))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">query</span>(<span class="params">self, inputs_list</span>):</span></span><br><span class="line">        <span class="comment"># 计算每个数字的概率</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 翻转矩阵</span></span><br><span class="line">        inputs = numpy.array(inputs_list, ndmin=<span class="number">2</span>).T</span><br><span class="line">		<span class="comment"># 输入进隐藏层的数据与权重相乘</span></span><br><span class="line">        hidden_inputs = numpy.dot(self.wih, inputs)</span><br><span class="line">        <span class="comment"># 激活函数</span></span><br><span class="line">        hidden_outputs = activate(hidden_inputs)</span><br><span class="line">		<span class="comment"># 输入进输出层的数据与权重相乘</span></span><br><span class="line">        final_inputs = numpy.dot(self.who, hidden_outputs)</span><br><span class="line">        <span class="comment"># 激活函数</span></span><br><span class="line">        final_outputs = activate(final_inputs)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> final_outputs</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">train</span>(<span class="params">self, inputs_list, targets_list</span>):</span></span><br><span class="line">        <span class="comment"># 误差计算函数</span></span><br><span class="line">        inputs = numpy.array(inputs_list, ndmin=<span class="number">2</span>).T</span><br><span class="line">        targets = numpy.array(targets_list, ndmin=<span class="number">2</span>).T</span><br><span class="line"></span><br><span class="line">        hidden_inputs = numpy.dot(self.wih, inputs)</span><br><span class="line">        hidden_outputs = activate(hidden_inputs)</span><br><span class="line"></span><br><span class="line">        final_inputs = numpy.dot(self.who, hidden_outputs)</span><br><span class="line">        final_outputs = activate(final_inputs)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># errors</span></span><br><span class="line">        <span class="comment"># 误差值</span></span><br><span class="line">        output_errors = targets - final_outputs</span><br><span class="line">        hidden_errors = numpy.dot(self.who.T, output_errors)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># update the weights for the links between the hidden and output layer</span></span><br><span class="line">        <span class="comment"># 根据误差调整权重</span></span><br><span class="line">        self.who += self.lr * numpy.dot((output_errors * final_outputs * (<span class="number">1.0</span> - final_outputs)), numpy.transpose(hidden_outputs))</span><br><span class="line">        <span class="comment"># update the weights for the links between the hidden and output layer</span></span><br><span class="line">        <span class="comment"># 根据误差调整权重</span></span><br><span class="line">        self.wih += self.lr * numpy.dot((hidden_errors * hidden_outputs * (<span class="number">1.0</span> - hidden_outputs)), numpy.transpose(inputs))</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>神经网络</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-        <tag>神经网络</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Python装饰器</title>
     <url>/2021/01/17/python-zhuang-shi-qi/</url>
     <content><![CDATA[<h1 id="装饰器是什么？"><a href="#装饰器是什么？" class="headerlink" title="装饰器是什么？"></a>装饰器是什么？</h1><p>装饰器(Decorators)是 Python 的一个重要部分。举一个不太恰当的比方，装饰器是一个函数，它以函数为参数，先执行一些操作，再调用作为参数的函数，然后再执行以下操作，例如下面的函数：</p>
@@ -285,6 +718,78 @@
       </categories>
       <tags>
         <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Xamarin的基本控件及常见用法</title>
+    <url>/2020/12/04/xamarin-de-ji-ben-kong-jian-ji-chang-jian-yong-fa/</url>
+    <content><![CDATA[<h1 id="Xamarin的基本控件及常见用法"><a href="#Xamarin的基本控件及常见用法" class="headerlink" title="Xamarin的基本控件及常见用法"></a>Xamarin的基本控件及常见用法</h1><p>由于Xaml文件和HTML文件有点像，无法直接上传，只能截图了</p>
+<h2 id="一一介绍"><a href="#一一介绍" class="headerlink" title="一一介绍"></a>一一介绍</h2><h3 id="一些通用的属性"><a href="#一些通用的属性" class="headerlink" title="一些通用的属性"></a>一些通用的属性</h3><h4 id="Margin-边距"><a href="#Margin-边距" class="headerlink" title="Margin 边距"></a>Margin 边距</h4><p>简而言之，就是设置控件距左上右下的边距，<strong>注意，不是HTML里的上右下左！</strong></p>
+<h4 id="VerticalTextAlignment-amp-HorizontalTextAlignment-垂直-水平居中"><a href="#VerticalTextAlignment-amp-HorizontalTextAlignment-垂直-水平居中" class="headerlink" title="VerticalTextAlignment &amp; HorizontalTextAlignment 垂直/水平居中"></a>VerticalTextAlignment &amp; HorizontalTextAlignment 垂直/水平居中</h4><p>意思很明显，就是定义控件的文本的对齐方式，有<code>Center</code>,<code>Strat</code>,<code>End</code>三个选项，分别对应：<code>居中</code>、<code>左对齐</code>、<code>右对齐</code>。</p>
+<h4 id="FontSize-字体大小"><a href="#FontSize-字体大小" class="headerlink" title="FontSize 字体大小"></a>FontSize 字体大小</h4><p>不多说，设置文本字体的大小</p>
+<h4 id="以Label控件为例"><a href="#以Label控件为例" class="headerlink" title="以Label控件为例"></a>以Label控件为例</h4><p><img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E4%BB%A3%E7%A0%8101.png" alt="代码01"></p>
+<p>表示一个上下左右边距均为8，垂直/水平居中，字体24号，显示文本”<code>Apple</code>“，名称为”<code>AppleLabel</code>“的Label控件。</p>
+<img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C01.png" alt="运行结果" style="zoom: 50%;" />
+
+<h3 id="Label-文本框"><a href="#Label-文本框" class="headerlink" title="Label 文本框"></a>Label 文本框</h3><p>最简单的控件，用于显示文本，常见属性有：</p>
+<p><img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E4%BB%A3%E7%A0%8102.png" alt="代码02"></p>
+<img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C02.png" alt="运行结果02" style="zoom:50%;" />
+
+<h3 id="Button-按钮"><a href="#Button-按钮" class="headerlink" title="Button 按钮"></a>Button 按钮</h3><p>按钮，按了就可以除非指定事件，比如：</p>
+<p><img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E4%BB%A3%E7%A0%8103.png" alt="代码03"></p>
+<p>配合如下代码：</p>
+<p><img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E4%BB%A3%E7%A0%8104.png" alt="代码04"></p>
+<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> Xamarin.Forms;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Blog</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">MainPage</span> : <span class="title">ContentPage</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">MainPage</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            InitializeComponent();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">MyPopupButton_Clicked</span>(<span class="params"><span class="built_in">object</span> sender, EventArgs e</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            AppleLabel.Text = <span class="string">&quot;Apple&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果：</p>
+<img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C03.png" alt="运行结果03" style="zoom:50%;" />
+
+<h3 id="Grid-表"><a href="#Grid-表" class="headerlink" title="Grid 表"></a>Grid 表</h3><p>一般用于排版，可以把其他控件放入其中，常见用法：</p>
+<p><img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E4%BB%A3%E7%A0%8105.png" alt="代码05"></p>
+<p>这个示例创建了一个3行2列的表，示例在本文末尾</p>
+<h3 id="ScrollView-滚动视图"><a href="#ScrollView-滚动视图" class="headerlink" title="ScrollView 滚动视图"></a>ScrollView 滚动视图</h3><p>顾名思义，就是鼠标滚轮可以控制的可滚动视图</p>
+<p><img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E4%BB%A3%E7%A0%8106.png" alt="代码06"></p>
+<p>最好要定义它的高度</p>
+<h3 id="用Label实现的超链接"><a href="#用Label实现的超链接" class="headerlink" title="用Label实现的超链接"></a>用Label实现的超链接</h3><p>通过附加属性使Label可点击，并添加下划线</p>
+<p><img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E4%BB%A3%E7%A0%8107.png" alt="代码07"></p>
+<p>配合C#代码：</p>
+<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> Xamarin.Essentials;</span><br><span class="line"><span class="keyword">using</span> Xamarin.Forms;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">HelloWorld</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">MainPage</span> : <span class="title">ContentPage</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">MainPage</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            InitializeComponent();</span><br><span class="line">        &#125;</span><br><span class="line">		<span class="comment">//注意要异步打开</span></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">async</span> <span class="keyword">void</span> <span class="title">ClickMeHyperlinkButton_Tapped</span>(<span class="params"><span class="built_in">object</span> sender, </span></span></span><br><span class="line"><span class="function"><span class="params">                                                         EventArgs e</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">await</span> Browser.OpenAsync(<span class="string">&quot;https://www.bilibili.com&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Switch-开关"><a href="#Switch-开关" class="headerlink" title="Switch 开关"></a>Switch 开关</h3><p>没什么好说的</p>
+<p><img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E4%BB%A3%E7%A0%8108.png" alt="代码08"></p>
+<h3 id="Entry-输入框"><a href="#Entry-输入框" class="headerlink" title="Entry 输入框"></a>Entry 输入框</h3><p>同样没什么可说的</p>
+<p><img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E4%BB%A3%E7%A0%8109.png" alt="代码09"></p>
+<h2 id="完整的例子"><a href="#完整的例子" class="headerlink" title="完整的例子"></a>完整的例子</h2><p><img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E4%BB%A3%E7%A0%8110.png" alt="代码10"></p>
+<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> Xamarin.Essentials;</span><br><span class="line"><span class="keyword">using</span> Xamarin.Forms;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Blog</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">MainPage</span> : <span class="title">ContentPage</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">MainPage</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            InitializeComponent();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">MyPopupButton_Clicked</span>(<span class="params"><span class="built_in">object</span> sender, EventArgs e</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            DisplayAlert(<span class="string">&quot;提示&quot;</span>, <span class="string">&quot;这是一个简单的弹窗&quot;</span>, <span class="string">&quot;确定&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">async</span> <span class="keyword">void</span> <span class="title">ClickMeHyperlinkButton_Tapped</span>(<span class="params"><span class="built_in">object</span> sender, EventArgs e</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">await</span> Browser.OpenAsync(<span class="string">&quot;https://www.bilibili.com&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E7%A4%BA%E4%BE%8B.png" alt="示例"></p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>Xamarin</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>一个简单的神经网络框架</title>
+    <url>/2020/11/14/yi-ge-jian-dan-de-shen-jing-wang-luo-kuang-jia/</url>
+    <content><![CDATA[<h2 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h2><p>这是一个基于python的最简单的神经网络框架，使用了<code>numpy</code>库，使用的是输入层 - 隐藏层 - 输出层的结构，每一层的节点数自可定义。原理图：</p>
+<p><img src="https://tc.skyone.host/blog/post/%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%A1%86%E6%9E%B6/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.png" alt="原理图"></p>
+<p>激活函数是经典的：</p>
+<p><img src="https://tc-1.oss-cn-hangzhou.aliyuncs.com/blog/post/%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%A1%86%E6%9E%B6/%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0.png" alt="激活函数"></p>
+<p>误差函数的斜率：</p>
+<p><img src="https://tc-1.oss-cn-hangzhou.aliyuncs.com/blog/post/%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%A1%86%E6%9E%B6/%E8%AF%AF%E5%B7%AE%E5%87%BD%E6%95%B0.png" alt="误差函数"></p>
+<p>使用矩阵简化运算：</p>
+<p><img src="https://tc-1.oss-cn-hangzhou.aliyuncs.com/blog/post/%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%A1%86%E6%9E%B6/%E7%9F%A9%E9%98%B5%E8%BF%90%E7%AE%97.png" alt="矩阵运算"></p>
+<p>代码很短、很简单，但效果却还不错。</p>
+<p>输入层、隐藏层、输出层节点数分别784、100、10个，经过<code>MNIST手写数字数据集</code>的训练后，跑了10000个测试，手写数字识别准确率达到了95%左右。</p>
+<p><img src="https://tc.skyone.host/blog/post/%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%A1%86%E6%9E%B6/%E8%AF%86%E5%88%AB%E5%87%86%E7%A1%AE%E7%8E%87.png" alt="识别准确率"></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">activate</span>(<span class="params">x</span>):</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span> / (<span class="number">1</span> + numpy.exp(-x))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NeuralNetwork</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, inputnodes, hiddennodes, outputnodes, learningrate=<span class="number">0.3</span></span>):</span></span><br><span class="line">        <span class="comment"># set number of nodes in each input, hidden, output layer</span></span><br><span class="line">        <span class="comment"># 分别是：输入层、隐藏层、输出层的节点数</span></span><br><span class="line">        self.inodes = inputnodes</span><br><span class="line">        self.hnodes = hiddennodes</span><br><span class="line">        self.onodes = outputnodes</span><br><span class="line"></span><br><span class="line">        <span class="comment"># learning rate</span></span><br><span class="line">        <span class="comment"># 学习速率</span></span><br><span class="line">        self.lr = learningrate</span><br><span class="line"></span><br><span class="line">        <span class="comment"># weights</span></span><br><span class="line">        <span class="comment"># 使用正态分布初始化权重</span></span><br><span class="line">        self.wih = numpy.random.normal(<span class="number">0.0</span>, <span class="built_in">pow</span>(self.inodes, -<span class="number">0.5</span>), (self.hnodes, self.inodes))</span><br><span class="line">        self.who = numpy.random.normal(<span class="number">0.0</span>, <span class="built_in">pow</span>(self.hnodes, -<span class="number">0.5</span>), (self.onodes, self.hnodes))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">query</span>(<span class="params">self, inputs_list</span>):</span></span><br><span class="line">        <span class="comment"># 计算每个数字的概率</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 翻转矩阵</span></span><br><span class="line">        inputs = numpy.array(inputs_list, ndmin=<span class="number">2</span>).T</span><br><span class="line">		<span class="comment"># 输入进隐藏层的数据与权重相乘</span></span><br><span class="line">        hidden_inputs = numpy.dot(self.wih, inputs)</span><br><span class="line">        <span class="comment"># 激活函数</span></span><br><span class="line">        hidden_outputs = activate(hidden_inputs)</span><br><span class="line">		<span class="comment"># 输入进输出层的数据与权重相乘</span></span><br><span class="line">        final_inputs = numpy.dot(self.who, hidden_outputs)</span><br><span class="line">        <span class="comment"># 激活函数</span></span><br><span class="line">        final_outputs = activate(final_inputs)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> final_outputs</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">train</span>(<span class="params">self, inputs_list, targets_list</span>):</span></span><br><span class="line">        <span class="comment"># 误差计算函数</span></span><br><span class="line">        inputs = numpy.array(inputs_list, ndmin=<span class="number">2</span>).T</span><br><span class="line">        targets = numpy.array(targets_list, ndmin=<span class="number">2</span>).T</span><br><span class="line"></span><br><span class="line">        hidden_inputs = numpy.dot(self.wih, inputs)</span><br><span class="line">        hidden_outputs = activate(hidden_inputs)</span><br><span class="line"></span><br><span class="line">        final_inputs = numpy.dot(self.who, hidden_outputs)</span><br><span class="line">        final_outputs = activate(final_inputs)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># errors</span></span><br><span class="line">        <span class="comment"># 误差值</span></span><br><span class="line">        output_errors = targets - final_outputs</span><br><span class="line">        hidden_errors = numpy.dot(self.who.T, output_errors)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># update the weights for the links between the hidden and output layer</span></span><br><span class="line">        <span class="comment"># 根据误差调整权重</span></span><br><span class="line">        self.who += self.lr * numpy.dot((output_errors * final_outputs * (<span class="number">1.0</span> - final_outputs)), numpy.transpose(hidden_outputs))</span><br><span class="line">        <span class="comment"># update the weights for the links between the hidden and output layer</span></span><br><span class="line">        <span class="comment"># 根据误差调整权重</span></span><br><span class="line">        self.wih += self.lr * numpy.dot((hidden_errors * hidden_outputs * (<span class="number">1.0</span> - hidden_outputs)), numpy.transpose(inputs))</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>神经网络</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+        <tag>神经网络</tag>
       </tags>
   </entry>
   <entry>
@@ -696,179 +1201,6 @@
       </categories>
       <tags>
         <tag>设计模式</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Xamarin的基本控件及常见用法</title>
-    <url>/2020/12/04/xamarin-de-ji-ben-kong-jian-ji-chang-jian-yong-fa/</url>
-    <content><![CDATA[<h1 id="Xamarin的基本控件及常见用法"><a href="#Xamarin的基本控件及常见用法" class="headerlink" title="Xamarin的基本控件及常见用法"></a>Xamarin的基本控件及常见用法</h1><p>由于Xaml文件和HTML文件有点像，无法直接上传，只能截图了</p>
-<h2 id="一一介绍"><a href="#一一介绍" class="headerlink" title="一一介绍"></a>一一介绍</h2><h3 id="一些通用的属性"><a href="#一些通用的属性" class="headerlink" title="一些通用的属性"></a>一些通用的属性</h3><h4 id="Margin-边距"><a href="#Margin-边距" class="headerlink" title="Margin 边距"></a>Margin 边距</h4><p>简而言之，就是设置控件距左上右下的边距，<strong>注意，不是HTML里的上右下左！</strong></p>
-<h4 id="VerticalTextAlignment-amp-HorizontalTextAlignment-垂直-水平居中"><a href="#VerticalTextAlignment-amp-HorizontalTextAlignment-垂直-水平居中" class="headerlink" title="VerticalTextAlignment &amp; HorizontalTextAlignment 垂直/水平居中"></a>VerticalTextAlignment &amp; HorizontalTextAlignment 垂直/水平居中</h4><p>意思很明显，就是定义控件的文本的对齐方式，有<code>Center</code>,<code>Strat</code>,<code>End</code>三个选项，分别对应：<code>居中</code>、<code>左对齐</code>、<code>右对齐</code>。</p>
-<h4 id="FontSize-字体大小"><a href="#FontSize-字体大小" class="headerlink" title="FontSize 字体大小"></a>FontSize 字体大小</h4><p>不多说，设置文本字体的大小</p>
-<h4 id="以Label控件为例"><a href="#以Label控件为例" class="headerlink" title="以Label控件为例"></a>以Label控件为例</h4><p><img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E4%BB%A3%E7%A0%8101.png" alt="代码01"></p>
-<p>表示一个上下左右边距均为8，垂直/水平居中，字体24号，显示文本”<code>Apple</code>“，名称为”<code>AppleLabel</code>“的Label控件。</p>
-<img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C01.png" alt="运行结果" style="zoom: 50%;" />
-
-<h3 id="Label-文本框"><a href="#Label-文本框" class="headerlink" title="Label 文本框"></a>Label 文本框</h3><p>最简单的控件，用于显示文本，常见属性有：</p>
-<p><img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E4%BB%A3%E7%A0%8102.png" alt="代码02"></p>
-<img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C02.png" alt="运行结果02" style="zoom:50%;" />
-
-<h3 id="Button-按钮"><a href="#Button-按钮" class="headerlink" title="Button 按钮"></a>Button 按钮</h3><p>按钮，按了就可以除非指定事件，比如：</p>
-<p><img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E4%BB%A3%E7%A0%8103.png" alt="代码03"></p>
-<p>配合如下代码：</p>
-<p><img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E4%BB%A3%E7%A0%8104.png" alt="代码04"></p>
-<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> Xamarin.Forms;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Blog</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">MainPage</span> : <span class="title">ContentPage</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">MainPage</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            InitializeComponent();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">MyPopupButton_Clicked</span>(<span class="params"><span class="built_in">object</span> sender, EventArgs e</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            AppleLabel.Text = <span class="string">&quot;Apple&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>效果：</p>
-<img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C03.png" alt="运行结果03" style="zoom:50%;" />
-
-<h3 id="Grid-表"><a href="#Grid-表" class="headerlink" title="Grid 表"></a>Grid 表</h3><p>一般用于排版，可以把其他控件放入其中，常见用法：</p>
-<p><img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E4%BB%A3%E7%A0%8105.png" alt="代码05"></p>
-<p>这个示例创建了一个3行2列的表，示例在本文末尾</p>
-<h3 id="ScrollView-滚动视图"><a href="#ScrollView-滚动视图" class="headerlink" title="ScrollView 滚动视图"></a>ScrollView 滚动视图</h3><p>顾名思义，就是鼠标滚轮可以控制的可滚动视图</p>
-<p><img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E4%BB%A3%E7%A0%8106.png" alt="代码06"></p>
-<p>最好要定义它的高度</p>
-<h3 id="用Label实现的超链接"><a href="#用Label实现的超链接" class="headerlink" title="用Label实现的超链接"></a>用Label实现的超链接</h3><p>通过附加属性使Label可点击，并添加下划线</p>
-<p><img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E4%BB%A3%E7%A0%8107.png" alt="代码07"></p>
-<p>配合C#代码：</p>
-<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> Xamarin.Essentials;</span><br><span class="line"><span class="keyword">using</span> Xamarin.Forms;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">HelloWorld</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">MainPage</span> : <span class="title">ContentPage</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">MainPage</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            InitializeComponent();</span><br><span class="line">        &#125;</span><br><span class="line">		<span class="comment">//注意要异步打开</span></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">async</span> <span class="keyword">void</span> <span class="title">ClickMeHyperlinkButton_Tapped</span>(<span class="params"><span class="built_in">object</span> sender, </span></span></span><br><span class="line"><span class="function"><span class="params">                                                         EventArgs e</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">await</span> Browser.OpenAsync(<span class="string">&quot;https://www.bilibili.com&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="Switch-开关"><a href="#Switch-开关" class="headerlink" title="Switch 开关"></a>Switch 开关</h3><p>没什么好说的</p>
-<p><img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E4%BB%A3%E7%A0%8108.png" alt="代码08"></p>
-<h3 id="Entry-输入框"><a href="#Entry-输入框" class="headerlink" title="Entry 输入框"></a>Entry 输入框</h3><p>同样没什么可说的</p>
-<p><img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E4%BB%A3%E7%A0%8109.png" alt="代码09"></p>
-<h2 id="完整的例子"><a href="#完整的例子" class="headerlink" title="完整的例子"></a>完整的例子</h2><p><img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E4%BB%A3%E7%A0%8110.png" alt="代码10"></p>
-<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> Xamarin.Essentials;</span><br><span class="line"><span class="keyword">using</span> Xamarin.Forms;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Blog</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">MainPage</span> : <span class="title">ContentPage</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">MainPage</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            InitializeComponent();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">MyPopupButton_Clicked</span>(<span class="params"><span class="built_in">object</span> sender, EventArgs e</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            DisplayAlert(<span class="string">&quot;提示&quot;</span>, <span class="string">&quot;这是一个简单的弹窗&quot;</span>, <span class="string">&quot;确定&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">async</span> <span class="keyword">void</span> <span class="title">ClickMeHyperlinkButton_Tapped</span>(<span class="params"><span class="built_in">object</span> sender, EventArgs e</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">await</span> Browser.OpenAsync(<span class="string">&quot;https://www.bilibili.com&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://tc.skyone.host/blog/post/Xamarin%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A7%E4%BB%B6%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/%E7%A4%BA%E4%BE%8B.png" alt="示例"></p>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>Xamarin</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux常见命令</title>
-    <url>/2020/10/24/linux-chang-jian-ming-ling/</url>
-    <content><![CDATA[<h1 id="Linux常见命令"><a href="#Linux常见命令" class="headerlink" title="Linux常见命令"></a>Linux常见命令</h1><h2 id="一-文件与目录"><a href="#一-文件与目录" class="headerlink" title="一.文件与目录"></a>一.文件与目录</h2><ul>
-<li><strong>ls</strong>（英文：list files）: 列出目录及文件名</li>
-<li><strong>cd</strong>（英文：change directory）：切换目录</li>
-<li><strong>pwd</strong>（英文：print work directory）：显示目前的目录</li>
-<li><strong>mkdir</strong>（英文：make directory）：创建一个新的目录</li>
-<li><strong>rmdir</strong>（英文：remove directory）：删除一个空的目录</li>
-<li><strong>cp</strong>（英文：copy file）: 复制文件或目录</li>
-<li><strong>rm</strong>（英文：remove）: 移除文件或目录</li>
-<li><strong>mv</strong>（英文：move file）: 移动文件与目录，或修改文件与目录的名称</li>
-</ul>
-<h3 id="ls-列出目录及文件名"><a href="#ls-列出目录及文件名" class="headerlink" title="ls 列出目录及文件名"></a>ls 列出目录及文件名</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">user@wzw:~$ ls [目录]</span><br></pre></td></tr></table></figure>
-<p>参数：</p>
-<ul>
-<li>-a    列出全部的文件，包含隐藏文件( 开头为 . 的文件) (常用)</li>
-<li>-d    仅列出目录本身，而不是列出目录内的文件数据(常用)</li>
-<li>-r    列出包含文件的属性与权限等等数据(常用)</li>
-</ul>
-<h3 id="cd-切换目录"><a href="#cd-切换目录" class="headerlink" title="cd 切换目录"></a>cd 切换目录</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">user@wzw:~$ cd [相对或绝对目录]</span><br></pre></td></tr></table></figure>
-<h3 id="pwd-显示当前所在的目录"><a href="#pwd-显示当前所在的目录" class="headerlink" title="pwd 显示当前所在的目录"></a>pwd 显示当前所在的目录</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">user@wzw:~$ pwd [-P]</span><br></pre></td></tr></table></figure>
-<p>参数：</p>
-<ul>
-<li>-P    显示出确实的路径，而非连结 (link) 路径</li>
-</ul>
-<h3 id="mkdir-创建新目录"><a href="#mkdir-创建新目录" class="headerlink" title="mkdir 创建新目录"></a>mkdir 创建新目录</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">user@wzw:~$ mkdir [-mp] 目录名称</span><br></pre></td></tr></table></figure>
-<p>参数：</p>
-<ul>
-<li>-m    配置文件的权限</li>
-<li>-p    直接将所需要的目录(包含上一级目录)递归创建起来</li>
-</ul>
-<h3 id="rmdir-删除空的目录"><a href="#rmdir-删除空的目录" class="headerlink" title="rmdir 删除空的目录"></a>rmdir 删除空的目录</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">user@wzw:~$ rmdir [-p] 目录</span><br></pre></td></tr></table></figure>
-<p>参数：</p>
-<ul>
-<li>-p    连同上一级<strong>空目录</strong>也一起删除</li>
-</ul>
-<h3 id="cp-复制文件或目录"><a href="#cp-复制文件或目录" class="headerlink" title="cp 复制文件或目录"></a>cp 复制文件或目录</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">user@wzw:~$ cp source destination</span><br></pre></td></tr></table></figure>
-<p>参数：</p>
-<ul>
-<li>-a    相当于 -pdr </li>
-<li>-d    若来源档为连结档的属性(link file)，则复制连结档属性而非文件本身</li>
-<li>-f    若目标文件已经存在且无法开启，则移除后再尝试一次</li>
-<li>-i    若目标档(destination)已经存在时，在覆盖时会先询问动作的进行(常用)</li>
-<li>-l    进行硬式连结(hard link)的连结档创建，而非复制文件本身</li>
-<li>-p    连同文件的属性一起复制，而非使用默认属性(备份文件时常用)</li>
-<li>-r    递归持续复制，用于目录的复制行为(常用)</li>
-<li>-s    复制成为符号连结档 (symbolic link)，亦即<strong>捷径文件</strong></li>
-<li>-u    若 destination 比 source 旧才升级 destination </li>
-</ul>
-<h3 id="rm-移除文件或目录"><a href="#rm-移除文件或目录" class="headerlink" title="rm 移除文件或目录"></a>rm 移除文件或目录</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">user@wzw:~$ rm [-fir] 文件或目录</span><br></pre></td></tr></table></figure>
-<p>参数：</p>
-<ul>
-<li>-f    忽略不存在的文件，不会出现警告信息</li>
-<li>-i    删除前会询问是否执行</li>
-<li>-r    递归删除，常用于删除目录。<strong>这是非常危险的选项！！！</strong></li>
-</ul>
-<h3 id="mv-移动文件与目录，或修改名称"><a href="#mv-移动文件与目录，或修改名称" class="headerlink" title="mv 移动文件与目录，或修改名称"></a>mv 移动文件与目录，或修改名称</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">user@wzw:~$ mv [-fiu] source destination</span><br><span class="line">user@wzw:~$ mv [-fiu] source1 source2 source3 .... directory</span><br></pre></td></tr></table></figure>
-<p>参数：</p>
-<ul>
-<li>-f     如果目标文件已经存在，不会询问而直接覆盖</li>
-<li>-i     若目标文件 (destination) 已存在，询问是否覆盖</li>
-<li>-u    若目标文件已存在，且source较新，才会升级 (update)</li>
-</ul>
-<h2 id="二-查看文件内容"><a href="#二-查看文件内容" class="headerlink" title="二.查看文件内容"></a>二.查看文件内容</h2><ul>
-<li><strong>cat</strong> 由第一行开始显示文件内容</li>
-<li><strong>tac</strong> 从最后一行开始显示，可以看出 tac 是 cat 的倒着写！</li>
-<li><strong>nl</strong>  显示的时候，顺道输出行号！</li>
-<li><strong>more</strong> 一页一页的显示文件内容</li>
-<li><strong>less</strong> 与 more 类似，但是比 more 更好的是，他可以往前翻页！</li>
-<li><strong>head</strong> 只看头几行</li>
-<li><strong>tail</strong> 只看尾巴几行</li>
-</ul>
-<h3 id="cat-从第一行开始显示文件内容"><a href="#cat-从第一行开始显示文件内容" class="headerlink" title="cat 从第一行开始显示文件内容"></a>cat 从第一行开始显示文件内容</h3><p>参数：</p>
-<ul>
-<li>-A     相当于 -vET</li>
-<li>-b     列出行号，仅针对非空白行做行号显示，空白行不标行号</li>
-<li>-E     结尾的断行字节用 $ 显示</li>
-<li>-n     列印出行号，连同空白行也会有行号</li>
-<li>-T     [tab] 键以 ^I 显示</li>
-<li>-v     列出一些看不出来的特殊字符</li>
-</ul>
-<h3 id="tac-从最后一行行开始显示文件内容"><a href="#tac-从最后一行行开始显示文件内容" class="headerlink" title="tac 从最后一行行开始显示文件内容"></a>tac 从最后一行行开始显示文件内容</h3><p>tac与cat命令刚好相反，文件内容从最后一行开始显示，可以看出 tac 是 cat 的倒着写。</p>
-<h3 id="nl-显示行号"><a href="#nl-显示行号" class="headerlink" title="nl 显示行号"></a>nl 显示行号</h3><ul>
-<li>-b ：指定行号指定的方式，主要有两种：<br>-b a ：表示不论是否为空行，也同样列出行号(类似 cat -n)<br>-b t ：如果有空行，空的那一行不要列出行号(默认值)</li>
-<li>-n ：列出行号表示的方法，主要有三种：<br>-n ln ：行号在荧幕的最左方显示；<br>-n rn ：行号在自己栏位的最右方显示，且不加 0<br>-n rz ：行号在自己栏位的最右方显示，且加 0</li>
-<li>-w ：行号栏位的占用的位数。</li>
-</ul>
-<h3 id="more-一页一页翻动"><a href="#more-一页一页翻动" class="headerlink" title="more 一页一页翻动"></a>more 一页一页翻动</h3><p>打开文件后，可以按：</p>
-<ul>
-<li>空白键 (space)：代表向下翻一页；</li>
-<li>Enter     ：代表向下翻『一行』；</li>
-<li>/字串     ：代表在这个显示的内容当中，向下搜寻『字串』这个关键字；</li>
-<li>:f      ：立刻显示出档名以及目前显示的行数；</li>
-<li>q       ：代表立刻离开 more ，不再显示该文件内容。</li>
-<li>b 或 [ctrl]-b ：代表往回翻页，只对文件有用。</li>
-</ul>
-<h3 id="less-一页一页翻动"><a href="#less-一页一页翻动" class="headerlink" title="less 一页一页翻动"></a>less 一页一页翻动</h3><p>打开文件后，可以按：</p>
-<ul>
-<li>空白键  ：向下翻动一页；</li>
-<li>[pagedown]：向下翻动一页；</li>
-<li>[pageup] ：向上翻动一页；</li>
-<li>/字串   ：向下搜寻『字串』的功能；</li>
-<li>?字串   ：向上搜寻『字串』的功能；</li>
-<li>n     ：重复前一个搜寻 (与 / 或 ? 有关！)</li>
-<li>N     ：反向的重复前一个搜寻 (与 / 或 ? 有关！)</li>
-<li>q     ：离开 less 这个程序；</li>
-</ul>
-<h3 id="head-显示文件前面几行"><a href="#head-显示文件前面几行" class="headerlink" title="head 显示文件前面几行"></a>head 显示文件前面几行</h3><p>参数：</p>
-<ul>
-<li>-n ：后面接数字，代表显示几行</li>
-</ul>
-<h3 id="tail-显示文件后面几行"><a href="#tail-显示文件后面几行" class="headerlink" title="tail 显示文件后面几行"></a>tail 显示文件后面几行</h3><p>参数</p>
-<ul>
-<li>-n ：后面接数字，代表显示几行</li>
-<li>-f ：持续侦测后面所接的档名，按下[ctrl]-c才会结束侦测</li>
-</ul>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>

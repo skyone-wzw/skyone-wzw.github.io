@@ -1,0 +1,553 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Arduino核心库常用函数 - Skyone-Blog</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="技术博客,"> 
+    <meta name="description" content="技术博客,注意！以下内容中的 int 指代整型变量，但实际上整型变量也有所不同，例如 analogWrite() 函数的原型如下：
+1void analogWrite(uint8_t pin, int val,"> 
+    <meta name="author" content="王志伟"> 
+    <link rel="alternative" href="atom.xml" title="Skyone-Blog" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+    
+<link rel="stylesheet" href="/css/diaspora.css">
+
+	<!--
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads"
+        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+	 -->
+    <!-- 看板娘 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css">
+    <script src="/live2d-widget/autoload.js"></script>
+    <!-- MD5 -->
+    <script src="/js/md5.min.js"></script>
+    <!-- aplayer音乐播放器 -->
+    <script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">Skyone-Blog</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="iconfont icon-home image-icon" href="javascript:;" data-url="https://skyone-wzw.github.io"></a>
+    <h3 class="subtitle">Arduino核心库常用函数</h3>
+    <div class="social">
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="iconfont icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">Arduino核心库常用函数</h1>
+        <div class="stuff">
+            <span>二月 27, 2021</span>
+            
+  <ul class="post-tags-list" itemprop="keywords"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/Arduino/" rel="tag">Arduino</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>注意！以下内容中的 <code>int</code> 指代整型变量，但实际上整型变量也有所不同，例如 <code>analogWrite()</code> 函数的原型如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">analogWrite</span><span class="params">(<span class="keyword">uint8_t</span> pin, <span class="keyword">int</span> val)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>不必深究，只需要把它当成整形变量即可。</p>
+<h1 id="必备函数"><a href="#必备函数" class="headerlink" title="必备函数"></a>必备函数</h1><h2 id="setup"><a href="#setup" class="headerlink" title="setup()"></a><code>setup()</code></h2><p>Arduino通电或复位后，即会开始执行 <code>setup()</code> 函数中的程序，该函数只会执行一次。</p>
+<p>例子：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setup</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    pinMode(<span class="number">3</span>, OUTPUT);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">4</span>; i &lt; <span class="number">11</span>; i++) &#123;</span><br><span class="line">        pinMode(i, OUTPUT);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="loop"><a href="#loop" class="headerlink" title="loop()"></a><code>loop()</code></h2><p>在setup() 函数中的程序执行完后，Arduino会接着会<strong>无限循环</strong> <code>loop()</code> 函数。</p>
+<p>例子：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">loop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    digitalWrite(led, HIGH);</span><br><span class="line">    delay(<span class="number">1000</span>);</span><br><span class="line">    digitalWrite(led, LOW);</span><br><span class="line">    delay(<span class="number">1000</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="main-函数呢？"><a href="#main-函数呢？" class="headerlink" title="main()函数呢？"></a><code>main()</code>函数呢？</h2><p>你可能会问，为什么这个C++项目没有 <code>main()</code> 函数呢？</p>
+<p>实际上，实际上 <code>main()</code> 函数存在于Arduino核心库中，且仍然是程序的入口。</p>
+<p>我们翻看一下 Arduino 核心库的 main.cpp 就可以看到：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;Arduino.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">atexit</span><span class="params">(<span class="keyword">void</span> (*)())</span> </span>&#123; <span class="keyword">return</span> <span class="number">0</span>; &#125;	<span class="comment">//这表示参数为一个指向 无参数无返回值 的函数的指针</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">initVariant</span><span class="params">()</span> __<span class="title">attribute__</span><span class="params">((weak))</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">initVariant</span><span class="params">()</span> </span>&#123; &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setupUSB</span><span class="params">()</span> __<span class="title">attribute__</span><span class="params">((weak))</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setupUSB</span><span class="params">()</span> </span>&#123; &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    init();</span><br><span class="line"></span><br><span class="line">    initVariant();</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> defined(USBCON)</span></span><br><span class="line">    USBDevice.attach();</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    setup();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">        loop();</span><br><span class="line">        <span class="keyword">if</span> (serialEventRun) serialEventRun();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>由上可见，对于一个 Arduino 项目，必须包含 <code>setup()</code> 和 <code>loop()</code> ，而不能包含 <code>main()</code></p>
+<h1 id="输入输出"><a href="#输入输出" class="headerlink" title="输入输出"></a>输入输出</h1><h2 id="pinMode-pin-mode"><a href="#pinMode-pin-mode" class="headerlink" title="pinMode(pin, mode)"></a><code>pinMode(pin, mode)</code></h2><p>在使用引脚前，需要先定义引脚的模式（读或写）</p>
+<h3 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h3><ul>
+<li><p><code>int pin</code></p>
+<p>指定的引脚编号，如： <code>10</code> , <code>A0</code> 等。</p>
+</li>
+<li><p><code>int mode</code></p>
+<p>共三种模式：</p>
+<ul>
+<li><p><code>INPUT</code></p>
+<p>输入模式</p>
+</li>
+<li><p><code>OUTPUT</code></p>
+<p>输出模式</p>
+</li>
+<li><p><code>INPUT_PULLUP</code></p>
+<p>输入上拉模式，也就是启动板载电阻，使该引脚可以直接连接 5V 电压而不需要在之间另加电阻，但<strong>不能接负电位，不能接大于 5V 的电压。</strong></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pinMode(<span class="number">3</span>, OUTPUT);       <span class="comment">// 设置 3 号引脚为输出模式</span></span><br><span class="line">pinMode(<span class="number">4</span>, INPUT);        <span class="comment">// 设置 4 号引脚为输入模式</span></span><br><span class="line">pinMode(<span class="number">5</span>, INPUT_PULLUP); <span class="comment">// 设置 5 号引脚为输入上拉模式</span></span><br></pre></td></tr></table></figure>
+<h2 id="digitalWrite-pin-value"><a href="#digitalWrite-pin-value" class="headerlink" title="digitalWrite(pin, value)"></a><code>digitalWrite(pin, value)</code></h2><p>设置指定引脚的电位，在此之前要保证该引脚已经 <code>pinMode</code> 过，且为输出模式。</p>
+<h3 id="参数-1"><a href="#参数-1" class="headerlink" title="参数"></a>参数</h3><ul>
+<li><p><code>int pin</code></p>
+<p>指定的引脚编号。</p>
+</li>
+<li><p><code>int value</code></p>
+<p>可以为以下两者之一：</p>
+<ul>
+<li><p><code>HIGH</code></p>
+<p>高电平</p>
+</li>
+<li><p><code>LOW</code></p>
+<p>低电平</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">digitalWrite(<span class="number">3</span>, HIGH); <span class="comment">// 设置 3 号引脚为 高电平</span></span><br><span class="line">digitalWrite(<span class="number">4</span>, HIGH); <span class="comment">// 设置 3 号引脚为 低电平</span></span><br></pre></td></tr></table></figure>
+<h2 id="digitalRead-pin"><a href="#digitalRead-pin" class="headerlink" title="digitalRead(pin)"></a><code>digitalRead(pin)</code></h2><p>读取指定引脚的电位，在此之前要保证该引脚已经 <code>pinMode</code> 过，且为输入模式</p>
+<h3 id="参数-2"><a href="#参数-2" class="headerlink" title="参数"></a>参数</h3><ul>
+<li><p><code>int pin</code></p>
+<p>指定的引脚编号。</p>
+</li>
+</ul>
+<h3 id="返回值"><a href="#返回值" class="headerlink" title="返回值"></a>返回值</h3><ul>
+<li><p><code>int</code></p>
+<p>指定的引脚的电位，为以下两者之一：</p>
+<ul>
+<li><p><code>HIGH</code></p>
+<p>高电平</p>
+</li>
+<li><p><code>LOW</code></p>
+<p>低电平</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="例子-1"><a href="#例子-1" class="headerlink" title="例子"></a>例子</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 假设 4 号引脚连接的是 高电平</span></span><br><span class="line"><span class="keyword">int</span> state = digitalWrite(<span class="number">4</span>);</span><br><span class="line"><span class="comment">// state = HIGH; 也就是 stats = 1;</span></span><br></pre></td></tr></table></figure>
+<h2 id="analogWrite-pin-value"><a href="#analogWrite-pin-value" class="headerlink" title="analogWrite(pin, value)"></a><code>analogWrite(pin, value)</code></h2><p>设定指定引脚的电位，在此之前要保证该引脚已经 <code>pinMode</code> 过，且为输出模式</p>
+<p>此外，还要保证该引脚支持模拟输出，也就是引脚旁边有一个波浪线。</p>
+<h3 id="参数-3"><a href="#参数-3" class="headerlink" title="参数"></a>参数</h3><ul>
+<li><p><code>int pin</code></p>
+<p>指定的引脚编号。</p>
+</li>
+<li><p><code>int value</code></p>
+<p>指定电位的值，范围为 <code>0~255</code> ，从 0V 到 5V 成比例对应。</p>
+</li>
+</ul>
+<h3 id="示例-1"><a href="#示例-1" class="headerlink" title="示例"></a>示例</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">digitalWrite(<span class="number">3</span>, <span class="number">0</span>);   <span class="comment">// 设置 3 号引脚为 0V</span></span><br><span class="line">digitalWrite(<span class="number">3</span>, <span class="number">255</span>); <span class="comment">// 设置 3 号引脚为 5V</span></span><br><span class="line">digitalWrite(<span class="number">3</span>, <span class="number">233</span>); <span class="comment">// 设置 3 号引脚为 (5 * 233 / 255)V</span></span><br></pre></td></tr></table></figure>
+<h2 id="analogRead"><a href="#analogRead" class="headerlink" title="analogRead()"></a><code>analogRead()</code></h2><p>读取指定引脚的电位，在此之前要保证该引脚已经 <code>pinMode</code> 过，且为输入模式</p>
+<p>此外，还要保证该引脚支持模拟输入，在 Arduino Uno 里支持模拟输入的只有： <code>A0</code> ， <code>A1</code> ， <code>A2</code> ，<code>A3</code> ， <code>A4</code> ， <code>A5</code> 六个。</p>
+<h3 id="参数-4"><a href="#参数-4" class="headerlink" title="参数"></a>参数</h3><ul>
+<li><p><code>int pin</code></p>
+<p>指定的引脚编号。</p>
+</li>
+</ul>
+<h3 id="返回值-1"><a href="#返回值-1" class="headerlink" title="返回值"></a>返回值</h3><ul>
+<li><p><code>int</code></p>
+<p>指定的引脚的电位，范围： <code>0~999</code> ，从 0V 到 5V 成比例对应。</p>
+</li>
+</ul>
+<h3 id="例子-2"><a href="#例子-2" class="headerlink" title="例子"></a>例子</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 假设 4 号引脚连接的是 3V</span></span><br><span class="line"><span class="keyword">int</span> state = digitalWrite(<span class="number">4</span>);</span><br><span class="line"><span class="comment">// state = 3 * 1000 / 5;</span></span><br></pre></td></tr></table></figure>
+<h1 id="时间"><a href="#时间" class="headerlink" title="时间"></a>时间</h1><h2 id="delay-ms"><a href="#delay-ms" class="headerlink" title="delay(ms)"></a><code>delay(ms)</code></h2><p>程序停止一段时间</p>
+<h3 id="参数-5"><a href="#参数-5" class="headerlink" title="参数"></a>参数</h3><ul>
+<li><p><code>unsigned long ms</code></p>
+<p>延时的时间，单位为毫秒</p>
+</li>
+</ul>
+<h3 id="示例-2"><a href="#示例-2" class="headerlink" title="示例"></a>示例</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">delay(<span class="number">500</span>); <span class="comment">// 延时 0.5 秒</span></span><br></pre></td></tr></table></figure>
+<h2 id="delayMicroseconds-us"><a href="#delayMicroseconds-us" class="headerlink" title="delayMicroseconds(us)"></a><code>delayMicroseconds(us)</code></h2><h3 id="参数-6"><a href="#参数-6" class="headerlink" title="参数"></a>参数</h3><ul>
+<li><p><code>unsigned int us</code></p>
+<p>延时的时间，单位为微秒</p>
+</li>
+</ul>
+<h3 id="示例-3"><a href="#示例-3" class="headerlink" title="示例"></a>示例</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">delayMicrosecond(<span class="number">300</span>); <span class="comment">// 延时 0.0003 秒</span></span><br></pre></td></tr></table></figure>
+<h2 id="millis"><a href="#millis" class="headerlink" title="millis()"></a><code>millis()</code></h2><h3 id="返回值-2"><a href="#返回值-2" class="headerlink" title="返回值"></a>返回值</h3><ul>
+<li><p><code>unsigned long</code></p>
+<p>Arduino通电后或复位后到现在的时间，单位毫秒</p>
+</li>
+</ul>
+<h3 id="示例-4"><a href="#示例-4" class="headerlink" title="示例"></a>示例</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">long</span> time = millis();</span><br></pre></td></tr></table></figure>
+<h2 id="micros"><a href="#micros" class="headerlink" title="micros()"></a><code>micros()</code></h2><h3 id="返回值-3"><a href="#返回值-3" class="headerlink" title="返回值"></a>返回值</h3><ul>
+<li><p><code>unsigned long</code></p>
+<p>Arduino通电后或复位后到现在的时间，单位毫秒</p>
+</li>
+</ul>
+<h3 id="示例-5"><a href="#示例-5" class="headerlink" title="示例"></a>示例</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">long</span> time = micros();</span><br></pre></td></tr></table></figure>
+<h1 id="串口通信：Serial类"><a href="#串口通信：Serial类" class="headerlink" title="串口通信：Serial类"></a>串口通信：<code>Serial</code>类</h1><h2 id="Serial-begin"><a href="#Serial-begin" class="headerlink" title="Serial.begin()"></a><code>Serial.begin()</code></h2><p>该函数有两个重载，</p>
+<ul>
+<li><p><code>Serial.begin(speed)</code></p>
+<ul>
+<li><p>参数：</p>
+<ul>
+<li><p><code>speed</code></p>
+<p>串口通信波特率，一般为9600，可以为：</p>
+<p>300、600、1200、2400、4800、9600、14400、19200、28800、38400、57600、115200</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code>Serial.begin(speed, config)</code></p>
+<ul>
+<li><p>参数</p>
+<ul>
+<li><p><code>speed</code> 同上</p>
+</li>
+<li><p><code>config</code></p>
+<p>配置信息，具体如下表：</p>
+<table>
+<thead>
+<tr>
+<th align="center">可选配置</th>
+<th align="center">数据位</th>
+<th align="center">校验位</th>
+<th align="center">停止位</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">SERIAL_5N1</td>
+<td align="center">5</td>
+<td align="center">无</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">SERIAL_6N1</td>
+<td align="center">6</td>
+<td align="center">无</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">SERIAL_7N1</td>
+<td align="center">7</td>
+<td align="center">无</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">SERIAL_8N1(默认配置)</td>
+<td align="center">8</td>
+<td align="center">无</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">SERIAL_5N2</td>
+<td align="center">5</td>
+<td align="center">无</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center">SERIAL_6N2</td>
+<td align="center">6</td>
+<td align="center">无</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center">SERIAL_7N2</td>
+<td align="center">7</td>
+<td align="center">无</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center">SERIAL_8N2</td>
+<td align="center">8</td>
+<td align="center">无</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center">SERIAL_5E1</td>
+<td align="center">5</td>
+<td align="center">偶</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">SERIAL_6E1</td>
+<td align="center">6</td>
+<td align="center">偶</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">SERIAL_7E1</td>
+<td align="center">7</td>
+<td align="center">偶</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">SERIAL_8E1</td>
+<td align="center">8</td>
+<td align="center">偶</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">SERIAL_5E2</td>
+<td align="center">5</td>
+<td align="center">偶</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center">SERIAL_6E2</td>
+<td align="center">6</td>
+<td align="center">偶</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center">SERIAL_7E2</td>
+<td align="center">7</td>
+<td align="center">偶</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center">SERIAL_8E2</td>
+<td align="center">8</td>
+<td align="center">偶</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center">SERIAL_5O1</td>
+<td align="center">5</td>
+<td align="center">奇</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">SERIAL_6O1</td>
+<td align="center">6</td>
+<td align="center">奇</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">SERIAL_7O1</td>
+<td align="center">7</td>
+<td align="center">奇</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">SERIAL_8O1</td>
+<td align="center">8</td>
+<td align="center">奇</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">SERIAL_5O2</td>
+<td align="center">5</td>
+<td align="center">奇</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center">SERIAL_6O2</td>
+<td align="center">6</td>
+<td align="center">奇</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center">SERIAL_7O2</td>
+<td align="center">7</td>
+<td align="center">奇</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center">SERIAL_8O2</td>
+<td align="center">8</td>
+<td align="center">奇</td>
+<td align="center">2</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Serial-end"><a href="#Serial-end" class="headerlink" title="Serial.end()"></a><code>Serial.end()</code></h2><p>结束串口通信。释放该串口所在的数字引脚，使得其可以作为普通数字引脚使用。</p>
+<h2 id="Serial-print-与-Serial-println"><a href="#Serial-print-与-Serial-println" class="headerlink" title="Serial.print() 与 Serial.println()"></a><code>Serial.print()</code> 与 <code>Serial.println()</code></h2><p>向串口写入数据，有许多重载</p>
+<p>至于两者区别相信学过Java的都知道，<code>Serial.println()</code> 在输出数据的同时换行。</p>
+<h2 id="Serial-read"><a href="#Serial-read" class="headerlink" title="Serial.read()"></a><code>Serial.read()</code></h2><p>接收串口数据</p>
+<p><strong>返回值</strong></p>
+<ul>
+<li><p><code>int</code></p>
+<p>返回从串口接收的数据，也就是依次接收 ASCII 字符，每次一个比特。</p>
+</li>
+</ul>
+<h2 id="Serial-available"><a href="#Serial-available" class="headerlink" title="Serial.available()"></a><code>Serial.available()</code></h2><p>获取串口接收到的除去已经读取的数据的个数，也就是缓冲区的数据个数，缓冲区最多可保存64 bytes的数据。</p>
+<p><strong>返回值</strong></p>
+<ul>
+<li><p><code>int</code></p>
+<p>缓冲区的数据的比特数，<code>0~64</code></p>
+</li>
+</ul>
+
+            <div id="aplayer"></div>
+            <script>
+                window.aplayer = new APlayer({
+                    container: document.getElementById('aplayer'),
+                    lrcType: 3,
+                    order: "random",
+                    fixed: true,
+                    audio: [
+                        
+                        
+                        {
+                            name: "夜航星",
+                            artist: "洛天依",
+                            url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/music/夜航星%20-%20洛天依.mp3",
+                            
+                            cover: "https://ooo.0x0.ooo/2021/02/14/o08AS.png",
+                            
+                            
+                            lrc: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/lrc/夜航星%20-%20洛天依.lrc",
+                            
+                        },
+                        
+                        {
+                            name: "为谁而为",
+                            artist: "洛天依",
+                            url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/music/为谁而为%20-%20洛天依%2CCOP.mp3",
+                            
+                            cover: "https://ooo.0x0.ooo/2021/02/16/ocSlx.jpg",
+                            
+                            
+                            lrc: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/lrc/为谁而为%20-%20洛天依%2CCOP.lrc",
+                            
+                        },
+                        
+                        {
+                            name: "Faded",
+                            artist: "乐正绫",
+                            url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/blog/music/乐正绫%20-%20Faded.mp3",
+                            
+                            cover: "https://ooo.0x0.ooo/2021/02/21/odvNY.png",
+                            
+                            
+                        },
+                        
+                        {
+                            name: "bilibili2018年度总结BGM",
+                            artist: "bilibili",
+                            url: "https://cdn.jsdelivr.net/gh/skyone-res/static@master/blog/music/bilibili2018%20-%20至尊马甲.flac",
+                            
+                            cover: "https://ooo.0x0.ooo/2021/02/21/odAdp.jpg",
+                            
+                            
+                        },
+                        
+                    ]
+                });
+            </script>
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+		data-enable='true'
+        data-ae='true'
+        data-ci='d5e197ef955b7f3268e5'
+        data-cs='7d4feed7a179ad28943b0865b7970814073145ad'
+        data-r='blog-gitalk'
+        data-o='skyone-wzw'
+        data-a='skyone-wzw'
+        data-d='false'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BF%85%E5%A4%87%E5%87%BD%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">必备函数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#setup"><span class="toc-number">1.1.</span> <span class="toc-text">setup()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#loop"><span class="toc-number">1.2.</span> <span class="toc-text">loop()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#main-%E5%87%BD%E6%95%B0%E5%91%A2%EF%BC%9F"><span class="toc-number">1.3.</span> <span class="toc-text">main()函数呢？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA"><span class="toc-number">2.</span> <span class="toc-text">输入输出</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#pinMode-pin-mode"><span class="toc-number">2.1.</span> <span class="toc-text">pinMode(pin, mode)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E6%95%B0"><span class="toc-number">2.1.1.</span> <span class="toc-text">参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B"><span class="toc-number">2.1.2.</span> <span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#digitalWrite-pin-value"><span class="toc-number">2.2.</span> <span class="toc-text">digitalWrite(pin, value)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E6%95%B0-1"><span class="toc-number">2.2.1.</span> <span class="toc-text">参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90"><span class="toc-number">2.2.2.</span> <span class="toc-text">例子</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#digitalRead-pin"><span class="toc-number">2.3.</span> <span class="toc-text">digitalRead(pin)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E6%95%B0-2"><span class="toc-number">2.3.1.</span> <span class="toc-text">参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="toc-number">2.3.2.</span> <span class="toc-text">返回值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90-1"><span class="toc-number">2.3.3.</span> <span class="toc-text">例子</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#analogWrite-pin-value"><span class="toc-number">2.4.</span> <span class="toc-text">analogWrite(pin, value)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E6%95%B0-3"><span class="toc-number">2.4.1.</span> <span class="toc-text">参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-1"><span class="toc-number">2.4.2.</span> <span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#analogRead"><span class="toc-number">2.5.</span> <span class="toc-text">analogRead()</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E6%95%B0-4"><span class="toc-number">2.5.1.</span> <span class="toc-text">参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%94%E5%9B%9E%E5%80%BC-1"><span class="toc-number">2.5.2.</span> <span class="toc-text">返回值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90-2"><span class="toc-number">2.5.3.</span> <span class="toc-text">例子</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%97%B6%E9%97%B4"><span class="toc-number">3.</span> <span class="toc-text">时间</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#delay-ms"><span class="toc-number">3.1.</span> <span class="toc-text">delay(ms)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E6%95%B0-5"><span class="toc-number">3.1.1.</span> <span class="toc-text">参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-2"><span class="toc-number">3.1.2.</span> <span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#delayMicroseconds-us"><span class="toc-number">3.2.</span> <span class="toc-text">delayMicroseconds(us)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E6%95%B0-6"><span class="toc-number">3.2.1.</span> <span class="toc-text">参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-3"><span class="toc-number">3.2.2.</span> <span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#millis"><span class="toc-number">3.3.</span> <span class="toc-text">millis()</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%94%E5%9B%9E%E5%80%BC-2"><span class="toc-number">3.3.1.</span> <span class="toc-text">返回值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-4"><span class="toc-number">3.3.2.</span> <span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#micros"><span class="toc-number">3.4.</span> <span class="toc-text">micros()</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%94%E5%9B%9E%E5%80%BC-3"><span class="toc-number">3.4.1.</span> <span class="toc-text">返回值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-5"><span class="toc-number">3.4.2.</span> <span class="toc-text">示例</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%B2%E5%8F%A3%E9%80%9A%E4%BF%A1%EF%BC%9ASerial%E7%B1%BB"><span class="toc-number">4.</span> <span class="toc-text">串口通信：Serial类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Serial-begin"><span class="toc-number">4.1.</span> <span class="toc-text">Serial.begin()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Serial-end"><span class="toc-number">4.2.</span> <span class="toc-text">Serial.end()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Serial-print-%E4%B8%8E-Serial-println"><span class="toc-number">4.3.</span> <span class="toc-text">Serial.print() 与 Serial.println()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Serial-read"><span class="toc-number">4.4.</span> <span class="toc-text">Serial.read()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Serial-available"><span class="toc-number">4.5.</span> <span class="toc-text">Serial.available()</span></a></li></ol></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+</html>
