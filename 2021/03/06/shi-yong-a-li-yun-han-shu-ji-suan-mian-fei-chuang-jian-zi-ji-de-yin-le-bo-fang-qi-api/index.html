@@ -215,7 +215,7 @@
 <p>我们使用的流量小到几乎可以忽略不计。。。</p>
 <hr>
 <p>选择 <strong>服务及函数–&gt;新增服务</strong></p>
-<img src="F:\Blog\草稿\Server Less APlayer\新增服务.png" alt="新增服务" style="zoom: 50%;" />
+<img src="https://tc.skyone.host/blog/post/使用阿里云函数计算免费创建自己的音乐播放器API/新增服务.png" alt="新增服务" style="zoom: 50%;" />
 
 <ul>
 <li>服务名称：随意</li>
@@ -224,10 +224,10 @@
 <li>链路追踪不开启<del>我穷，没钱</del></li>
 </ul>
 <p>如果开启了绑定日志，可能会让你授权，点击确认即可。</p>
-<img src="F:\Blog\草稿\Server Less APlayer\新增服务-表单.png" alt="新增服务-表单" style="zoom: 50%;" />
+<img src="https://tc.skyone.host/blog/post/使用阿里云函数计算免费创建自己的音乐播放器API/新增服务-表单.png" alt="新增服务-表单" style="zoom: 50%;" />
 
 <p>然后<strong>新增函数–&gt;HTTP函数</strong></p>
-<img src="F:\Blog\草稿\Server Less APlayer\新增函数.png" alt="新增函数" style="zoom: 50%;" />
+<img src="https://tc.skyone.host/blog/post/使用阿里云函数计算免费创建自己的音乐播放器API/新增函数.png" alt="新增函数" style="zoom: 50%;" />
 
 <ul>
 <li>函数名：随意</li>
@@ -242,10 +242,10 @@
 <li>认证方式：<code>anonymous</code></li>
 <li>请求方式：改为<code>GET</code></li>
 </ul>
-<img src="F:\Blog\草稿\Server Less APlayer\新增函数-表单.png" alt="新增函数-表单" style="zoom: 50%;" />
+<img src="https://tc.skyone.host/blog/post/使用阿里云函数计算免费创建自己的音乐播放器API/新增函数-表单.png" alt="新增函数-表单" style="zoom: 50%;" />
 
 <p>进入该函数，选择触发器，复制链接</p>
-<img src="F:\Blog\草稿\Server Less APlayer\触发器链接.png" alt="触发器链接" style="zoom:50%;" />
+<img src="https://tc.skyone.host/blog/post/使用阿里云函数计算免费创建自己的音乐播放器API/触发器链接.png" alt="触发器链接" style="zoom:50%;" />
 
 <p>打开浏览器，粘贴链接，并在后面加上你的GET请求参数，我的例子可以用：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?_=|https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/music/%E5%A4%9C%E8%88%AA%E6%98%9F%20-%20%E6%B4%9B%E5%A4%A9%E4%BE%9D.mp3|https://ooo.0x0.ooo/2021/02/14/o08AS.png||https://cdn.jsdelivr.net/gh/skyone-res/static@master/res/lrc/%E5%A4%9C%E8%88%AA%E6%98%9F%20-%20%E6%B4%9B%E5%A4%A9%E4%BE%9D.lrc</span><br></pre></td></tr></table></figure>
@@ -254,7 +254,7 @@
 <p>输入你的<strong>已经备案的</strong>域名，需要开启HTTPS的自行百度这么申请SSL证书</p>
 <p>路径填 <code>/</code> ，当然你懂的话自行修改</p>
 <p>选择函数为刚才创建的，LATEST版</p>
-<p>![自定义域名](F:\Blog\草稿\Server Less APlayer\自定义域名.png)</p>
+<p><img src="https://tc.skyone.host/blog/post/%E4%BD%BF%E7%94%A8%E9%98%BF%E9%87%8C%E4%BA%91%E5%87%BD%E6%95%B0%E8%AE%A1%E7%AE%97%E5%85%8D%E8%B4%B9%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E9%9F%B3%E4%B9%90%E6%92%AD%E6%94%BE%E5%99%A8API/%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9F%9F%E5%90%8D.png" alt="自定义域名"></p>
 <p>点确定后，进入你的域名服务商的域名解析控制台，为你的主域名添加对应的子域名，选择CNAME模式，指向上图复制的链接。</p>
 <h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>打开如下网址</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;你的域名&#x2F;你的get请求参数</span><br></pre></td></tr></table></figure>
@@ -267,7 +267,7 @@
 <li>参数在<a href="#%E6%88%91%E7%9A%84API%E7%9A%84%E5%8F%82%E6%95%B0">这一段</a>有写</li>
 </ul>
 <p>例图：</p>
-<p><a target="_blank" rel="noopener" href="https://www.skyone.host/2021/02/24/win10-xia-pei-zhi-shu-mei-pai-pico-de-micropython-yu-c-huan-jing/">![例图](F:\Blog\草稿\Server Less APlayer\例图.png)</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.skyone.host/2021/02/24/win10-xia-pei-zhi-shu-mei-pai-pico-de-micropython-yu-c-huan-jing/"><img src="https://tc.skyone.host/blog/post/%E4%BD%BF%E7%94%A8%E9%98%BF%E9%87%8C%E4%BA%91%E5%87%BD%E6%95%B0%E8%AE%A1%E7%AE%97%E5%85%8D%E8%B4%B9%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E9%9F%B3%E4%B9%90%E6%92%AD%E6%94%BE%E5%99%A8API/%E4%BE%8B%E5%9B%BE.png" alt="例图"></a></p>
 <p><strong>注意：</strong>不保证我提供的示例会稳定运行，如果我发现有很多来自非我网站的调用，我会停止此API，<strong>所以，想要就自己动手，不要什么事都让被人给你做好！</strong></p>
 <p><span style="color:red;font-size:1.2em;">本文完全原创，禁止转载</span>，如果真的想转载，请<a href="mailto:wzw@skyone.host">邮箱联系我</a>。</p>
 
